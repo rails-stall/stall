@@ -1,0 +1,17 @@
+.modal.danger.fade{ role: 'dialog', tabindex: '-1', data: { :'line-item' => @line_item.as_json(only: [:name, :quantity, :eot_price, :price, :vat_rate]) } }
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ type: 'button', :'aria-label' => 'Close', data: { dismiss:  'modal' } }
+          %span{ :'aria-hidden' => 'true' }
+            ×
+        %h4.modal-title
+          = t('stall.line_items.add_error.title')
+
+      .modal-body
+        %p.text-danger
+          = t('stall.line_items.add_error.description')
+
+      .modal-footer
+        %button.btn.btn-default{ type: 'button', data: { dismiss: 'modal' } }
+          = t('stall.shared.close')

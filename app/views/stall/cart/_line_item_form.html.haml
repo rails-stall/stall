@@ -1,0 +1,11 @@
+= simple_form_for line_item, as: :line_item, url: stall_cart_line_items_path(cart), remote: true, data: { :'add-to-cart-form' => true } do |form|
+  = form.hidden_field :sellable_type
+  = form.hidden_field :sellable_id
+
+  .input-group
+    = form.input_field :quantity, spinner: false, value: 1, class: 'form-group'
+
+    %span.input-group-btn
+      %button.btn.btn-primary{ type: 'submit', style: 'font-size: 12px' }
+        %i.fa.fa-shopping-cart
+        = t('stall.line_items.form.add_to_cart')

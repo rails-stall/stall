@@ -1,0 +1,23 @@
+.modal.fade{ role: 'dialog', tabindex: '-1', data: { :'cart' => { :'total-quantity' => current_cart.total_quantity } } }
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ type: 'button', :'aria-label' => 'Close', data: { dismiss:  'modal' } }
+          %span{ :'aria-hidden' => 'true' }
+            ×
+        %h4.modal-title
+          = t('stall.line_items.added.title')
+
+      .modal-body
+        = @line_item.name
+        x
+        = @quantity
+        \=
+        = number_to_currency(@line_item.unit_price * @quantity)
+
+      .modal-footer
+        %button.btn.btn-default{ type: 'button', data: { dismiss: 'modal' } }
+          = t('stall.line_items.added.continue_shopping')
+
+        = link_to stall_cart_path(@cart), class: 'btn btn-primary' do
+          = t('stall.line_items.added.view_cart')

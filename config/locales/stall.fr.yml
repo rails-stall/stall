@@ -1,0 +1,20 @@
+fr:
+  stall:
+    shared:
+      close: "Fermer"
+
+    line_items:
+      form:
+        add_to_cart: "Ajouter au panier"
+      added:
+        title: "Votre produit a bien été ajouté à votre panier"
+        continue_shopping: "Continuer mes achats"
+        view_cart: "Voir mon panier"
+      add_error:
+        title: "Votre produit n'a pu être ajouté"
+        description: "Merci de vérifier que vous avez bien rempli la quantité avant d'ajouter le produit au panier."
+
+  activerecord:
+    attributes:
+      stall/line_item:
+        quantity: "Quantité"
