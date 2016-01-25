@@ -6,7 +6,7 @@ module Stall
       @router = router
     end
 
-    def draw(mount_location, options = {}, &block)
+    def draw(mount_location)
       router.instance_eval do
         scope mount_location do
           scope module: :stall do

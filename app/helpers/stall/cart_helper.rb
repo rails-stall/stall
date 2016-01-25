@@ -8,8 +8,8 @@ module Stall
 
     def load_current_cart
       if (cart_token = session[cart_store_key_for(:default)])
-        if (cart = Stall::Cart.find_by_token(cart_token))
-          return cart
+        if (current_cart = Stall::Cart.find_by_token(cart_token))
+          return current_cart
         end
       end
 

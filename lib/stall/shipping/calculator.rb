@@ -8,7 +8,7 @@ module Stall
         @config = config
       end
 
-      def available_for?(address)
+      def available_for?(_address)
         raise NoMethodError,
           'Shipping calculators must implement the #available_for? method ' \
           'to allow filtering available shipping methods'

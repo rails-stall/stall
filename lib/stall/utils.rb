@@ -12,7 +12,7 @@ module Stall
           begin
             require name.underscore
             name.constantize
-          rescue LoadError, NameError => e
+          rescue LoadError, NameError
             nil
           end
         end
