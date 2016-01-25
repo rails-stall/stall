@@ -18,6 +18,7 @@ module Stall
 
   autoload :Checkout
   autoload :Shipping
+  autoload :Payments
 
   autoload :Routes
   autoload :Config

@@ -25,6 +25,18 @@ module Stall
       token
     end
 
+    def total_price
+      line_items.map(&:price).sum
+    end
+
+    def total_eot_price
+      line_items.map(&:eot_price).sum
+    end
+
+    def total_vat
+      line_items.map(&:vat).sum
+    end
+
     def total_quantity
       line_items.map(&:quantity).sum
     end

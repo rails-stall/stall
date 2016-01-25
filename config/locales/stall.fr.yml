@@ -4,6 +4,8 @@ fr:
       close: "Fermer"
 
     carts:
+      formats:
+        name: "Commande n°%{ref}"
       flashes:
         update:
           success: "Votre panier a bien été mis à jour."
@@ -36,6 +38,10 @@ fr:
         validate: "Valider mon mode de paiement"
       payment:
         title: "Paiement"
+
+    payments:
+      gateway:
+        pay: "Payer ma commande"
 
   activerecord:
     attributes:

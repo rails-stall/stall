@@ -51,7 +51,7 @@ RSpec.feature 'The default cart check out' do
     expect(cart.shipment.price.to_i).not_to eq(0)
   end
 
-  scenario 'allows to choose a payment method', focus: true do
+  scenario 'allows to choose a payment method' do
     create(:payment_method, name: 'Fake payment gateway', identifier: 'fake-payment-gateway')
     cart = build_cart
     cart.state = :payment_method

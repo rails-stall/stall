@@ -6,6 +6,7 @@ class CreateStallProductLists < ActiveRecord::Migration
       t.string     :currency, null: false
       t.references :customer, index: true
       t.string     :token,    null: false
+      t.json       :data
 
       t.timestamps            null: false
     end

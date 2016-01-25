@@ -19,4 +19,9 @@ RSpec.describe Stall::Cart do
       expect(cart.total_weight).to eq(300)
     end
   end
+
+  it 'sets its reference on creation' do
+    cart = create(:cart, reference: nil)
+    expect(cart.reference).not_to be_nil
+  end
 end

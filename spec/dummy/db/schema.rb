@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 20160125100754) do
     t.string   "currency",    null: false
     t.integer  "customer_id"
     t.string   "token",       null: false
+    t.json     "data"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

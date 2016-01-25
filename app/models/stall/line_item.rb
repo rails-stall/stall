@@ -31,6 +31,10 @@ module Stall
       product_list.try(:currency) || Money.default_currency
     end
 
+    def vat
+      price - eot_price
+    end
+
     private
 
     # TODO : Stocks availibility handling
