@@ -1,5 +1,5 @@
 class Book < ActiveRecord::Base
-  acts_as_sellable
+  include Stall::Sellable
 
   validates :title, :price, presence: true
   validates :price, numericality: true
