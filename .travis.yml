@@ -3,5 +3,9 @@ rvm:
  - "2.1.6"
  - "2.2.4"
  - "2.3.0"
-# uncomment this line if your project needs to run something other than `rake`:
+
 script: bundle exec rspec spec
+
+addons:
+  code_climate:
+    repo_token: 17486efa0f84b7c23a3c56ac04a9a40f3ec00ccc7761475118d811cae1ed3a4c
