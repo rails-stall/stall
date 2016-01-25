@@ -7,5 +7,9 @@ rvm:
 script: bundle exec rspec spec
 
 addons:
+  postgresql: "9.4"
   code_climate:
     repo_token: 17486efa0f84b7c23a3c56ac04a9a40f3ec00ccc7761475118d811cae1ed3a4c
+
+before_script:
+  - psql -c 'create database stall_test_test;' -U postgres
