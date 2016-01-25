@@ -1,0 +1,9 @@
+<h1>Books</h1>
+
+<% @books.each do |book| %>
+  <div data-book-id="<%= book.id %>">
+    <h2><%= book.title %></h2>
+    <span class="price"><%= number_to_currency(book.price) %></span>
+    <%= add_to_cart_form_for(book) %>
+  </div>
+<% end %>

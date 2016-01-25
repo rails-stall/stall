@@ -9,8 +9,11 @@ module Stall
 
     def call
       return false unless line_item.valid?
-      assemble_identical_line_items
-      cart.line_items << line_item
+
+      unless assemble_identical_line_items
+        cart.line_items << line_item
+      end
+
       cart.save
     end
 
@@ -33,6 +36,8 @@ module Stall
       if existing_line_item
         existing_line_item.quantity += line_item.quantity
         @line_item = existing_line_item
+      else
+        false
       end
     end
 

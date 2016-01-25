@@ -3,6 +3,15 @@ fr:
     shared:
       close: "Fermer"
 
+    carts:
+      flashes:
+        update:
+          success: "Votre panier a bien été mis à jour."
+          error: "Votre panier n'a pu être mis à jour, merci de vérifier les champs."
+      recap:
+        update: "Mettre à jour le panier"
+        validate: "Passer la commande"
+
     line_items:
       form:
         add_to_cart: "Ajouter au panier"
@@ -14,7 +23,38 @@ fr:
         title: "Votre produit n'a pu être ajouté"
         description: "Merci de vérifier que vous avez bien rempli la quantité avant d'ajouter le produit au panier."
 
+    checkout:
+      informations:
+        title: "Vos informations"
+        validate: "Valider mes adresses"
+        error: "Vos informations n'ont pu être enregistrées, merci de vérifier les champs"
+      shipping_method:
+        title: "Mode de livraison"
+        validate: "Valider mon mode de livraison"
+      payment_method:
+        title: "Mode de paiement"
+        validate: "Valider mon mode de paiement"
+      payment:
+        title: "Paiement"
+
   activerecord:
     attributes:
       stall/line_item:
+        name: "Produit"
+        unit_price: "Prix unitaire"
+        unit_eot_price: "Prix unitaire HT"
+        price: "Prix"
+        eot_price: "Prix HT"
         quantity: "Quantité"
+      stall/customer:
+        email: "Adresse e-mail"
+      stall/address:
+        civility: "Civilité"
+        first_name: "Prénom"
+        last_name: "Nom"
+        address: "Adresse"
+        address_details: "Complément d'adresse"
+        zip: "Code postal"
+        city: "Ville"
+        country: "Pays"
+        phone: "Téléphone"

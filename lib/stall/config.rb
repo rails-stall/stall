@@ -1,22 +1,6 @@
 module Stall
-  # The DSL allows for declaring instance-level configuration params
-  # with defaults in a single line
-  #
-  module ConfigDSL
-    def param(name, default = nil)
-      attr_writer name
-
-      instance_variable_name = :"@#{ name }"
-
-      define_method(name) do
-        instance_variable_get(instance_variable_name) ||
-          instance_variable_set(instance_variable_name, default)
-      end
-    end
-  end
-
   class Config
-    extend Stall::ConfigDSL
+    extend Stall::Utils::ConfigDSL
 
     # Default VAT rate
     param :vat_rate, BigDecimal.new('20.0')
@@ -26,5 +10,18 @@ module Stall
 
     # Engine's ApplicationController parent
     param :application_controller_ancestor, '::ApplicationController'
+
+    # Default currency for money objects
+    param :default_currency, 'EUR'
+
+    # Default checkout wizard used
+    param :default_checkout_wizard, 'DefaultCheckoutWizard'
+
+    # Default product weight if no weight is found
+    param :default_product_weight, 0
+
+    def shipping
+      @shipping ||= Stall::Shipping::Config.new
+    end
   end
 end

@@ -1,0 +1,60 @@
+en:
+  stall:
+    shared:
+      close: "Close"
+
+    carts:
+      flashes:
+        update:
+          success: "Your cart has successfully been updated"
+          error: "Your cart could not be updated, please check that all the fields are correctly filled"
+      recap:
+        update: "Update the cart"
+        validate: "Proceed to order"
+
+    line_items:
+      form:
+        add_to_cart: "Add to cart"
+      added:
+        title: "Votre produit a bien été ajouté à votre panier"
+        continue_shopping: "Continuer mes achats"
+        view_cart: "Voir mon panier"
+      add_error:
+        title: "Votre produit n'a pu être ajouté"
+        description: "Merci de vérifier que vous avez bien rempli la quantité avant d'ajouter le produit au panier."
+
+    checkout:
+      informations:
+        title: "Vos informations"
+        validate: "Valider mes adresses"
+        error: "Your informations could not be saved, please check that all the fields are correctly filled"
+      shipping_method:
+        title: "Mode de livraison"
+        validate: "Valider mon mode de livraison"
+      payment_method:
+        title: "Mode de paiement"
+        validate: "Valider mon mode de paiement"
+      payment:
+        title: "Paiement"
+
+  activerecord:
+    attributes:
+      stall/customer:
+        email: "E-mail address"
+      stall/line_item:
+        name: "Produit"
+        unit_price: "Prix unitaire"
+        unit_eot_price: "Prix unitaire HT"
+        price: "Prix"
+        eot_price: "Prix HT"
+        quantity: "Quantité"
+      stall/address:
+        civility: "Civility"
+        first_name: "First name"
+        last_name: "Last name"
+        address: "Adress"
+        address_details: "Address 2"
+        zip: "Zip code"
+        city: "City"
+        country: "Country"
+        phone: "Phone"

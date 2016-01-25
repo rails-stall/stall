@@ -1,6 +1,13 @@
 module Stall
   class LineItem < ActiveRecord::Base
+    store_accessor :data, :weight
+
+    monetize :unit_eot_price_cents, :unit_price_cents,
+             :eot_price_cents, :price_cents,
+             with_model_currency: :currency, allow_nil: true
+
     belongs_to :sellable, polymorphic: true
+    belongs_to :product_list
 
     validates :name, :unit_price, :unit_eot_price, :vat_rate, :price, :quantity,
               :eot_price, :sellable, presence: true
@@ -18,6 +25,10 @@ module Stall
       [:sellable_id, :sellable_type].all? do |property|
         public_send(property) == other.public_send(property)
       end
+    end
+
+    def currency
+      product_list.try(:currency) || Money.default_currency
     end
 
     private

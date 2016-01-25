@@ -19,5 +19,5 @@
         %button.btn.btn-default{ type: 'button', data: { dismiss: 'modal' } }
           = t('stall.line_items.added.continue_shopping')
 
-        = link_to stall_cart_path(@cart), class: 'btn btn-primary' do
+        = link_to cart_path(@cart), class: 'btn btn-primary' do
           = t('stall.line_items.added.view_cart')

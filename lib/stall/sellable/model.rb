@@ -12,19 +12,16 @@ module Stall
 
         Stall::LineItem.new(
           sellable: self,
+          quantity: 1,
           name: (value_if_method.(:name) || value_if_method.(:title)),
-          unit_price: round_price(value_if_method.(:price)),
-          unit_eot_price: round_price(eot_price),
-          vat_rate: round_price(vat_rate)
+          unit_price: value_if_method.(:price),
+          unit_eot_price: eot_price,
+          vat_rate: vat_rate,
         )
       end
 
       def vat_ratio
         (vat_rate / 100.0) + 1
-      end
-
-      def round_price(price)
-        price.round(Stall.config.prices_precision)
       end
 
       private

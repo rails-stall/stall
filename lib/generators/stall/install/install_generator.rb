@@ -9,5 +9,9 @@ module Stall
     def copy_initializer
       copy_file 'initializer.rb', 'config/initializers/stall.rb'
     end
+
+    def copy_default_checkout_wizard
+      generate 'stall:wizard', 'default'
+    end
   end
 end

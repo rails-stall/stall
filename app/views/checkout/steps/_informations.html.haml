@@ -1,0 +1,41 @@
+%h1= t('stall.checkout.informations.title')
+
+= simple_form_for cart, as: :cart, url: step_path(cart) do |form|
+  = form.fields_for :customer do |customer_form|
+    = customer_form.input :email
+
+  = form.fields_for :address_ownerships, [cart.address_ownership_for(:shipping)] do |ownership_form|
+    %fieldset{ data: { :'address-form' => :shipping } }
+      = ownership_form.hidden_field :shipping
+
+      = ownership_form.fields_for :address do |address_form|
+        = address_form.input :civility
+        = address_form.input :first_name
+        = address_form.input :last_name
+        = address_form.input :address
+        = address_form.input :address_details
+        = address_form.input :zip
+        = address_form.input :city
+        = address_form.input :country
+        = address_form.input :phone
+
+  = form.input :use_another_address_for_billing do
+    = check_box_tag :use_another_address_for_billing, '1', params[:use_another_address_for_billing]
+
+  = form.fields_for :address_ownerships, [cart.address_ownership_for(:billing)] do |ownership_form|
+    %fieldset{ data: { :'address-form' => :billing } }
+      = ownership_form.hidden_field :billing
+
+      = ownership_form.fields_for :address do |address_form|
+        = address_form.input :civility
+        = address_form.input :first_name
+        = address_form.input :last_name
+        = address_form.input :address
+        = address_form.input :address_details
+        = address_form.input :zip
+        = address_form.input :city
+        = address_form.input :country
+        = address_form.input :phone
+
+  %button.btn.btn-primary{ type: 'submit' }
+    = t('stall.checkout.informations.validate')

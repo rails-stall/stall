@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :books
 
-  mount Stall::Engine => "/stall"
+  mount_stall '/'
 end

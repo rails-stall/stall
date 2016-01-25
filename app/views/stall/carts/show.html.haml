@@ -1,0 +1,23 @@
+.cart-recap{ data: { :'cart-recap' => true } }
+  = simple_form_for @cart, url: cart_path(@cart), as: :cart do |form|
+    %table.table.table-striped
+      %thead
+        %tr
+          %th= Stall::LineItem.human_attribute_name(:name)
+          %th= Stall::LineItem.human_attribute_name(:unit_price)
+          %th= Stall::LineItem.human_attribute_name(:quantity)
+          %th= Stall::LineItem.human_attribute_name(:price)
+      %tbody
+        = form.fields_for :line_items do |line_item_fields|
+          %tr{ data: { :'line-item-id' => line_item_fields.object.id } }
+            %td= line_item_fields.object.name
+            %td= line_item_fields.object.unit_price
+            %td= line_item_fields.input_field :quantity, class: 'form-control', data: { :'quantity-field' => true }
+            %td= line_item_fields.object.price
+
+    .form-actions
+      %button.btn.btn-default{ type: 'submit' }
+        = t('stall.carts.recap.update')
+
+      = link_to checkout_path(@cart), class: 'btn btn-primary' do
+        = t('stall.carts.recap.validate')
