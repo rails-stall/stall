@@ -7,6 +7,9 @@ RSpec.describe Stall::Cart do
   it { should have_one(:shipment).dependent(:destroy) }
   it { should accept_nested_attributes_for(:shipment) }
 
+  it { should have_one(:payment).dependent(:destroy) }
+  it { should accept_nested_attributes_for(:payment) }
+
   describe '#total_weight' do
     it 'returns the total weight of the cart line items' do
       cart = build(:cart)

@@ -6,7 +6,7 @@ module Stall
     monetize :eot_price_cents, :price_cents,
              with_model_currency: :currency, allow_nil: true
 
-    validates :cart, presence: true
+    validates :cart, :shipping_method, presence: true
 
     def currency
       cart.try(:currency) || Money.default_currency

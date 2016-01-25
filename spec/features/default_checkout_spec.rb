@@ -30,7 +30,7 @@ RSpec.feature 'The default cart check out' do
   end
 
   scenario 'allows to choose a shipping method' do
-    create(:shipping_method, name: 'Fake Shipping Calculator', identifier: 'fake-shipping-calculator')
+    create(:shipping_method, name: 'Fake shipping carrier', identifier: 'fake-shipping-calculator')
     cart = build_cart
     cart.customer = build(:customer)
     cart.billing_address = build(:address)
@@ -40,15 +40,33 @@ RSpec.feature 'The default cart check out' do
 
     visit checkout_step_path(cart.wizard.route_key, cart)
 
-    choose 'Fake Shipping Calculator'
+    choose 'Fake shipping carrier'
 
     click_on t('stall.checkout.shipping_method.validate')
 
     expect(page).to have_content t('stall.checkout.payment_method.title')
 
     cart.reload
-    expect(cart.shipment.shipping_method.name).to eq('Fake Shipping Calculator')
+    expect(cart.shipment.shipping_method.name).to eq('Fake shipping carrier')
     expect(cart.shipment.price.to_i).not_to eq(0)
+  end
+
+  scenario 'allows to choose a payment method', focus: true do
+    create(:payment_method, name: 'Fake payment gateway', identifier: 'fake-payment-gateway')
+    cart = build_cart
+    cart.state = :payment_method
+    cart.save!
+
+    visit checkout_step_path(cart.wizard.route_key, cart)
+
+    choose 'Fake payment gateway'
+
+    click_on t('stall.checkout.payment_method.validate')
+
+    expect(page).to have_content t('stall.checkout.payment.title')
+
+    cart.reload
+    expect(cart.payment.payment_method.name).to eq('Fake payment gateway')
   end
 
   def build_cart

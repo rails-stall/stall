@@ -5,6 +5,9 @@ module Stall
     has_one :shipment, dependent: :destroy, inverse_of: :cart
     accepts_nested_attributes_for :shipment
 
+    has_one :payment, dependent: :destroy, inverse_of: :cart
+    accepts_nested_attributes_for :payment
+
     def total_weight
       line_items.reduce(0) do |total, line_item|
         total + (line_item.weight || Stall.config.default_product_weight)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160124020323) do
+ActiveRecord::Schema.define(version: 20160125100754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,25 @@ ActiveRecord::Schema.define(version: 20160124020323) do
   add_index "stall_line_items", ["product_list_id"], name: "index_stall_line_items_on_product_list_id", using: :btree
   add_index "stall_line_items", ["sellable_type", "sellable_id"], name: "index_stall_line_items_on_sellable_type_and_sellable_id", using: :btree
 
+  create_table "stall_payment_methods", force: :cascade do |t|
+    t.string   "name"
+    t.string   "identifier"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "stall_payments", force: :cascade do |t|
+    t.integer  "payment_method_id"
+    t.integer  "cart_id"
+    t.datetime "paid_at"
+    t.json     "data"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "stall_payments", ["cart_id"], name: "index_stall_payments_on_cart_id", using: :btree
+  add_index "stall_payments", ["payment_method_id"], name: "index_stall_payments_on_payment_method_id", using: :btree
+
   create_table "stall_product_lists", force: :cascade do |t|
     t.string   "state",       null: false
     t.string   "type",        null: false
@@ -111,6 +130,8 @@ ActiveRecord::Schema.define(version: 20160124020323) do
 
   add_foreign_key "stall_address_ownerships", "stall_addresses", column: "address_id"
   add_foreign_key "stall_line_items", "stall_product_lists", column: "product_list_id"
+  add_foreign_key "stall_payments", "stall_payment_methods", column: "payment_method_id"
+  add_foreign_key "stall_payments", "stall_product_lists", column: "cart_id"
   add_foreign_key "stall_product_lists", "stall_customers", column: "customer_id"
   add_foreign_key "stall_shipments", "stall_product_lists", column: "cart_id"
   add_foreign_key "stall_shipments", "stall_shipping_methods", column: "shipping_method_id"
