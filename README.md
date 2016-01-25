@@ -65,7 +65,10 @@ You can now add the "Add to cart" button to your templates :
 
 ### Configuring the checkout flow
 
-TBW
+1. Checkout Wizards
+2. Checkout Steps
+
+TBW ...
 
 # Licence
 

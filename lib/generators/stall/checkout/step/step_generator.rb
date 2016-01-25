@@ -3,7 +3,7 @@ module Stall
     class StepGenerator < ::Rails::Generators::NamedBase
       source_root File.expand_path('../templates', __FILE__)
 
-      def copy_template
+      def copy_step_template
         template 'step.rb.erb', "lib/#{ file_path }.rb"
       end
 
