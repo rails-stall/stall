@@ -13,11 +13,6 @@ PATH
       simple_form (~> 3.0)
       vertebra (~> 0.1)
 
-PATH
-  remote: ~/gems/stall-colissimo
-  specs:
-    stall-colissimo (0.1.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -229,7 +224,6 @@ DEPENDENCIES
   rubocop (~> 0.36.0)
   shoulda-matchers (~> 3.0)
   stall!
-  stall-colissimo!
 
 BUNDLED WITH
    1.11.2
