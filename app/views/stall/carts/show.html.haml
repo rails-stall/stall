@@ -17,15 +17,15 @@
 
         %tr
           %td{ colspan: 3 }= t('stall.carts.recap.total_eot_price')
-          %td= number_to_currency(cart.total_eot_price)
+          %td= number_to_currency(@cart.total_eot_price)
 
         %tr
           %td{ colspan: 3 }= t('stall.carts.recap.total_vat')
-          %td= number_to_currency(cart.total_vat)
+          %td= number_to_currency(@cart.total_vat)
 
         %tr
           %td{ colspan: 3 }= t('stall.carts.recap.total_price')
-          %td= number_to_currency(cart.total_price)
+          %td= number_to_currency(@cart.total_price)
 
     .form-actions
       %button.btn.btn-default{ type: 'submit' }
