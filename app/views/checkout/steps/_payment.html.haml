@@ -1,1 +1,28 @@
 %h1= t('stall.checkout.payment.title')
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th= Stall::LineItem.human_attribute_name(:name)
+      %th= Stall::LineItem.human_attribute_name(:unit_price)
+      %th= Stall::LineItem.human_attribute_name(:quantity)
+      %th= Stall::LineItem.human_attribute_name(:price)
+  %tbody
+    - cart.line_items.each do |line_item|
+      %tr{ data: { :'line-item-id' => line_item.id } }
+        %td= line_item.name
+        %td= number_to_currency(line_item.unit_price)
+        %td= line_item.quantity
+        %td= number_to_currency(line_item.price)
+
+    %tr
+      %td{ colspan: 3 }= t('stall.carts.recap.total_eot_price')
+      %td= number_to_currency(cart.total_eot_price)
+
+    %tr
+      %td{ colspan: 3 }= t('stall.carts.recap.total_vat')
+      %td= number_to_currency(cart.total_vat)
+
+    %tr
+      %td{ colspan: 3 }= t('stall.carts.recap.total_price')
+      %td= number_to_currency(cart.total_price)

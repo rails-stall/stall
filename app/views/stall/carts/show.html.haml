@@ -15,6 +15,18 @@
             %td= line_item_fields.input_field :quantity, class: 'form-control', data: { :'quantity-field' => true }
             %td= line_item_fields.object.price
 
+        %tr
+          %td{ colspan: 3 }= t('stall.carts.recap.total_eot_price')
+          %td= number_to_currency(cart.total_eot_price)
+
+        %tr
+          %td{ colspan: 3 }= t('stall.carts.recap.total_vat')
+          %td= number_to_currency(cart.total_vat)
+
+        %tr
+          %td{ colspan: 3 }= t('stall.carts.recap.total_price')
+          %td= number_to_currency(cart.total_price)
+
     .form-actions
       %button.btn.btn-default{ type: 'submit' }
         = t('stall.carts.recap.update')

@@ -11,6 +11,9 @@ fr:
           success: "Votre panier a bien été mis à jour."
           error: "Votre panier n'a pu être mis à jour, merci de vérifier les champs."
       recap:
+        total_eot_price: "Prix total HT"
+        total_vat: "Total TVA"
+        total_price: "Prix total"
         update: "Mettre à jour le panier"
         validate: "Passer la commande"
 
