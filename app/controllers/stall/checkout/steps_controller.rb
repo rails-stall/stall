@@ -26,6 +26,11 @@ module Stall
         @cart = Stall::Cart.find_by_token(params[:cart_id])
         @wizard = @cart.wizard.new(@cart)
         @step = @wizard.current_step.new(@cart, params)
+
+        # Hook into step creation to allow dependency injection
+        if Stall.config.steps_initialization
+          instance_exec(@step, &Stall.config.steps_initialization)
+        end
       end
     end
   end

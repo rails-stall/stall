@@ -1,4 +1,4 @@
-class <%= class_name %> < Stall::Checkout::Step
+class AuthenticationCheckoutStep < Stall::Checkout::Step
   # Prepare the `cart` before showing your view
   #
   # def prepare

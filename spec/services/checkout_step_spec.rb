@@ -17,4 +17,12 @@ RSpec.describe Stall::Checkout::Step do
       expect { Stall::Checkout::Step.for(:undefined) }.to raise_error(Stall::Checkout::StepNotFoundError)
     end
   end
+
+  describe '#inject' do
+    it 'allows injecting dependencies to the current step instance' do
+      step = Stall::Checkout::Step.new(double(:cart), double(:params))
+      step.inject(:foo, 'bar')
+      expect(step.foo).to eq('bar')
+    end
+  end
 end

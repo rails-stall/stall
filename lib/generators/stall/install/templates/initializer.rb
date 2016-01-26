@@ -44,4 +44,14 @@ Stall.configure do |config|
   # Defaults to nil, which means all countries are available
   #
   # config.shipping.free_shipping.available = nil
+
+  # Allows hooking into checkout steps initialization in the steps controller
+  # to inject dependencies to all or a specific step
+  #
+  # config.steps_initialization do |step|
+  #   # Add the `current_user` in all steps
+  #   step.inject(:current_user, current_user)
+  #   # Only inject in the :some step :
+  #   step.inject(:ip, request.remote_ip) if SomeCheckoutStep === step
+  # end
 end

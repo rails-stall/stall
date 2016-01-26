@@ -1,0 +1,7 @@
+%h1= t('stall.checkout.<%= base_file_name %>.title')
+
+= simple_form_for cart, as: :cart, url: step_path(cart) do |form|
+
+  %button.btn.btn-primary{ type: 'submit' }
+    = t('stall.checkout.<%= base_file_name %>.validate')
+

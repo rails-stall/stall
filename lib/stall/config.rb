@@ -20,8 +20,19 @@ module Stall
     # Default product weight if no weight is found
     param :default_product_weight, 0
 
+    # Default step initialization hook
+    param :_steps_initialization_callback
+
     def shipping
       @shipping ||= Stall::Shipping::Config.new
+    end
+
+    def steps_initialization(&block)
+      if block
+        @_steps_initialization_callback = block
+      else
+        @_steps_initialization_callback
+      end
     end
   end
 end

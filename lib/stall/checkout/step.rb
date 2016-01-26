@@ -10,6 +10,12 @@ module Stall
         @params = params
       end
 
+      # Allow injecting dependencies on step initialization and accessing
+      # them as instance method in subclasses
+      def inject(method, content)
+        define_singleton_method(method, -> { content })
+      end
+
       # Allows for preparing to the cart for the current step before rendering
       # the step's view
       #

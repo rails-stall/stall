@@ -7,6 +7,10 @@ module Stall
         template 'step.rb.erb', "lib/#{ file_path }.rb"
       end
 
+      def create_view_template
+        template 'step.html.haml.erb', "app/views/checkout/steps/_#{ base_file_name }.html.haml"
+      end
+
       private
 
       # Override provided file name to include checkout_wizard at the end and
@@ -14,6 +18,10 @@ module Stall
       #
       def file_name
         @_file_name ||= [@file_name, 'checkout_step'].join('_')
+      end
+
+      def base_file_name
+        @file_name
       end
     end
   end
