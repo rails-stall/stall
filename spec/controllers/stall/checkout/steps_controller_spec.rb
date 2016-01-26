@@ -23,7 +23,7 @@ RSpec.describe Stall::Checkout::StepsController do
 
       cart = create(:cart)
 
-      patch :update, { type: 'default', cart_id: cart.token }
+      patch :update, { type: 'default', cart_id: cart.token, cart: { reference: 'foo'} }
 
       expect(assigns(:step).foo).to eq('bar')
     end

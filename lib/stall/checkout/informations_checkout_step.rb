@@ -29,12 +29,14 @@ module Stall
       def process_addresses
         unless params[:use_another_address_for_billing]
           # Remove submitted billing address
-          billing_ownership = cart.address_ownership_for(:billing)
-          cart.address_ownerships.destroy(billing_ownership)
+          if (billing_ownership = cart.address_ownership_for(:billing))
+            cart.address_ownerships.destroy(billing_ownership)
+          end
 
           # Set shipping address as the billing one
-          shipping_ownership = cart.address_ownership_for(:shipping)
-          shipping_ownership.billing = true
+          if (shipping_ownership = cart.address_ownership_for(:shipping))
+            shipping_ownership.billing = true
+          end
         end
       end
     end
