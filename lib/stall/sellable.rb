@@ -2,14 +2,17 @@ module Stall
   module Sellable
     extend ActiveSupport::Concern
 
-    def to_line_item
-      value_if_method = -> name { send(name) if respond_to?(name) }
+    included do
+      has_many :line_items, class_name: 'Stall::LineItem',
+                            dependent: :nullify,
+                            as: :sellable,
+                            inverse_of: :sellable
+    end
 
-      Stall::LineItem.new(
-        sellable: self,
-        quantity: 1,
-        name: (value_if_method.(:name) || value_if_method.(:title)),
-        unit_price: value_if_method.(:price),
+    def to_line_item
+      line_items.build(
+        name: (respond_to?(:name) && name) || (respond_to?(:title) && title),
+        unit_price: (respond_to?(:price) && price),
         unit_eot_price: eot_price,
         vat_rate: vat_rate,
       )
