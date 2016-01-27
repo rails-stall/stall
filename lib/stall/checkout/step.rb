@@ -29,7 +29,11 @@ module Stall
       end
 
       def cart_params
-        params.require(:cart).permit!
+        @cart_params ||= params.require(:cart).permit!
+      end
+
+      def skip?
+        false
       end
 
       # Handles conversion from an identifier to a checkout step class, allowing

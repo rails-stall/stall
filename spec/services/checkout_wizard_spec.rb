@@ -4,6 +4,15 @@ class FakeDefaultCheckoutWizard < Stall::Checkout::Wizard
   steps :step1, :step2, :step3
 end
 
+class Step1CheckoutStep < Stall::Checkout::Step
+  def skip?
+    params[:skip]
+  end
+end
+
+class Step2CheckoutStep < Stall::Checkout::Step
+end
+
 RSpec.describe Stall::Checkout::Wizard do
   describe '.steps' do
     it 'allows subclasses to define the checkout wizard steps when passed arguments' do
@@ -25,6 +34,42 @@ RSpec.describe Stall::Checkout::Wizard do
     it 'returns a wizard from a given route key' do
       wizard = Stall::Checkout::Wizard.from_route_key('fake-default')
       expect(wizard).to eq(FakeDefaultCheckoutWizard)
+    end
+  end
+
+  describe '#initialize_current_step' do
+    it 'returns a step instance of the current step type' do
+      cart = build(:cart, state: :step1)
+      wizard = FakeDefaultCheckoutWizard.new(cart)
+      step = wizard.initialize_current_step({})
+      expect(step).to be_a(Step1CheckoutStep)
+    end
+
+    it 'returns the next step if the current one should be skipped' do
+      cart = build(:cart, state: :step1)
+      wizard = FakeDefaultCheckoutWizard.new(cart)
+      step = wizard.initialize_current_step({ skip: true })
+      expect(step).to be_a(Step2CheckoutStep)
+    end
+
+    it 'allows dependency injection on instanciation with a config block' do
+      cart = build(:cart, state: :step1)
+      wizard = FakeDefaultCheckoutWizard.new(cart)
+
+      step = wizard.initialize_current_step({}) do |step|
+        step.inject(:foo, 'bar')
+      end
+
+      expect(step.foo).to eq('bar')
+    end
+  end
+
+  describe '#current_step' do
+    it 'returns the current step class' do
+      cart = build(:cart, state: :step1)
+      wizard = FakeDefaultCheckoutWizard.new(cart)
+
+      expect(wizard.current_step).to eq(Step1CheckoutStep)
     end
   end
 
@@ -82,6 +127,16 @@ RSpec.describe Stall::Checkout::Wizard do
       wizard = FakeDefaultCheckoutWizard.new(cart)
 
       expect(wizard.steps_count).to eq(3)
+    end
+  end
+
+  describe '#validate_current_step!' do
+    it 'sets the cart state to the next step' do
+      cart = build(:cart, state: :step1)
+      wizard = FakeDefaultCheckoutWizard.new(cart)
+      wizard.validate_current_step!
+
+      expect(cart.reload.state).to eq(:step2)
     end
   end
 end

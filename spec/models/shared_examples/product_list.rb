@@ -100,5 +100,11 @@ RSpec.shared_examples 'a product list' do |factory|
 
       expect(list.wizard).to eq(DefaultCheckoutWizard)
     end
+
+    it 'raises if no wizard was found' do
+      with_config :default_checkout_wizard, 'foo' do
+        expect { create(factory) }.to raise_error(Stall::Checkout::WizardNotFoundError)
+      end
+    end
   end
 end

@@ -9,4 +9,11 @@ class <%= class_name %> < Stall::Checkout::Step
   #
   # def process
   # end
+
+  # Handle the case where the step should be skipped by returning true from
+  # this method
+  #
+  # def skip?
+  #   false
+  # end
 end

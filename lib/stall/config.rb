@@ -27,9 +27,9 @@ module Stall
       @shipping ||= Stall::Shipping::Config.new
     end
 
-    def steps_initialization(&block)
-      if block
-        @_steps_initialization_callback = block
+    def steps_initialization(value = nil, &block)
+      if (value ||= block)
+        @_steps_initialization_callback = value
       else
         @_steps_initialization_callback
       end

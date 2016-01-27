@@ -1,6 +1,19 @@
 require 'rails_helper'
 
-RSpec.feature 'The user cart recap' do
+RSpec.feature 'The user cart' do
+  scenario 'errors if a user adds a product without quantity' do
+    book = create(:book, title: 'Alice in wonderland')
+
+    visit books_path
+
+    within(:css, "[data-book-id='#{ book.id }']") do
+      find(:css, '[data-quantity-field]').set('0')
+      click_on t('stall.line_items.form.add_to_cart')
+    end
+
+    expect(page).to have_content(t('stall.line_items.add_error.title'))
+  end
+
   scenario 'shows products added to cart' do
     book = create(:book, title: 'Alice in wonderland')
 

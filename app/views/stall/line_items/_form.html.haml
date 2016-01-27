@@ -3,7 +3,7 @@
   = form.hidden_field :sellable_id
 
   .input-group
-    = form.input_field :quantity, spinner: false, value: 1, class: 'form-group'
+    = form.input_field :quantity, spinner: false, value: 1, class: 'form-group', data: { :'quantity-field' => true }
 
     %span.input-group-btn
       %button.btn.btn-primary{ type: 'submit', style: 'font-size: 12px' }

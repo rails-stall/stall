@@ -37,6 +37,9 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include ActionView::Helpers::TranslationHelper
 
+  # Allows switching configs and restore them after
+  config.include ConfigSwitcher
+
   config.before(:suite) do
     begin
       DatabaseCleaner.start

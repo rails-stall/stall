@@ -11,7 +11,7 @@ module Stall
     end
 
     def copy_default_checkout_wizard
-      generate 'stall:wizard', 'default'
+      generate 'stall:checkout:wizard', 'default'
     end
   end
 end

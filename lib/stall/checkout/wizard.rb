@@ -19,10 +19,22 @@ module Stall
         @cart = cart
       end
 
-      def current_step
-        if (step_name = current_step_name)
-          Stall::Checkout::Step.for(step_name)
+      def initialize_current_step(params, &block)
+        step = current_step.new(cart, params)
+        # This block allows us to let the config inject controller-bound
+        # dependencies to the step just after it is initialized
+        block.call(step) if block
+
+        if step.skip?
+          validate_current_step!
+          initialize_current_step(params, &block)
+        else
+          step
         end
+      end
+
+      def current_step
+        Stall::Checkout::Step.for(current_step_name)
       end
 
       def current_step_name
