@@ -9,5 +9,10 @@ engines:
     enabled: true
   duplication:
     enabled: true
+    config:
+      languages:
+        - ruby
+        - javascript
+        - coffeescript
   rubocop:
     enabled: true
