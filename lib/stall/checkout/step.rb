@@ -1,5 +1,45 @@
 module Stall
   module Checkout
+    class StepForm
+      include ActiveModel::Validations
+
+      class_attribute :nested_forms
+
+      attr_reader :target, :step
+
+      def initialize(target, step)
+        @target = target
+        @step = step
+      end
+
+      def validate
+        super && validate_nested_forms
+      end
+
+      def validate_nested_forms
+        self.class.nested_forms.each do |name, form|
+          if respond_to?(name) && (model = target.send(name))
+            if model.respond_to(:each)
+              model.all? { |m| form.new(m, step).validate }
+            else
+              form.new(model, step).validate
+            end
+          else
+            true
+          end
+        end
+      end
+
+      def self.nested(type, &block)
+        self.nested_forms ||= {}
+        nested_forms[type] = Class.new(StepForm, &block)
+      end
+
+      def method_missing(method, *args, &block)
+        step._validation_method_missing(method, *args, &block) || super
+      end
+    end
+
     class StepNotFoundError < StandardError; end
 
     class Step
@@ -51,6 +91,26 @@ module Stall
         raise StepNotFoundError,
           "No checkout step was found for #{ identifier }. You can generate " +
           "it with `rails g stall:checkout:step #{ identifier }`"
+      end
+
+      def self.validations(&block)
+        if block
+          @validations = Class.new(Stall::Checkout::StepForm, &block)
+        else
+          @validations
+        end
+      end
+
+      def valid?
+        if @validations
+          @validations.new(self).validate
+        else
+          true
+        end
+      end
+
+      def _validation_method_missing(method, *args, &block)
+        send(method, *args, &block) if respond_to?(method)
       end
     end
   end
