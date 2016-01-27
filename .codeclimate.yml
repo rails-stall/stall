@@ -16,3 +16,6 @@ engines:
         - coffeescript
   rubocop:
     enabled: true
+
+exclude_paths:
+  - spec/**/*
