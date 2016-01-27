@@ -49,26 +49,21 @@ class Book < ActiveRecord::Base
 end
 ```
 
-This will allow to add the model to the cart.
-
-The default behavior is to use any  `name` or `title` method of the model to set
-the line items name, and a `price` method to set the line item price.
-
-If you want to configure that behavior, you can override the `#to_line_item`
-method of the containing model, and return a valid `Stall::LineItem` instance.
-
 You can now add the "Add to cart" button to your templates :
 
 ```ruby
 = add_to_cart_form_for(@book)
 ```
 
+For more informations see the Wiki page :
+[Allowing customers to add products to cart](https://github.com/rails-stall/stall/wiki/Allowing-customers-to-add-products-to-cart)
+
 ### Configuring the checkout flow
 
-1. Checkout Wizards
-2. Checkout Steps
+The checkout process is completely flexible and can be overriden easily.
 
-TBW ...
+Please see the Wiki page :
+[The checkout process](https://github.com/rails-stall/stall/wiki/The-checkout-process)
 
 # Licence
 
