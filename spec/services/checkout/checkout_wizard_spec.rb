@@ -6,7 +6,7 @@ end
 
 class Step1CheckoutStep < Stall::Checkout::Step
   def skip?
-    params[:skip]
+    respond_to?(:skip) && skip
   end
 end
 
@@ -41,14 +41,16 @@ RSpec.describe Stall::Checkout::Wizard do
     it 'returns a step instance of the current step type' do
       cart = build(:cart, state: :step1)
       wizard = FakeDefaultCheckoutWizard.new(cart)
-      step = wizard.initialize_current_step({})
+      step = wizard.initialize_current_step
       expect(step).to be_a(Step1CheckoutStep)
     end
 
     it 'returns the next step if the current one should be skipped' do
       cart = build(:cart, state: :step1)
       wizard = FakeDefaultCheckoutWizard.new(cart)
-      step = wizard.initialize_current_step({ skip: true })
+      step = wizard.initialize_current_step do |step|
+        step.inject(:skip, true)
+      end
       expect(step).to be_a(Step2CheckoutStep)
     end
 
@@ -56,7 +58,7 @@ RSpec.describe Stall::Checkout::Wizard do
       cart = build(:cart, state: :step1)
       wizard = FakeDefaultCheckoutWizard.new(cart)
 
-      step = wizard.initialize_current_step({}) do |step|
+      step = wizard.initialize_current_step do |step|
         step.inject(:foo, 'bar')
       end
 

@@ -8,11 +8,11 @@ module Stall
       def try_load_constant(name)
         begin
           name.constantize
-        rescue NameError
+        rescue NameError => e
           begin
             require name.underscore
             name.constantize
-          rescue LoadError, NameError
+          rescue LoadError, NameError => e
             nil
           end
         end

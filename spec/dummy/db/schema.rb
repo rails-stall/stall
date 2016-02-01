@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160127151108) do
+ActiveRecord::Schema.define(version: 20160201164154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,15 @@ ActiveRecord::Schema.define(version: 20160127151108) do
     t.decimal  "price",       precision: 11, scale: 2
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
+    t.integer  "category_id"
+  end
+
+  add_index "books", ["category_id"], name: "index_books_on_category_id", using: :btree
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "stall_address_ownerships", force: :cascade do |t|
@@ -133,6 +142,7 @@ ActiveRecord::Schema.define(version: 20160127151108) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "books", "categories"
   add_foreign_key "stall_address_ownerships", "stall_addresses", column: "address_id"
   add_foreign_key "stall_line_items", "stall_product_lists", column: "product_list_id"
   add_foreign_key "stall_payments", "stall_payment_methods", column: "payment_method_id"

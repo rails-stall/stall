@@ -1,53 +1,12 @@
 module Stall
   module Checkout
-    class StepForm
-      include ActiveModel::Validations
-
-      class_attribute :nested_forms
-
-      attr_reader :target, :step
-
-      def initialize(target, step)
-        @target = target
-        @step = step
-      end
-
-      def validate
-        super && validate_nested_forms
-      end
-
-      def validate_nested_forms
-        self.class.nested_forms.each do |name, form|
-          if respond_to?(name) && (model = target.send(name))
-            if model.respond_to(:each)
-              model.all? { |m| form.new(m, step).validate }
-            else
-              form.new(model, step).validate
-            end
-          else
-            true
-          end
-        end
-      end
-
-      def self.nested(type, &block)
-        self.nested_forms ||= {}
-        nested_forms[type] = Class.new(StepForm, &block)
-      end
-
-      def method_missing(method, *args, &block)
-        step._validation_method_missing(method, *args, &block) || super
-      end
-    end
-
     class StepNotFoundError < StandardError; end
 
     class Step
-      attr_reader :cart, :params
+      attr_reader :cart
 
-      def initialize(cart, params)
+      def initialize(cart)
         @cart = cart
-        @params = params
       end
 
       # Allow injecting dependencies on step initialization and accessing
@@ -65,7 +24,7 @@ module Stall
       end
 
       def process
-        cart.update_attributes(cart_params)
+        save
       end
 
       def cart_params
@@ -76,37 +35,43 @@ module Stall
         false
       end
 
+      # Abstracts the simple case of assigning the submitted parameters to the
+      # cart object, running the step validations and saving the cart
+      def save
+        cart.assign_attributes(cart_params)
+        cart.save if valid?
+      end
+
       # Handles conversion from an identifier to a checkout step class, allowing
       # us to specify a list of symbols in our wizard's .step macro
       #
       def self.for(identifier)
         name = identifier.to_s.camelize
         step_name = [name, 'CheckoutStep'].join
+        # Try loading step from app
+        step = Stall::Utils.try_load_constant(step_name)
+        # Try loading step from stall core or lib if not found in app
+        step = Stall::Utils.try_load_constant(
+          ['Stall', 'Checkout', step_name.demodulize].join('::')
+        ) unless step
 
-        step = Stall::Utils.try_load_constant(step_name) ||
-          Stall::Utils.try_load_constant(['Stall', 'Checkout', step_name.demodulize].join('::'))
+        unless step
+          raise StepNotFoundError,
+            "No checkout step was found for #{ identifier }. You can generate " +
+            "it with `rails g stall:checkout:step #{ identifier }`"
+        end
 
-        return step if step
-
-        raise StepNotFoundError,
-          "No checkout step was found for #{ identifier }. You can generate " +
-          "it with `rails g stall:checkout:step #{ identifier }`"
+        step
       end
 
       def self.validations(&block)
-        if block
-          @validations = Class.new(Stall::Checkout::StepForm, &block)
-        else
-          @validations
-        end
+        return @validations unless block
+        @validations = Stall::Checkout::StepForm.build(&block)
       end
 
       def valid?
-        if @validations
-          @validations.new(self).validate
-        else
-          true
-        end
+        return true unless (validations = self.class.validations)
+        validations.new(cart, self).validate
       end
 
       def _validation_method_missing(method, *args, &block)

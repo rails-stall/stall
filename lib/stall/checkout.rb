@@ -3,8 +3,8 @@ module Stall
     extend ActiveSupport::Autoload
 
     autoload :Wizard
-    autoload :Checkout
     autoload :Step
+    autoload :StepForm
 
     autoload :InformationsCheckoutStep
     autoload :ShippingMethodCheckoutStep

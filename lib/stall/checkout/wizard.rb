@@ -19,15 +19,16 @@ module Stall
         @cart = cart
       end
 
-      def initialize_current_step(params, &block)
-        step = current_step.new(cart, params)
-        # This block allows us to let the config inject controller-bound
-        # dependencies to the step just after it is initialized
+      def initialize_current_step(&block)
+        step = current_step.new(cart)
+
+        # This block allows us to let inject controller-bound dependencies
+        # into the step just after it's initialized
         block.call(step) if block
 
         if step.skip?
           validate_current_step!
-          initialize_current_step(params, &block)
+          initialize_current_step(&block)
         else
           step
         end
