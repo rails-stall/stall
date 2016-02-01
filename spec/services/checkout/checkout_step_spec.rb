@@ -20,9 +20,17 @@ RSpec.describe Stall::Checkout::Step do
 
   describe '#inject' do
     it 'allows injecting dependencies to the current step instance' do
-      step = Stall::Checkout::Step.new(double(:cart), double(:params))
+      step = Stall::Checkout::Step.new(double(:cart))
       step.inject(:foo, 'bar')
       expect(step.foo).to eq('bar')
+    end
+  end
+
+  describe '.validations' do
+    it 'allows to build validations for the given step when given a block' do
+      with_config FakeCheckoutStep, :validations, proc { validates :customer, presence: true } do
+        expect(FakeCheckoutStep.validations).not_to be_nil
+      end
     end
   end
 end

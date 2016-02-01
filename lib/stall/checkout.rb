@@ -4,6 +4,7 @@ module Stall
 
     autoload :Wizard
     autoload :Step
+    autoload :StepForm
 
     autoload :InformationsCheckoutStep
     autoload :ShippingMethodCheckoutStep
