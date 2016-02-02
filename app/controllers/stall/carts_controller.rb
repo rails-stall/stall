@@ -6,12 +6,26 @@ module Stall
     end
 
     def update
-      if @cart.update_attributes(cart_params)
-        flash[:success] = t('stall.carts.flashes.update.success')
-        redirect_to cart_path(@cart)
-      else
-        flash[:error] = t('stall.carts.flashes.update.error')
-        render 'show'
+      respond_to do |format|
+        if @cart.update_attributes(cart_params)
+          format.html.xhr do
+            render 'show'
+          end
+
+          format.html.any do
+            flash[:success] = t('stall.carts.flashes.update.success')
+            redirect_to cart_path(@cart)
+          end
+        else
+          format.html.xhr do
+            render 'show'
+          end
+
+          format.html.any do
+            flash[:error] = t('stall.carts.flashes.update.error')
+            render 'show'
+          end
+        end
       end
     end
 

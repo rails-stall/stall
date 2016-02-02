@@ -1,5 +1,5 @@
 .cart-recap{ data: { :'cart-recap' => true } }
-  = simple_form_for @cart, url: cart_path(@cart), as: :cart do |form|
+  = simple_form_for @cart, url: cart_path(@cart), as: :cart, remote: true, data: { :'cart-form' => true } do |form|
     %table.table.table-striped
       %thead
         %tr
@@ -12,7 +12,7 @@
           %tr{ data: { :'line-item-id' => line_item_fields.object.id } }
             %td= line_item_fields.object.name
             %td= line_item_fields.object.unit_price
-            %td= line_item_fields.input_field :quantity, class: 'form-control', data: { :'quantity-field' => true }
+            %td= line_item_fields.input_field :quantity, spinner: false, class: 'form-control', data: { :'quantity-field' => true }
             %td= line_item_fields.object.price
 
         %tr
@@ -28,7 +28,7 @@
           %td= number_to_currency(@cart.total_price)
 
     .form-actions
-      %button.btn.btn-default{ type: 'submit' }
+      %button.btn.btn-default{ type: 'submit', data: { :'cart-update-button' => true } }
         = t('stall.carts.recap.update')
 
       = link_to checkout_path(@cart), class: 'btn btn-primary' do
