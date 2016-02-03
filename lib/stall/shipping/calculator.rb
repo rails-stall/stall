@@ -8,9 +8,9 @@ module Stall
         @config = config
       end
 
-      def available_for?(_address)
+      def available?
         raise NoMethodError,
-          'Shipping calculators must implement the #available_for? method ' \
+          'Shipping calculators must implement the #available? method ' \
           'to allow filtering available shipping methods'
       end
 
@@ -22,6 +22,20 @@ module Stall
 
       def self.register(name)
         Stall::Shipping.calculators[name] = self
+
+        Stall::ShippingMethod.where(identifier: name).first_or_create do |method|
+          method.name = name.to_s.humanize
+        end
+      end
+
+      def self.for(shipping_method)
+        Stall::Shipping.calculators[shipping_method.identifier]
+      end
+
+      private
+
+      def address
+        cart.shipping_address || cart.billing_address
       end
     end
   end

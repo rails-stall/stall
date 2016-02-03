@@ -8,10 +8,10 @@ RSpec.describe Stall::Shipping::Calculator do
     end
   end
 
-  describe '#available_for?' do
+  describe '#available?' do
     it 'raises when not overriden' do
       calculator = Stall::Shipping::Calculator.new(double(:cart), double(:config))
-      expect { calculator.available_for?(double(:address)) }.to raise_error(NoMethodError)
+      expect { calculator.available? }.to raise_error(NoMethodError)
     end
   end
 

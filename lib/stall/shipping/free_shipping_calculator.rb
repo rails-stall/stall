@@ -9,7 +9,7 @@ module Stall
         0
       end
 
-      def available_for?(address)
+      def available?
         if Array === available
           available.include?(address.country)
         elsif Proc === available

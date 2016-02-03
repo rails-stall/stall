@@ -35,6 +35,17 @@ module Stall
         false
       end
 
+      def is?(key)
+        identifier == key
+      end
+
+      def identifier
+        @identifier ||= begin
+          class_name = self.class.name.demodulize
+          class_name.gsub(/CheckoutStep$/, '').underscore.to_sym
+        end
+      end
+
       # Abstracts the simple case of assigning the submitted parameters to the
       # cart object, running the step validations and saving the cart
       def save

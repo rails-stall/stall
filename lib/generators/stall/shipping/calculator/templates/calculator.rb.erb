@@ -1,0 +1,16 @@
+class <%= class_name %> < Stall::Shipping::Calculator
+  # Use this method to handle the related shipping method availibility depending
+  # on the cart data available to the calculator
+  #
+  def available?
+    true
+  end
+
+  # Write your logic here and return the price for the current cart
+  #
+  # You can access `cart` and `shipping_method` (the model) here.
+  #
+  def price
+    0
+  end
+end

@@ -1,19 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe Stall::Shipping::CountryWeightTableCalculator do
-  describe '#available_for?' do
+  describe '#availables?' do
     it 'returns true when the given country code is present' do
       calculator = FakeShippingCalculator.new(build(:cart), build(:shipping_method))
-      address = build(:address, country: 'FR')
+      calculator.cart.shipping_address = build(:address, country: 'FR')
 
-      expect(calculator.available_for?(address)).to eq(true)
+      expect(calculator.available?).to eq(true)
     end
 
     it 'returns false when the given country does not exist in the table' do
       calculator = FakeShippingCalculator.new(build(:cart), build(:shipping_method))
-      address = build(:address, country: 'UY')
+      calculator.cart.shipping_address = build(:address, country: 'UY')
 
-      expect(calculator.available_for?(address)).to eq(false)
+      expect(calculator.available?).to eq(false)
     end
   end
 

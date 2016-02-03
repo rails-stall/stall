@@ -10,7 +10,7 @@ module Stall
     autoload :Config
 
     mattr_reader :calculators
-    @@calculators = {}
+    @@calculators = {}.with_indifferent_access
   end
 end
 

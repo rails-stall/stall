@@ -3,7 +3,7 @@ require 'csv'
 module Stall
   module Shipping
     class CountryWeightTableCalculator < Stall::Shipping::Calculator
-      def available_for?(address)
+      def available?
         country?(address.country)
       end
 

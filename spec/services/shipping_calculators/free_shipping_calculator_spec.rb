@@ -9,12 +9,12 @@ RSpec.describe Stall::Shipping::FreeShippingCalculator do
     end
   end
 
-  describe '#available_for?' do
+  describe '#available?' do
     context 'when not configured' do
       it 'returns true' do
         calculator = build_calculator
 
-        expect(calculator.available_for?(build(:address))).to eq(true)
+        expect(calculator.available?).to eq(true)
       end
     end
 
@@ -24,17 +24,15 @@ RSpec.describe Stall::Shipping::FreeShippingCalculator do
       end
 
       it 'returns true if the country is in the list' do
-        calculator = build_calculator
-        address = build(:address, country: 'FR')
+        calculator = build_calculator(country: 'FR')
 
-        expect(calculator.available_for?(address)).to eq(true)
+        expect(calculator.available?).to eq(true)
       end
 
       it 'returns false if the country is not in the list' do
-        calculator = build_calculator
-        address = build(:address, country: 'DE')
+        calculator = build_calculator(country: 'DE')
 
-        expect(calculator.available_for?(address)).to eq(false)
+        expect(calculator.available?).to eq(false)
       end
     end
 
@@ -46,24 +44,22 @@ RSpec.describe Stall::Shipping::FreeShippingCalculator do
       end
 
       it 'returns true if the proc returns true' do
-        calculator = build_calculator
-        address = build(:address, country: 'FR')
+        calculator = build_calculator(country: 'FR')
 
-        expect(calculator.available_for?(address)).to eq(true)
+        expect(calculator.available?).to eq(true)
       end
 
       it 'returns false if the proc returns false' do
-        calculator = build_calculator
-        address = build(:address, country: 'GB')
+        calculator = build_calculator(country: 'GB')
 
-        expect(calculator.available_for?(address)).to eq(false)
+        expect(calculator.available?).to eq(false)
       end
     end
   end
 
-  def build_calculator
+  def build_calculator(attributes = {})
     Stall::Shipping::FreeShippingCalculator.new(
-      build(:cart),
+      build(:cart, shipping_address: build(:address, attributes)),
       build(:shipping_method)
     )
   end
