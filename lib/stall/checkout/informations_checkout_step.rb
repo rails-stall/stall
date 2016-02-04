@@ -4,6 +4,11 @@ module Stall
       def prepare
         ensure_customer
         ensure_address(:billing)
+
+        if cart.billing_address == cart.shipping_address
+          cart.shipping_address = nil
+        end
+
         ensure_address(:shipping)
       end
 
@@ -20,10 +25,8 @@ module Stall
       end
 
       def ensure_address(type)
-        unless cart.address_ownership_for(type)
-          ownership = cart.address_ownerships.build(type => true)
-          ownership.build_address
-        end
+        ownership = cart.address_ownership_for(type) || cart.address_ownerships.build(type => true)
+        ownership.address || ownership.build_address
       end
 
       def process_addresses
