@@ -86,7 +86,7 @@ module Stall
       end
 
       def _validation_method_missing(method, *args, &block)
-        send(method, *args, &block) if respond_to?(method)
+        send(method, *args, &block) if respond_to?(method, true)
       end
     end
   end
