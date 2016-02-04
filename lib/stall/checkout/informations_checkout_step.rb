@@ -10,7 +10,7 @@ module Stall
       def process
         cart.assign_attributes(cart_params)
         process_addresses
-        cart.save!
+        save
       end
 
       private
