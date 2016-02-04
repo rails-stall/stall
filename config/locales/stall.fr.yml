@@ -46,6 +46,11 @@ fr:
       gateway:
         pay: "Payer ma commande"
 
+    addresses:
+      civilities:
+        m: M.
+        mme: Mme.
+
   activerecord:
     attributes:
       stall/line_item:
