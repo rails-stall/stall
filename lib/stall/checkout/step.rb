@@ -84,10 +84,6 @@ module Stall
         return true unless (validations = self.class.validations)
         validations.new(cart, self).validate
       end
-
-      def _validation_method_missing(method, *args, &block)
-        send(method, *args, &block) if respond_to?(method, true)
-      end
     end
   end
 end

@@ -30,8 +30,10 @@ module Stall
       def method_missing(method, *args, &block)
         if object.respond_to?(method, true)
           object.send(method, *args, &block)
+        elsif step.respond_to?(method, true)
+          step.send(method, *args, &block)
         else
-          step._validation_method_missing(method, *args, &block) || super
+          super
         end
       end
 
