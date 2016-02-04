@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe Stall::ShippingMethod do
+RSpec.describe ShippingMethod do
   it { should have_many(:shipments).dependent(:nullify) }
 end

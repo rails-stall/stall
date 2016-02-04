@@ -25,7 +25,7 @@ module Stall
     end
 
     def cart
-      @cart ||= Stall::Cart.find(gateway_class.cart_id_from(request))
+      @cart ||= Cart.find(gateway_class.cart_id_from(request))
     end
   end
 end

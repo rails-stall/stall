@@ -23,7 +23,7 @@ module Stall
       private
 
       def load_step
-        @cart = Stall::Cart.find_by_token(params[:cart_id])
+        @cart = Cart.find_by_token(params[:cart_id])
         @wizard = @cart.wizard.new(@cart)
 
         @step = @wizard.initialize_current_step do |step|

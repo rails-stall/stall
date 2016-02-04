@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :customer, class: Stall::Customer do
+  factory :customer do
     email 'customer@example.com'
   end
 end

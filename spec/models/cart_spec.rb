@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Stall::Cart do
+RSpec.describe Cart do
   it_behaves_like 'a product list', :product_list
   it_behaves_like 'an addressable model', :cart
 

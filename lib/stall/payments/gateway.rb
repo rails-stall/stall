@@ -53,7 +53,7 @@ module Stall
       private
 
       def next_transaction_id
-        if (last_transaction = Stall::Payment.order("data->>'transaction_id' DESC").select(:data).first)
+        if (last_transaction = Payment.order("data->>'transaction_id' DESC").select(:data).first)
           if (id = last_transaction.transaction_id)
             index = id.split('-').pop.to_i + 1
             return transaction_id_for(index)

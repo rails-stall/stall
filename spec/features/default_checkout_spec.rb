@@ -8,15 +8,15 @@ RSpec.feature 'The default cart check out' do
 
     click_on t('stall.carts.recap.validate')
 
-    fill_in Stall::Customer.human_attribute_name(:email), with: 'test@example.com'
+    fill_in Customer.human_attribute_name(:email), with: 'test@example.com'
 
     within(:css, '[data-address-form="shipping"]') do
-      fill_in Stall::Address.human_attribute_name(:first_name), with: 'Jean'
-      fill_in Stall::Address.human_attribute_name(:last_name), with: 'Val'
-      fill_in Stall::Address.human_attribute_name(:address), with: '1 rue de la rue'
-      fill_in Stall::Address.human_attribute_name(:zip), with: '75001'
-      fill_in Stall::Address.human_attribute_name(:city), with: 'Paris'
-      select 'France', from: Stall::Address.human_attribute_name(:country)
+      fill_in Address.human_attribute_name(:first_name), with: 'Jean'
+      fill_in Address.human_attribute_name(:last_name), with: 'Val'
+      fill_in Address.human_attribute_name(:address), with: '1 rue de la rue'
+      fill_in Address.human_attribute_name(:zip), with: '75001'
+      fill_in Address.human_attribute_name(:city), with: 'Paris'
+      select 'France', from: Address.human_attribute_name(:country)
     end
 
     click_on t('stall.checkout.informations.validate')

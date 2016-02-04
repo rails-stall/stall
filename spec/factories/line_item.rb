@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :line_item, class: Stall::LineItem do
+  factory :line_item do
     name 'Product Test'
     unit_eot_price 10
     unit_price 12

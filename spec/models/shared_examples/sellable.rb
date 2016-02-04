@@ -4,7 +4,7 @@ RSpec.shared_examples 'a sellable model' do |factory|
   describe '#to_line_item' do
     it 'returns a line_item' do
       sellable = build(factory)
-      expect(sellable.to_line_item.class.name).to eq(Stall::LineItem.name)
+      expect(sellable.to_line_item.class.name).to eq(LineItem.name)
     end
 
     it 'needs minimal data on the sellable to produce a valid line item' do

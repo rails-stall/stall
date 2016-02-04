@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :product_list, class: Stall::ProductList do
-    type 'Stall::ProductList'
+  factory :product_list do
+    type 'ProductList'
   end
 end

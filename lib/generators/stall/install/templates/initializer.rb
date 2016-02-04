@@ -39,7 +39,7 @@ Stall.configure do |config|
 
   # Allows configuring which countries are available for free shipping offers
   #
-  # Accepts an array of country codes or a proc with a Stall::Address argument
+  # Accepts an array of country codes or a proc with an Address argument
   #
   # Defaults to nil, which means all countries are available
   #

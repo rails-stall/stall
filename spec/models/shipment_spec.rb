@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Stall::Shipment do
+RSpec.describe Shipment do
   it { should belong_to(:shipping_method) }
   it { should belong_to(:cart) }
 

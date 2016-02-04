@@ -3,8 +3,7 @@ module Stall
     extend ActiveSupport::Concern
 
     included do
-      has_many :line_items, class_name: 'Stall::LineItem',
-                            dependent: :nullify,
+      has_many :line_items, dependent: :nullify,
                             as: :sellable,
                             inverse_of: :sellable
     end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Stall::Customer do
+RSpec.describe Customer do
   it_behaves_like 'an addressable model', :customer
 
   it { should belong_to(:user).inverse_of(:customer) }

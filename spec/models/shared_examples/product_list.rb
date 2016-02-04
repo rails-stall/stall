@@ -6,11 +6,11 @@ RSpec.shared_examples 'a product list' do |factory|
   it { should belong_to(:customer) }
 
   it 'sets its currency to the default Money one on initialization' do
-    expect(Stall::ProductList.new.currency).to eq(Money.default_currency)
+    expect(ProductList.new.currency).to eq(Money.default_currency)
   end
 
   it 'sets its state to the first wizard step on initialization' do
-    expect(Stall::ProductList.new.state).to eq(DefaultCheckoutWizard.steps.first)
+    expect(ProductList.new.state).to eq(DefaultCheckoutWizard.steps.first)
   end
 
   it 'generates a token on creation' do

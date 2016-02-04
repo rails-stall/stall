@@ -3,10 +3,10 @@
     %table.table.table-striped
       %thead
         %tr
-          %th= Stall::LineItem.human_attribute_name(:name)
-          %th= Stall::LineItem.human_attribute_name(:unit_price)
-          %th= Stall::LineItem.human_attribute_name(:quantity)
-          %th= Stall::LineItem.human_attribute_name(:price)
+          %th= LineItem.human_attribute_name(:name)
+          %th= LineItem.human_attribute_name(:unit_price)
+          %th= LineItem.human_attribute_name(:quantity)
+          %th= LineItem.human_attribute_name(:price)
 
       %tbody
         = form.fields_for :line_items do |line_item_fields|

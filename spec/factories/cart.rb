@@ -1,4 +1,5 @@
 FactoryGirl.define do
-  factory :cart, class: Stall::Cart do
+  factory :cart do
+    type 'Cart'
   end
 end

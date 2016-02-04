@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Stall::LineItem do
+RSpec.describe LineItem do
   it { should belong_to(:sellable) }
   it { should belong_to(:product_list) }
 

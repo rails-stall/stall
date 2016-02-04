@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :address, class: Stall::Address do
+  factory :address do
     civility 'M'
     first_name 'Jean'
     last_name 'Val'

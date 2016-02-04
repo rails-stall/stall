@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :shipment, class: Stall::Shipment do
+  factory :shipment do
     shipping_method { build(:shipping_method) }
     cart { build(:cart) }
   end

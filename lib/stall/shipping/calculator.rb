@@ -23,7 +23,7 @@ module Stall
       def self.register(name)
         Stall::Shipping.calculators[name] = self
 
-        Stall::ShippingMethod.where(identifier: name).first_or_create do |method|
+        ShippingMethod.where(identifier: name).first_or_create do |method|
           method.name = name.to_s.humanize
         end
       end

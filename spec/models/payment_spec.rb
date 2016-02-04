@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Stall::Payment do
+RSpec.describe Payment do
   it { should belong_to(:payment_method) }
   it { should belong_to(:cart) }
 
