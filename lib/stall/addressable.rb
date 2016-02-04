@@ -26,7 +26,6 @@ module Stall
       define_method(:"#{ type }_address=") do |address|
         ownership = address_ownership_for(type) || address_ownerships.build(type => true)
         ownership.address = address
-        ownership.save if persisted?
         instance_variable_set(instance_variable_name, address)
       end
 
@@ -38,6 +37,13 @@ module Stall
         if (ownership = address_ownership_for(type))
           instance_variable_set(instance_variable_name, ownership.address)
         end
+      end
+
+      define_method(:"#{ type }_address_attributes=") do |attributes|
+        ownership = address_ownership_for(type) || address_ownerships.build(type => true)
+        address = ownership.address || ownership.build_address
+        address.assign_attributes(attributes)
+        instance_variable_set(instance_variable_name, address)
       end
     end
   end

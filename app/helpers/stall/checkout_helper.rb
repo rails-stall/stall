@@ -5,7 +5,7 @@ module Stall
     end
 
     def available_shipping_methods_for(cart)
-      Stall::ShippingMethod.order('stall_shipping_methods.name ASC')
+      ShippingMethod.order('stall_shipping_methods.name ASC')
         .select do |shipping_method|
           calculator_class = Stall::Shipping::Calculator.for(shipping_method)
 
