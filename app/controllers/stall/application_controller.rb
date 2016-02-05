@@ -14,6 +14,7 @@ module Stall
     # layout to be rendered
     def set_stall_layout
       return false if request.xhr?
+      return Stall.config.default_layout if Stall.config.default_layout
 
       parent_controller = self.class.ancestors.find do |ancestor|
         !ancestor.name.match(/^Stall::/)

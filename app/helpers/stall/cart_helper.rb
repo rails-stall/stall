@@ -1,7 +1,7 @@
 module Stall
   module CartHelper
     def current_cart
-      RequestStore.store[cart_store_key] ||= load_current_cart
+      RequestStore.store[cart_key] ||= load_current_cart
     end
 
     private
@@ -11,7 +11,7 @@ module Stall
     end
 
     def load_current_cart(type = current_cart_key)
-      if (cart_token = session[cart_store_key(type)])
+      if (cart_token = session[cart_key(type)])
         if (current_cart = Cart.find_by_token(cart_token))
           return current_cart
         end
@@ -21,11 +21,11 @@ module Stall
       # new cart and store the new token
       #
       Cart.create!.tap do |cart|
-        session[cart_store_key(type)] = cart.token
+        session[cart_key(type)] = cart.token
       end
     end
 
-    def cart_store_key(identifier = current_cart_key)
+    def cart_key(identifier = current_cart_key)
       ['stall', 'cart', identifier.to_s].join('.')
     end
   end

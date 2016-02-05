@@ -11,6 +11,13 @@ Stall.configure do |config|
   #
   # config.application_controller_ancestor = '::ApplicationController'
 
+  # Set a layout to use in the checkouts controllers
+  #
+  # The default is set to nil, which will make the controllers inherit from the
+  # layout of the controller set in `config.application_controller_ancestor`
+  #
+  # config.default_layout = nil
+
   # Default currency used in the app for money objects.
   #
   # Note : If you need multi currency support in your app, you'll have to ensure

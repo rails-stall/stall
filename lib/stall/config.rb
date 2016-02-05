@@ -11,6 +11,9 @@ module Stall
     # Engine's ApplicationController parent
     param :application_controller_ancestor, '::ApplicationController'
 
+    # Default layout used for the checkout
+    param :default_layout
+
     # Default currency for money objects
     param :default_currency, 'EUR'
 
