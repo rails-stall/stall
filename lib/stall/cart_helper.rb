@@ -1,5 +1,11 @@
 module Stall
   module CartHelper
+    extend ActiveSupport::Concern
+
+    included do
+      helper_method :current_cart
+    end
+
     def current_cart
       RequestStore.store[cart_key] ||= load_current_cart
     end

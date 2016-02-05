@@ -10,6 +10,12 @@ module Stall
       end
     end
 
+    initializer 'include cart helper' do
+      ActiveSupport.on_load(:action_controller) do
+        include Stall::CartHelper
+      end
+    end
+
     # Development : Configure rails generators to only generate the target
     # files and not try to generate useless complementary files
     #

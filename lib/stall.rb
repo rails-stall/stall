@@ -22,6 +22,7 @@ module Stall
   autoload :Payments
 
   autoload :Routes
+  autoload :CartHelper
   autoload :Config
   autoload :Utils
 
