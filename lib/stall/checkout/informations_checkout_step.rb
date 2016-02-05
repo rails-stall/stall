@@ -15,7 +15,7 @@ module Stall
       def process
         cart.assign_attributes(cart_params)
         process_addresses
-        save
+        cart.save if valid?
       end
 
       private
