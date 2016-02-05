@@ -1,5 +1,5 @@
 module Stall
-  class CheckoutsController < ApplicationController
+  class CheckoutsController < Stall::ApplicationController
     def show
       @cart = Cart.find_by_token(params[:id])
       @cart.reset_state!

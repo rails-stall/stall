@@ -1,5 +1,5 @@
 module Stall
-  class CartsController < ApplicationController
+  class CartsController < Stall::ApplicationController
     before_action :load_cart
 
     def show

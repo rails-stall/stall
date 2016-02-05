@@ -1,5 +1,5 @@
 module Stall
-  class LineItemsController < ApplicationController
+  class LineItemsController < Stall::ApplicationController
     def create
       service = Stall::AddToCartService.new(cart, line_item_params)
 

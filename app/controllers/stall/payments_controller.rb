@@ -1,5 +1,5 @@
 module Stall
-  class PaymentsController < ApplicationController
+  class PaymentsController < Stall::ApplicationController
     def process
       service = Stall::PaymentNotificationService.new(request)
       service.call
