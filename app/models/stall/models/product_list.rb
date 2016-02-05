@@ -33,15 +33,15 @@ module Stall
       end
 
       def total_price
-        line_items.map(&:price).sum
+        items.map(&:price).sum
       end
 
       def total_eot_price
-        line_items.map(&:eot_price).sum
+        items.map(&:eot_price).sum
       end
 
       def total_vat
-        line_items.map(&:vat).sum
+        items.map(&:vat).sum
       end
 
       def total_quantity
@@ -70,6 +70,10 @@ module Stall
 
       def ensure_state
         self.state ||= wizard.steps.first
+      end
+
+      def items
+        line_items.to_a
       end
     end
   end

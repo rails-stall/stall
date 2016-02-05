@@ -14,7 +14,12 @@ module Stall
 
       if calculator_class
         calculator = calculator_class.new(cart, cart.shipment.shipping_method)
-        cart.shipment.update_attributes(price: calculator.price)
+
+        cart.shipment.update_attributes(
+          price: calculator.price,
+          eot_price: calculator.eot_price,
+          vat_rate: calculator.vat_rate
+        )
       end
     end
   end

@@ -25,6 +25,12 @@ module Stall
 
       private
 
+      def items
+        items = line_items.to_a
+        items << shipment if shipment
+        items
+      end
+
       def ensure_reference
         unless reference.present?
           reference = [Time.now.strftime('%Y%m%d'), ('%05d' % id)].join('-')

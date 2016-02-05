@@ -20,6 +20,14 @@ module Stall
           'the actual shipping price for the given cart'
       end
 
+      def eot_price
+        price / (1 + (vat_rate / 100.0))
+      end
+
+      def vat_rate
+        Stall.config.vat_rate
+      end
+
       def self.register(name)
         Stall::Shipping.calculators[name] = self
 

@@ -6,6 +6,8 @@ module Stall
       included do
         self.table_name = 'stall_shipments'
 
+        include Stall::Priceable
+
         belongs_to :cart
         belongs_to :shipping_method
 

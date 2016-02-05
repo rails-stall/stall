@@ -15,6 +15,15 @@
         %td= line_item.quantity
         %td= number_to_currency(line_item.price)
 
+    - if cart.shipment && cart.shipment
+      %tr
+        %td{ colspan: 3 }
+          = t('stall.carts.recap.total_shipment_price')
+          \:
+          = cart.shipment.shipping_method.name
+
+        %td= number_to_currency(cart.shipment.price)
+
     %tr
       %td{ colspan: 3 }= t('stall.carts.recap.total_eot_price')
       %td= number_to_currency(cart.total_eot_price)

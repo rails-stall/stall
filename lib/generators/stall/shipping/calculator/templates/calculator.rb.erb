@@ -13,4 +13,17 @@ class <%= class_name %> < Stall::Shipping::Calculator
   def price
     0
   end
+
+  # Allows you to override how calculator's eot_price price is calculated
+  #
+  # def eot_price
+  #   price / (1 + (vat_rate / 100.0))
+  # end
+
+  # Allows you to override the VAT for the calculator which allows calculating
+  # the EOT price
+  #
+  # def vat_rate
+  #   Stall.config.vat_rate
+  # end
 end

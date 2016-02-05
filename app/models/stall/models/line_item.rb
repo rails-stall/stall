@@ -6,6 +6,8 @@ module Stall
       included do
         self.table_name = 'stall_line_items'
 
+        include Stall::Priceable
+
         store_accessor :data, :weight
 
         monetize :unit_eot_price_cents, :unit_price_cents,
@@ -36,10 +38,6 @@ module Stall
 
       def currency
         product_list.try(:currency) || Money.default_currency
-      end
-
-      def vat
-        price - eot_price
       end
 
       private
