@@ -9,7 +9,7 @@
       = ownership_form.hidden_field :shipping
 
       = ownership_form.fields_for :address do |address_form|
-        = address_form.input :civility
+        = address_form.input :civility, collection: Address.civility_enum
         = address_form.input :first_name
         = address_form.input :last_name
         = address_form.input :address
@@ -27,7 +27,7 @@
       = ownership_form.hidden_field :billing
 
       = ownership_form.fields_for :address do |address_form|
-        = address_form.input :civility
+        = address_form.input :civility, collection: Address.civility_enum
         = address_form.input :first_name
         = address_form.input :last_name
         = address_form.input :address

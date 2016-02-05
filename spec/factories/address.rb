@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :address do
-    civility 'M'
+    civility :m
     first_name 'Jean'
     last_name 'Val'
     address '1 rue de la rue'

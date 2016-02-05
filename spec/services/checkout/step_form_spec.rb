@@ -12,7 +12,7 @@ RSpec.describe Stall::Checkout::StepForm do
 
       form.validate
 
-      expect(form.target.errors.count).to eq(1)
+      expect(form.object.errors.count).to eq(1)
     end
 
     it 'runs the validations for the nested forms' do
@@ -28,7 +28,7 @@ RSpec.describe Stall::Checkout::StepForm do
 
       form.validate
 
-      expect(form.target.category.errors.count).to eq(1)
+      expect(form.object.category.errors.count).to eq(1)
     end
   end
 
@@ -60,7 +60,7 @@ RSpec.describe Stall::Checkout::StepForm do
       step = double(:step, important: true)
       form = form_class.new(build(:book), step)
 
-      expect(step).to receive(:_validation_method_missing).with(:important).and_return(true)
+      expect(step).to receive(:important).and_return(true)
       expect(form.important).to eq(true)
     end
   end
