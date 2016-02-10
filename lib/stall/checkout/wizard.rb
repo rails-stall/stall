@@ -57,12 +57,21 @@ module Stall
         step_index && step_index >= steps_count - 1
       end
 
+      def step_complete?(step_identifier)
+        steps.index(cart.state) > steps.index(step_identifier.to_sym)
+      end
+
       def steps_count
         @steps_count ||= steps.length
       end
 
       def validate_current_step!
         cart.state = next_step_name
+        cart.save!
+      end
+
+      def move_to_step!(target_step)
+        cart.state = target_step
         cart.save!
       end
 

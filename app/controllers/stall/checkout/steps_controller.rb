@@ -20,6 +20,19 @@ module Stall
         end
       end
 
+      def change
+        target_step = params[:step]
+
+        if @wizard.step_complete?(target_step)
+          @wizard.move_to_step!(target_step)
+          redirect_to step_path(@cart)
+        else
+          @step.prepare
+          flash[:error] ||= t("stall.checkout.#{ target_step }.error")
+          render 'show'
+        end
+      end
+
       private
 
       def load_step

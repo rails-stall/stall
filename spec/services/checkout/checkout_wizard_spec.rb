@@ -132,6 +132,16 @@ RSpec.describe Stall::Checkout::Wizard do
     end
   end
 
+  describe '#step_complete?' do
+    it 'returns wether a given step is complete or not' do
+      cart = build(:cart, state: :step2)
+      wizard = FakeDefaultCheckoutWizard.new(cart)
+
+      expect(wizard.step_complete?(:step1)).to eq(true)
+      expect(wizard.step_complete?(:step2)).to eq(false)
+    end
+  end
+
   describe '#validate_current_step!' do
     it 'sets the cart state to the next step' do
       cart = build(:cart, state: :step1)
@@ -139,6 +149,16 @@ RSpec.describe Stall::Checkout::Wizard do
       wizard.validate_current_step!
 
       expect(cart.reload.state).to eq(:step2)
+    end
+  end
+
+  describe '#move_to_step!' do
+    it 'sets the cart state to the given step' do
+      cart = build(:cart, state: :step3)
+      wizard = FakeDefaultCheckoutWizard.new(cart)
+      wizard.move_to_step!(:step1)
+
+      expect(cart.reload.state).to eq(:step1)
     end
   end
 end

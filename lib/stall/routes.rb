@@ -16,7 +16,9 @@ module Stall
           resources :checkouts, only: [:show]
 
           scope '/checkout/:type/:cart_id', module: 'checkout', as: :checkout do
-            resource :step, only: [:show, :update]
+            resource :step, only: [:show, :update] do
+              get 'change/:step', action: :change, as: :change
+            end
           end
 
           match '/payments/:gateway/process' => 'payments#process', via: [:get, :post]
