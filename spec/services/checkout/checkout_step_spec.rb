@@ -33,4 +33,38 @@ RSpec.describe Stall::Checkout::Step do
       end
     end
   end
+
+  describe '#is?' do
+    it 'returns true if the step identifier equals the passed symbol' do
+      step = FakeCheckoutStep.new(double(:cart))
+
+      expect(step.is?(:fake)).to eq(true)
+    end
+  end
+
+  describe '#identifier' do
+    it 'returns the name of the class demodulized and without the CheckoutStep suffix' do
+      step = FakeCheckoutStep.new(double(:cart))
+
+      expect(step.identifier).to eq(:fake)
+    end
+  end
+
+  describe '#valid?' do
+    it 'returns true if the step is valid with the provided cart data' do
+      with_config FakeCheckoutStep, :validations, proc { validates :customer, presence: true } do
+        cart = build(:cart, customer: build(:customer))
+        step = FakeCheckoutStep.new(cart)
+        expect(step.valid?).to eq(true)
+      end
+    end
+
+    it 'returns false if the step is invalid with the provided cart data' do
+      with_config FakeCheckoutStep, :validations, proc { validates :customer, presence: true } do
+        cart = build(:cart, customer: nil)
+        step = FakeCheckoutStep.new(cart)
+        expect(step.valid?).to eq(false)
+      end
+    end
+  end
 end
