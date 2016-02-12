@@ -6,7 +6,9 @@ module Stall
     extend ActiveSupport::Concern
 
     included do
-      has_many :address_ownerships, as: :addressable, dependent: :destroy
+      has_many :address_ownerships, as: :addressable, dependent: :destroy,
+                                    inverse_of: :addressable
+
       has_many :addresses, through: :address_ownerships
       accepts_nested_attributes_for :address_ownerships, allow_destroy: true
     end
@@ -26,6 +28,16 @@ module Stall
       define_method(:"#{ type }_address=") do |address|
         ownership = address_ownership_for(type) || address_ownerships.build(type => true)
         ownership.address = address
+        instance_variable_set(instance_variable_name, address)
+      end
+
+      define_method(:"build_#{ type }_address") do |attributes = {}|
+        if (ownership = address_ownership_for(type))
+          ownership.send(:"#{ type }=", false)
+        end
+
+        ownership = address_ownerships.build(type => true)
+        address = ownership.build_address(attributes)
         instance_variable_set(instance_variable_name, address)
       end
 

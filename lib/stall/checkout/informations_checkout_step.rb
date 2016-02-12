@@ -4,11 +4,6 @@ module Stall
       def prepare
         ensure_customer
         ensure_address(:billing)
-
-        if cart.billing_address == cart.shipping_address
-          cart.shipping_address = nil
-        end
-
         ensure_address(:shipping)
       end
 
