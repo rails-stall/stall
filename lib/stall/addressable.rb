@@ -52,6 +52,8 @@ module Stall
       end
 
       define_method(:"#{ type }_address_attributes=") do |attributes|
+        attributes.delete(:id)
+
         ownership = address_ownership_for(type) || address_ownerships.build(type => true)
         address = ownership.address || ownership.build_address
         address.assign_attributes(attributes)

@@ -14,7 +14,7 @@ module Stall
 
       [:shipping, :billing].each do |type|
         define_method(:"mark_as_#{ type }") do
-          if (ownership = addressable.address_ownership_for(type))
+          if (ownership = addressable.address_ownership_for(type)) && ownership != self
             ownership.send(:"#{ type }=", false)
           end
 
