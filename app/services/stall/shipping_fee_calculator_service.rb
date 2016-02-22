@@ -10,7 +10,7 @@ module Stall
       return unless cart.shipment && cart.shipment.shipping_method
 
       calculator_identifier = cart.shipment.shipping_method.identifier
-      calculator_class = Stall::Shipping.calculators[calculator_identifier]
+      calculator_class = Stall::Shipping::Calculator.for(calculator_identifier)
 
       if calculator_class
         calculator = calculator_class.new(cart, cart.shipment.shipping_method)

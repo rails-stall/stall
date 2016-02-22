@@ -28,16 +28,27 @@ module Stall
         Stall.config.vat_rate
       end
 
+      # Register a calculator from inside the class.
+      #
+      # This is useful for registering the calculator direclty in the class
+      # body, but is not suited for "auto-loaded" classes because of Rails'
+      # class unloading behavior
+      #
       def self.register(name)
-        Stall::Shipping.calculators[name] = self
-
-        ShippingMethod.where(identifier: name).first_or_create do |method|
-          method.name = name.to_s.humanize
-        end
+        Stall.config.shipping.register_calculator(name, self)
       end
 
+      # Fetch a shipping calculator from a shipping method or a shipping
+      # method identifier
+      #
       def self.for(shipping_method)
-        Stall::Shipping.calculators[shipping_method.identifier]
+        identifier = case shipping_method
+        when String, Symbol then shipping_method.to_s
+        else shipping_method.identifier
+        end
+
+        name = Stall::Shipping.calculators[identifier]
+        String === name ? name.constantize : name
       end
 
       private

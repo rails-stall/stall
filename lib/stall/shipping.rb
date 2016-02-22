@@ -11,6 +11,8 @@ module Stall
 
     mattr_reader :calculators
     @@calculators = {}.with_indifferent_access
+
+    class CalculatorNotFound < StandardError; end
   end
 end
 
