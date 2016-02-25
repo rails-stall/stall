@@ -1,8 +1,9 @@
 module Stall
   class PaymentNotificationService < Stall::BaseService
-    attr_reader :request
+    attr_reader :request, :gateway_identifier
 
-    def initialize(request)
+    def initialize(gateway_identifier, request)
+      @gateway_identifier = gateway_identifier
       @request = request
     end
 
@@ -21,7 +22,7 @@ module Stall
     end
 
     def gateway_class
-      @gateway_class ||= Stall::Payments.gateways[request.params[:gateway]]
+      @gateway_class ||= Stall::Payments.gateways[gateway_identifier]
     end
 
     def cart

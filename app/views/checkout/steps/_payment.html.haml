@@ -35,3 +35,5 @@
     %tr
       %td{ colspan: 3 }= t('stall.carts.recap.total_price')
       %td= number_to_currency(cart.total_price)
+
+= payment_button_for(cart)

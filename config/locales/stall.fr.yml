@@ -42,6 +42,20 @@ fr:
         validate: "Valider mon mode de paiement"
       payment:
         title: "Paiement"
+        error: |
+          Votre paiement n'a pas pu être pris en compte, vous pouvez réessayer
+          de payer avec le bouton : "Payer ma commande"
+      payment_return:
+        title: "Paiement effectué"
+        help: |
+          Votre paiement a bien été pris en compte et votre commande a été
+          validée. Celle-ci sera traitée dans les plus bref délais.
+          <br><br>
+          Un e-mail de confirmation vous a été envoyé.
+          <br><br>
+          Merci pour votre confiance !
+
+        back_to_shop: "Retour à la boutique"
 
     payments:
       gateway:

@@ -26,6 +26,15 @@ Stall.configure do |config|
   #
   # param :default_currency, 'EUR'
 
+  # Default app domain use for building URLs in payment gateway forms and in
+  # e-mails.
+  #
+  # Add the `APP_DOMAIN` environment variable, or modify the parameter below.
+  #
+  # Ex : 'localhost:3000', 'www.example.com'
+  #
+  # config.default_app_domain = ENV['APP_DOMAIN']
+
   # Defined the default checkout wizard used for checking carts out in the
   # shop process.
   #
@@ -51,6 +60,24 @@ Stall.configure do |config|
   # Defaults to nil, which means all countries are available
   #
   # config.shipping.free_shipping.available = nil
+
+  # Register custom shipping methods and calculators
+  #
+  # If no existing shipping method / calculator cover your needs, you can
+  # create one by subclassing Stall::Shipping::Calculator
+  #
+  # Read more at : https://github.com/rails-stall/stall/wiki/Shipping-methods
+  #
+  # config.shipping.register_calculator :my_calculator, 'MyCalculator'
+
+  # Register custom payment methods and gateways
+  #
+  # If no existing payment method / gateway cover your needs, you can
+  # create one by subclassing Stall::Payments::Gateway
+  #
+  # Read more at : https://github.com/rails-stall/stall/wiki/Payment-methods
+  #
+  # config.payment.register_gateway :my_gateway, 'MyGateway'
 
   # Allows hooking into checkout steps initialization in the steps controller
   # to inject dependencies to all or a specific step

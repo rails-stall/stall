@@ -17,6 +17,9 @@ module Stall
     # Default currency for money objects
     param :default_currency, 'EUR'
 
+    # Default app domain for building routes
+    param :_default_app_domain
+
     # Default checkout wizard used
     param :default_checkout_wizard, 'DefaultCheckoutWizard'
 
@@ -30,12 +33,20 @@ module Stall
       @shipping ||= Stall::Shipping::Config.new
     end
 
+    def payment
+      @payment ||= Stall::Payments::Config.new
+    end
+
     def steps_initialization(value = nil, &block)
       if (value ||= block)
         @_steps_initialization_callback = value
       else
         @_steps_initialization_callback
       end
+    end
+
+    def default_app_domain
+      _default_app_domain || ENV['APP_DOMAIN']
     end
   end
 end

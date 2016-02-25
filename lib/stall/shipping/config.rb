@@ -9,19 +9,15 @@ module Stall
       #
       def register_calculator(name, calculator)
         Stall::Shipping.calculators[name] = calculator
-
-        ShippingMethod.where(identifier: name).first_or_create do |method|
-          method.name = name.to_s.humanize
-        end
       end
 
       def configure
-        yield config
+        yield self
       end
 
       def method_missing(name, *args)
-        if (calculator = Stall::Shipping.calculators[name])
-          calculator
+        if (calculator = Stall::Shipping::Calculator.for(name))
+          yield calculator
         else
           super
         end

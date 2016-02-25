@@ -10,24 +10,27 @@ module Stall
       end
 
       def self.register(name)
-        Stall::Payments.gateways[name] = self
+        Stall.config.payment.register_gateway(name, self)
       end
 
-      def self.cart_id_from(_request)
+      def self.for(payment_method)
+        identifier = case payment_method
+        when String, Symbol then payment_method.to_s
+        else payment_method.identifier
+        end
+
+        gateway = Stall::Payments.gateways[identifier]
+        String === gateway ? gateway.constantize : gateway
+      end
+
+      def self.response(_request)
         raise NoMethodError,
-          'Subclasses must implement the .cart_id_from(request) class method ' \
-          'to allow retrieving the cart from the remote gateway notification ' \
-          'request object'
+          'Subclasses must implement the .response(request) class method '
       end
 
-      def self.cart_id_from_transaction_id(transaction_id)
-        transaction_id && transaction_id.split('-')[2].to_i
-      end
-
-      def process_payment_for(_request)
+      def self.request(cart)
         raise NoMethodError,
-          'Subclasses must implement the #process_payment_for(request) ' \
-          'method to handle payment verifications and cart payment validation'
+          'Subclasses must implement the .request(cart) class method '
       end
 
       def transaction_id
@@ -48,6 +51,10 @@ module Stall
       # overriden by subclasses
       def rendering_options
         { text: nil }
+      end
+
+      def payment_urls
+        @payment_urls ||= Stall::Payments::UrlsConfig.new(cart)
       end
 
       private
