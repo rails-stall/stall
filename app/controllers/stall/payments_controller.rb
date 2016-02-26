@@ -1,6 +1,6 @@
 module Stall
   class PaymentsController < Stall::ApplicationController
-    def process
+    def notify
       service = Stall::PaymentNotificationService.new(params[:gateway], request)
       service.call
       render service.rendering_options

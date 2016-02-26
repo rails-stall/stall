@@ -38,6 +38,12 @@ module Stall
           save(validate: false)
         end
       end
+
+      module ClassMethods
+        def find_by_reference(reference)
+          where("data->>'reference' = ?", reference).first
+        end
+      end
     end
   end
 end
