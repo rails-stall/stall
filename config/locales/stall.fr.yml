@@ -67,17 +67,29 @@ fr:
         mme: Mme.
 
   activerecord:
+    models:
+      line_item: "Produit"
+      customer: "Client"
+      address: "Adresse"
+      cart: "Panier"
+      shipment: "Livraison"
+      payment: "Paiement"
     attributes:
-      stall/line_item:
-        name: "Produit"
-        unit_price: "Prix unitaire"
-        unit_eot_price: "Prix unitaire HT"
-        price: "Prix"
-        eot_price: "Prix HT"
+      line_item:
+        sellable: "Produit source"
+        name: "Nom du produit"
         quantity: "Quantité"
-      stall/customer:
+        unit_eot_price: "Prix unitaire HT"
+        unit_price: "Prix unitaire TTC"
+        eot_price: "Prix total HT"
+        price: "Prix total TTC"
+        vat_rate: "Taux de TVA"
+        weight: "Poids"
+      customer:
         email: "Adresse e-mail"
-      stall/address:
+        shipping_address: "Adresse de livraison"
+        billing_address: "Adresse de facturation"
+      address:
         civility: "Civilité"
         first_name: "Prénom"
         last_name: "Nom"
@@ -87,3 +99,24 @@ fr:
         city: "Ville"
         country: "Pays"
         phone: "Téléphone"
+      cart:
+        reference: "Référence"
+        state: "Étape du panier"
+        customer: "Client"
+        total_price: "Montant total"
+        created_at: "Date"
+        shipment: "Livraison"
+        shipping_address: "Adresse de livraison"
+        billing_address: "Adresse de facturation"
+        line_items: "Produits commandés"
+      shipment:
+        price: "Prix"
+        eot_price: "Prix HT"
+        vat_rate: "Taux de TVA"
+        sent_at: "Expédié le"
+        shipping_method: "Mode de livraison"
+      payment:
+        payment_method: "Mode de paiement"
+        paid_at: "Payé le"
+        transaction_id: "Numéro de transaction"
+
