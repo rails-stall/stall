@@ -33,7 +33,9 @@ module Stall
       end
 
       def total_price
-        items.map(&:price).sum
+        price = items.map(&:price).sum
+        price = Money.new(price, currency) unless Money === price
+        price
       end
 
       def total_eot_price
@@ -69,7 +71,7 @@ module Stall
       end
 
       def ensure_state
-        self.state ||= wizard.steps.first
+        self.state ||= 'pending'
       end
 
       def items
