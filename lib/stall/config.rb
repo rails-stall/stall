@@ -1,6 +1,7 @@
 module Stall
   class Config
     extend Stall::Utils::ConfigDSL
+    param :store_name
 
     # Default VAT rate
     param :vat_rate, BigDecimal.new('20.0')

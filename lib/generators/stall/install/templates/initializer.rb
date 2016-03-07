@@ -1,4 +1,9 @@
 Stall.configure do |config|
+  # Store name used by the system when a human readable identifier for your
+  # store is needed, e.g. for payment gateways
+  #
+  config.store_name = "My stall (Change me in config/initializers/stall.rb)"
+
   # Global default VAT rate, can be overrided by products
   #
   # config.vat_rate = BigDecimal.new('20.0')
