@@ -12,7 +12,7 @@ module Stall
       def update
         if @step.process
           @wizard.validate_current_step!
-          redirect_to step_path(@cart)
+          redirect_to step_path
         else
           @step.prepare
           flash[:error] ||= t("stall.checkout.#{ @wizard.current_step_name }.error")
@@ -25,7 +25,7 @@ module Stall
 
         if @wizard.step_complete?(target_step)
           @wizard.move_to_step!(target_step)
-          redirect_to step_path(@cart)
+          redirect_to step_path
         else
           @step.prepare
           flash[:error] ||= t("stall.checkout.#{ target_step }.error")
@@ -36,7 +36,7 @@ module Stall
       private
 
       def load_step
-        @cart = Cart.find_by_token(params[:cart_id])
+        @cart = current_cart
         @wizard = @cart.wizard.new(@cart)
 
         @step = @wizard.initialize_current_step do |step|

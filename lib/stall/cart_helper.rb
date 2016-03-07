@@ -3,24 +3,22 @@ module Stall
     extend ActiveSupport::Concern
 
     included do
-      helper_method :current_cart
+      helper_method :current_cart, :current_cart_key
     end
 
     def current_cart
       RequestStore.store[cart_key] ||= load_current_cart
     end
 
-    private
+    protected
 
     def current_cart_key
-      :default
+      params[:cart_key].try(:to_sym) || :default
     end
 
     def load_current_cart(type = current_cart_key)
-      if (cart_token = session[cart_key(type)])
-        if (current_cart = Cart.find_by_token(cart_token))
-          return current_cart
-        end
+      if (cart = find_cart(type))
+        return cart
       end
 
       # If no token was stored or the token does not exist anymore, create a
@@ -28,6 +26,14 @@ module Stall
       #
       Cart.create!.tap do |cart|
         session[cart_key(type)] = cart.token
+      end
+    end
+
+    def find_cart(type)
+      if (cart_token = session[cart_key(type)])
+        if (current_cart = Cart.find_by_token(cart_token))
+          return current_cart
+        end
       end
     end
 

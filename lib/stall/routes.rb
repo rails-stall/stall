@@ -15,13 +15,16 @@ module Stall
 
           resources :checkouts, only: [:show]
 
-          scope '/checkout/:type/:cart_id', module: 'checkout', as: :checkout do
-            resource :step, only: [:show, :update] do
-              post '/', action: :update, as: :update
-              get '/process', action: :update, as: :process
-              get 'change/:step', action: :change, as: :change
+          scope 'checkout', module: 'checkout', as: :checkout do
+            scope '(:cart_key)' do
+              resource :step, only: [:show, :update] do
+                post '/', action: :update, as: :update
+                get '/process', action: :update, as: :process
+                get 'change/:step', action: :change, as: :change
+              end
             end
           end
+
 
           scope '/:gateway' do
             resource :payment, only: [] do

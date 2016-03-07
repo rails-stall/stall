@@ -25,7 +25,7 @@ RSpec.describe Stall::Checkout::StepsController do
       with_config :steps_initialization, ->(step) { step.inject(:foo, 'bar') } do
         cart = create_cart
 
-        get :show, { type: 'default', cart_id: cart.token }
+        get :show
 
         expect(assigns(:step).foo).to eq('bar')
       end
@@ -35,7 +35,7 @@ RSpec.describe Stall::Checkout::StepsController do
   describe '#update' do
     it 'handles unsuccessful steps with an error message' do
       cart = create_cart
-      patch :update, { type: 'default', cart_id: cart.token }
+      patch :update, cart: { customer_attributes: { email: '' } }
 
       expect(flash[:error]).not_to be_nil
     end
@@ -44,7 +44,7 @@ RSpec.describe Stall::Checkout::StepsController do
       with_config :steps_initialization, ->(step) { step.inject(:foo, 'bar') } do
         cart = create_cart
 
-        patch :update, { type: 'default', cart_id: cart.token }
+        patch :update, cart: { state: 'fake' }
 
         expect(assigns(:step).foo).to eq('bar')
       end

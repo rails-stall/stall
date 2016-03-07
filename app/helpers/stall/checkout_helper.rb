@@ -1,7 +1,7 @@
 module Stall
   module CheckoutHelper
-    def step_path(cart)
-      checkout_step_path(cart.wizard.route_key, cart)
+    def step_path
+      checkout_step_path(current_cart_key)
     end
 
     def available_shipping_methods_for(cart)

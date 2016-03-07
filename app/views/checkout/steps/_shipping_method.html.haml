@@ -1,6 +1,6 @@
 %h1= t('stall.checkout.shipping_method.title')
 
-= simple_form_for cart, as: :cart, url: step_path(cart) do |form|
+= simple_form_for cart, as: :cart, url: step_path do |form|
   = form.fields_for :shipment do |shipment_fields|
     = shipment_fields.association :shipping_method, as: :radio_buttons
 

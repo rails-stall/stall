@@ -1,9 +1,18 @@
 module Stall
   class CheckoutsController < Stall::ApplicationController
+    include CheckoutHelper
+
+    before_action :load_cart
+
     def show
-      @cart = Cart.find_by_token(params[:id])
       @cart.reset_state!
-      redirect_to checkout_step_path(@cart.wizard.route_key, @cart)
+      redirect_to step_path
+    end
+
+    private
+
+    def load_cart
+      @cart = find_cart(current_cart_key)
     end
   end
 end
