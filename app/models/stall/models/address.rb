@@ -21,8 +21,8 @@ module Stall
         end
 
         def country_name
-          if (country = ISO3166::Country[country_code])
-            country.translations[I18n.locale.to_s] || country.name
+          if (iso_country = ISO3166::Country[country])
+            iso_country.translations[I18n.locale.to_s] || iso_country.name
           end
         end
       end
