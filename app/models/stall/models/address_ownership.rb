@@ -6,7 +6,7 @@ module Stall
       included do
         self.table_name = 'stall_address_ownerships'
 
-        belongs_to :address, inverse_of: :addressable_ownership
+        belongs_to :address, inverse_of: :address_ownership
         accepts_nested_attributes_for :address
 
         belongs_to :addressable, polymorphic: true
