@@ -38,9 +38,9 @@ RSpec.describe Stall::Shipping::FreeShippingCalculator do
 
     context 'when configured with a proc' do
       before(:all) do
-        Stall.config.shipping.free_shipping.available = -> address do
+        Stall.config.shipping.free_shipping.available = -> address {
           address.country == 'FR'
-        end
+        }
       end
 
       it 'returns true if the proc returns true' do
