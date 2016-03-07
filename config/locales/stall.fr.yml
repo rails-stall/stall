@@ -99,6 +99,7 @@ fr:
         city: "Ville"
         country: "Pays"
         phone: "Téléphone"
+        state: "État"
       cart:
         reference: "Référence"
         state: "Étape du panier"
