@@ -11,7 +11,7 @@ module Stall
 
     def call
       if gateway_response.valid?
-        gateway_response.notify
+        send_payment_notification_emails! if gateway_response.notify
       else
         raise UnknownNotificationError,
               "The payment notification request does not seem to come from " +
@@ -31,6 +31,10 @@ module Stall
 
     def gateway_response
       @gateway_response ||= gateway_class.response(request)
+    end
+
+    def send_payment_notification_emails!
+      true
     end
   end
 end
