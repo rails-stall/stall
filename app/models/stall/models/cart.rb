@@ -14,7 +14,20 @@ module Stall
         has_one :payment, dependent: :destroy, inverse_of: :cart
         accepts_nested_attributes_for :payment
 
+        has_many :adjustments, dependent: :destroy, inverse_of: :cart
+        accepts_nested_attributes_for :adjustments
+
         after_save :ensure_reference, on: :create
+      end
+
+      def subtotal
+        price = line_items.map(&:price).sum
+        price = Money.new(price, currency) unless Money === price
+        price
+      end
+
+      def eot_subtotal
+        line_items.map(&:eot_price).sum
       end
 
       def total_weight
@@ -28,6 +41,7 @@ module Stall
       def items
         items = line_items.to_a
         items << shipment if shipment
+        items += adjustments.to_a
         items
       end
 

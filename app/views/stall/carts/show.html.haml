@@ -16,6 +16,25 @@
             %td= line_item_fields.input_field :quantity, spinner: false, class: 'form-control', data: { :'quantity-field' => true }
             %td= line_item_fields.object.price
 
+        - if @cart.subtotal != @cart.total
+          %tr
+            %td{ colspan: 3 }= t('stall.carts.recap.subtotal')
+            %td= number_to_currency(@cart.subtotal)
+
+        - if @cart.shipment && @cart.shipment
+          %tr
+            %td{ colspan: 3 }
+              = t('stall.carts.recap.total_shipment_price')
+              \:
+              = @cart.shipment.shipping_method.name
+
+            %td= number_to_currency(@cart.shipment.price)
+
+        - @cart.adjustments.each do |adjustment|
+          %tr
+            %td{ colspan: 3 }= adjustment.name
+            %td= number_to_currency(adjustment.price)
+
         %tr
           %td{ colspan: 3 }= t('stall.carts.recap.total_eot_price')
           %td= number_to_currency(@cart.total_eot_price)

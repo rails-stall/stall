@@ -11,6 +11,7 @@ fr:
           success: "Votre panier a bien été mis à jour."
           error: "Votre panier n'a pu être mis à jour, merci de vérifier les champs."
       recap:
+        subtotal: "Sous-total"
         total_shipment_price: "Livraison"
         total_eot_price: "Prix total HT"
         total_vat: "Total TVA"
@@ -120,4 +121,3 @@ fr:
         payment_method: "Mode de paiement"
         paid_at: "Payé le"
         transaction_id: "Numéro de transaction"
-
