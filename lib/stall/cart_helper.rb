@@ -24,7 +24,7 @@ module Stall
       # If no token was stored or the token does not exist anymore, create a
       # new cart and store the new token
       #
-      Cart.create!.tap do |cart|
+      Cart.create!(identifier: type).tap do |cart|
         session[cart_key(type)] = cart.token
       end
     end
