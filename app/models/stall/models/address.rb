@@ -21,9 +21,25 @@ module Stall
         end
 
         def country_name
-          if (iso_country = ISO3166::Country[country])
+          if iso_country
             iso_country.translations[I18n.locale.to_s] || iso_country.name
           end
+        end
+
+        def state_name
+          if iso_state
+            iso_state['name']
+          end
+        end
+
+        private
+
+        def iso_country
+          @iso_country ||= country && ISO3166::Country[country]
+        end
+
+        def iso_state
+          @iso_state ||= iso_country.subdivisions[state] if iso_country && state
         end
       end
     end
