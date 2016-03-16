@@ -3,7 +3,9 @@ module Stall
     extend ActiveSupport::Concern
 
     included do
-      helper_method :current_cart, :current_cart_key
+      if respond_to?(:helper_method)
+        helper_method :current_cart, :current_cart_key
+      end
     end
 
     def current_cart
@@ -35,6 +37,10 @@ module Stall
           return current_cart
         end
       end
+    end
+
+    def remove_cart_from_session(type = current_cart_key)
+      session.delete(cart_key(type))
     end
 
     def cart_key(identifier = current_cart_key)
