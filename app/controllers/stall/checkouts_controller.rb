@@ -12,7 +12,7 @@ module Stall
     private
 
     def load_cart
-      @cart = find_cart(current_cart_key)
+      @cart = current_cart
     end
   end
 end

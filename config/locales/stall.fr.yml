@@ -31,6 +31,8 @@ fr:
         description: "Merci de vérifier que vous avez bien rempli la quantité avant d'ajouter le produit au panier."
 
     checkout:
+      shared:
+        not_checkoutable: "Aucun produit dans le panier, impossible de passer la commande."
       informations:
         title: "Vos informations"
         validate: "Valider mes adresses"

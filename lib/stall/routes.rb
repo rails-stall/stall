@@ -13,7 +13,7 @@ module Stall
             resources :line_items
           end
 
-          resources :checkouts, only: [:show]
+          get 'checkout/:cart_key' => 'checkouts#show', as: :checkout
 
           scope 'checkout', module: 'checkout', as: :checkout do
             scope '(:cart_key)' do

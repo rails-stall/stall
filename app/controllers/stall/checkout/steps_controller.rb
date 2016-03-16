@@ -3,6 +3,8 @@ module Stall
     class StepsController < Stall::ApplicationController
       include Stall::CheckoutHelper
 
+      before_action :load_cart
+      before_action :ensure_cart_checkoutable
       before_action :load_step
 
       def show
@@ -35,12 +37,22 @@ module Stall
 
       private
 
-      def load_step
+      def load_cart
         @cart = current_cart
+      end
+
+      def ensure_cart_checkoutable
+        unless @cart.checkoutable?
+          flash[:error] = t('stall.checkout.shared.not_checkoutable')
+          redirect_to request.referrer || root_path
+        end
+      end
+
+      def load_step
         @wizard = @cart.wizard.new(@cart)
 
         @step = @wizard.initialize_current_step do |step|
-          # Inject request dependent
+          # Inject request dependent data
           step.inject(:params, params)
           step.inject(:session, session)
           step.inject(:request, request)

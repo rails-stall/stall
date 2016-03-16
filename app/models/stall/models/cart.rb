@@ -36,6 +36,10 @@ module Stall
         end
       end
 
+      def checkoutable?
+        line_items.length > 0
+      end
+
       private
 
       def items
