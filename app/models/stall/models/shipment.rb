@@ -11,8 +11,12 @@ module Stall
         belongs_to :cart
         belongs_to :shipping_method
 
+        store_accessor :data, :tracking_code
+
         monetize :eot_price_cents, :price_cents,
                  with_model_currency: :currency, allow_nil: true
+
+        enum state: { pending: 0, shipped: 1 }
 
         validates :cart, :shipping_method, presence: true
       end

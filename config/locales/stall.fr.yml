@@ -70,6 +70,11 @@ fr:
         mme: Mme.
 
   activerecord:
+    enums:
+      shipment:
+        state:
+          pending: "En attente"
+          shipped: "Expédié"
     models:
       line_item: "Produit"
       customer: "Client"
@@ -119,6 +124,7 @@ fr:
         vat_rate: "Taux de TVA"
         sent_at: "Expédié le"
         shipping_method: "Mode de livraison"
+        tracking_code: "Code de suivi"
       payment:
         payment_method: "Mode de paiement"
         paid_at: "Payé le"
