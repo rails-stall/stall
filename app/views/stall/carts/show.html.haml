@@ -7,6 +7,7 @@
           %th= LineItem.human_attribute_name(:unit_price)
           %th= LineItem.human_attribute_name(:quantity)
           %th= LineItem.human_attribute_name(:price)
+          %th
 
       %tbody
         = form.fields_for :line_items do |line_item_fields|
@@ -15,11 +16,13 @@
             %td= line_item_fields.object.unit_price
             %td= line_item_fields.input_field :quantity, spinner: false, class: 'form-control', data: { :'quantity-field' => true }
             %td= line_item_fields.object.price
+            %td= link_to_remove_association '&times;'.html_safe, line_item_fields
 
         - if @cart.subtotal != @cart.total
           %tr
             %td{ colspan: 3 }= t('stall.carts.recap.subtotal')
             %td= number_to_currency(@cart.subtotal)
+            %td
 
         - if @cart.shipment && @cart.shipment
           %tr
@@ -29,23 +32,28 @@
               = @cart.shipment.shipping_method.name
 
             %td= number_to_currency(@cart.shipment.price)
+            %td
 
         - @cart.adjustments.each do |adjustment|
           %tr
             %td{ colspan: 3 }= adjustment.name
             %td= number_to_currency(adjustment.price)
+            %td
 
         %tr
           %td{ colspan: 3 }= t('stall.carts.recap.total_eot_price')
           %td= number_to_currency(@cart.total_eot_price)
+          %td
 
         %tr
           %td{ colspan: 3 }= t('stall.carts.recap.total_vat')
           %td= number_to_currency(@cart.total_vat)
+          %td
 
         %tr
           %td{ colspan: 3 }= t('stall.carts.recap.total_price')
           %td= number_to_currency(@cart.total_price)
+          %td
 
     .form-actions
       %button.btn.btn-default{ type: 'submit', data: { :'cart-update-button' => true } }

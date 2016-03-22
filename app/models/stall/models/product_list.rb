@@ -9,7 +9,7 @@ module Stall
         has_secure_token
 
         has_many :line_items, dependent: :destroy
-        accepts_nested_attributes_for :line_items
+        accepts_nested_attributes_for :line_items, allow_destroy: true
 
         belongs_to :customer
         accepts_nested_attributes_for :customer

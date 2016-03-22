@@ -5,6 +5,7 @@ require 'request_store'
 require 'haml-rails'
 require 'simple_form'
 require 'country_select'
+require 'cocoon'
 
 require 'stall/rails/routing_mapper'
 require 'stall/rails/currency_helper'

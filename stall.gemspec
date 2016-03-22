@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'money-rails', '~> 1.6'
   s.add_dependency 'request_store', '~> 1.3'
   s.add_dependency 'country_select', '~> 2.0'
+  s.add_dependency 'cocoon', '~> 1.0'
 
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'shoulda-matchers', '~> 3.0'

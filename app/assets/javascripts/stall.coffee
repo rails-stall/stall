@@ -1,4 +1,5 @@
 #= require vertebra
+#= require cocoon
 #= require_self
 #= require stall/add-to-cart-form
 #= require stall/cart-form

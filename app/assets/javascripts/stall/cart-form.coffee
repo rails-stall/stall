@@ -1,6 +1,7 @@
 class Stall.CartForm extends Vertebra.View
   events:
-    'change [data-quantity-field]': 'quantityChanged'
+    'change [data-quantity-field]': 'formUpdated'
+    'cocoon:after-remove': 'formUpdated'
     'ajax:success': 'updateSuccess'
 
   initialize: ->
@@ -9,7 +10,7 @@ class Stall.CartForm extends Vertebra.View
   clean: ->
     @$('[data-cart-update-button]').hide(0)
 
-  quantityChanged: (e) ->
+  formUpdated: (e) ->
     @$el.submit()
 
   updateSuccess: (e, resp) ->
