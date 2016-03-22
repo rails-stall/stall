@@ -18,7 +18,7 @@ module Stall
             options[:unit] = price.symbol
           end
 
-          original_number_to_currency(price, options)
+          original_number_to_currency(price.to_f, options)
         end
       end
     end
