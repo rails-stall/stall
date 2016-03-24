@@ -17,6 +17,14 @@ module Stall
       def pay!
         update_attributes!(paid_at: Time.now)
       end
+
+      def paid?
+        paid_at != nil
+      end
+
+      def state
+        paid? ? :paid : :pending
+      end
     end
   end
 end

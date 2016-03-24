@@ -27,9 +27,7 @@ module Stall
         end
 
         def state_name
-          if iso_state
-            iso_state['name']
-          end
+          iso_state['name'] if iso_state
         end
 
         private

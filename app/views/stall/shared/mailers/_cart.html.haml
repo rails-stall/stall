@@ -1,0 +1,103 @@
+%table
+  %tbody
+    %tr
+      %td
+        %table
+          %tbody
+            %tr
+              %td
+                %h2= Cart.human_attribute_name(:billing_address)
+                = render partial: 'stall/shared/mailers/address', locals: { address: cart.billing_address }
+
+              %td
+                %h2= Cart.human_attribute_name(:shipping_address)
+                = render partial: 'stall/shared/mailers/address', locals: { address: cart.shipping_address }
+
+    %tr
+      %td
+        %table
+          %thead
+            %tr
+              %th= LineItem.human_attribute_name(:name)
+              %th= LineItem.human_attribute_name(:unit_price)
+              %th= LineItem.human_attribute_name(:quantity)
+              %th= LineItem.human_attribute_name(:price)
+
+          %tbody
+            - cart.line_items.each do |line_item|
+              %tr
+                %td= line_item.name
+                %td= number_to_currency(line_item.unit_price)
+                %td= line_item.quantity
+                %td= number_to_currency(line_item.price)
+
+          %tfoot
+            - if cart.subtotal != cart.total_price
+              %tr
+                %td{ colspan: 3 }= t('stall.carts.recap.subtotal')
+                %td= number_to_currency(cart.subtotal)
+
+            - if cart.shipment && cart.shipment.shipping_method
+              %tr
+                %td{ colspan: 3 }
+                  = t('stall.carts.recap.total_shipment_price')
+                  \:
+                  = cart.shipment.shipping_method.name
+
+                %td= number_to_currency(cart.shipment.price)
+
+            - cart.adjustments.each do |adjustment|
+              %tr
+                %td{ colspan: 3 }= adjustment.name
+                %td= number_to_currency(adjustment.price)
+
+            %tr
+              %td{ colspan: 3 }= t('stall.carts.recap.total_eot_price')
+              %td= number_to_currency(cart.total_eot_price)
+
+            %tr
+              %td{ colspan: 3 }= t('stall.carts.recap.total_vat')
+              %td= number_to_currency(cart.total_vat)
+
+            %tr
+              %td{ colspan: 3 }= t('stall.carts.recap.total_price')
+              %td= number_to_currency(cart.total_price)
+
+    %tr
+      %td
+        %table
+          %tbody
+            %tr
+              %td{ colspan: 2 }
+                %strong= Cart.human_attribute_name(:payment)
+
+            %tr
+              %td
+                = Payment.human_attribute_name(:payment_method)
+              %td
+                = cart.payment.payment_method.name
+
+            %tr
+              %td
+                = Payment.human_attribute_name(:state)
+              %td
+                - if cart.payment.paid?
+                  = t("stall.carts.recap.paid_at", at: cart.payment.paid_at)
+                - else
+                  = t("activerecord.enums.payment.state.#{ cart.payment.state }")
+
+            %tr
+              %td{ colspan: 2 }
+                %strong= Cart.human_attribute_name(:shipment)
+
+            %tr
+              %td
+                = Shipment.human_attribute_name(:shipping_method)
+              %td
+                = cart.shipment.shipping_method.name
+
+            %tr
+              %td
+                = Shipment.human_attribute_name(:state)
+              %td
+                = t("activerecord.enums.payment.state.#{ cart.shipment.state }")

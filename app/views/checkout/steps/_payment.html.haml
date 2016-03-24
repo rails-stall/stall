@@ -15,7 +15,7 @@
         %td= line_item.quantity
         %td= number_to_currency(line_item.price)
 
-    - if cart.subtotal != cart.total
+    - if cart.subtotal != cart.total_price
       %tr
         %td{ colspan: 3 }= t('stall.carts.recap.subtotal')
         %td= number_to_currency(cart.subtotal)

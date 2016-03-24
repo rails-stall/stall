@@ -1,0 +1,18 @@
+= address.civility_name
+= address.first_name
+= address.last_name
+%br
+
+= address.address
+%br
+
+- if address.address_details.present?
+  = address.address_details
+  %br
+
+= [:zip, :city, :state, :country_name].map { |prop| address.send(prop).presence }.compact.join(', ')
+
+%br
+
+- if address.phone.present?
+  = address.phone

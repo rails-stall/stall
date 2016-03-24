@@ -4,6 +4,19 @@ Stall.configure do |config|
   #
   config.store_name = "My stall (Change me in config/initializers/stall.rb)"
 
+  # Configure the admin e-mail to which order notifications will be sent
+  #
+  # Either set the `STALL_ADMIN_EMAIL` env var or use the below config
+  #
+  # config.admin_email = ENV['STALL_ADMIN_EMAIL']
+
+  # Configure the e-mail address used to send e-mails to customers for
+  # order notifications
+  #
+  # Either set the `STALL_SENDER_EMAIL` env var or use the below config
+  #
+  # config.sender_email = ENV['STALL_SENDER_EMAIL']
+
   # Global default VAT rate, can be overrided by products
   #
   # config.vat_rate = BigDecimal.new('20.0')
@@ -22,6 +35,12 @@ Stall.configure do |config|
   # layout of the controller set in `config.application_controller_ancestor`
   #
   # config.default_layout = nil
+
+  # Defines the parent mailer for the Stall customer and admin mailers
+  #
+  # If commented out, ActionMailer::Base will be used
+  #
+  config.mailers_parent_class = 'ApplicationMailer'
 
   # Default currency used in the app for money objects.
   #

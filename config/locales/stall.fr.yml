@@ -18,6 +18,7 @@ fr:
         total_price: "Prix total"
         update: "Mettre à jour le panier"
         validate: "Passer la commande"
+        paid_at: "Payée le %{at}"
 
     line_items:
       form:
@@ -69,12 +70,25 @@ fr:
         m: M.
         mme: Mme.
 
+    mailers:
+      customer:
+        order_paid_email:
+          subject: "Le paiement de votre commande n°%{ref} a bien été effectué !"
+          intro: "Votre commande sera traitée dans les meilleurs délais."
+      admin:
+        order_paid_email:
+          subject: "Une nouvelle commande a été passée sur le site - %{ref}"
+
   activerecord:
     enums:
       shipment:
         state:
           pending: "En attente"
           shipped: "Expédié"
+      payment:
+        state:
+          pending: "En attente"
+          shipped: "Payé"
     models:
       line_item: "Produit"
       customer: "Client"
@@ -114,6 +128,7 @@ fr:
         customer: "Client"
         total_price: "Montant total"
         created_at: "Date"
+        payment: "Paiement"
         shipment: "Livraison"
         shipping_address: "Adresse de livraison"
         billing_address: "Adresse de facturation"
@@ -125,7 +140,9 @@ fr:
         sent_at: "Expédié le"
         shipping_method: "Mode de livraison"
         tracking_code: "Code de suivi"
+        state: "État"
       payment:
         payment_method: "Mode de paiement"
         paid_at: "Payé le"
         transaction_id: "Numéro de transaction"
+        state: "État"

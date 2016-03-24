@@ -34,7 +34,8 @@ module Stall
     end
 
     def send_payment_notification_emails!
-      true
+      Stall::CustomerMailer.order_paid_email(gateway_response.cart).deliver
+      Stall::AdminMailer.order_paid_email(gateway_response.cart).deliver
     end
   end
 end

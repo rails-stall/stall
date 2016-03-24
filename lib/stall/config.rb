@@ -3,6 +3,12 @@ module Stall
     extend Stall::Utils::ConfigDSL
     param :store_name
 
+    # Admin e-mail address to which order notifications will be sent
+    param :admin_email, ENV['STALL_ADMIN_EMAIL'] || 'admin.change_me_in.stall.rb@example.com'
+
+    # E-mail address used to send e-mails to customers
+    param :sender_email, ENV['STALL_SENDER_EMAIL'] || 'shop.change_me_in.stall.rb@example.com'
+
     # Default VAT rate
     param :vat_rate, BigDecimal.new('20.0')
 
@@ -11,6 +17,8 @@ module Stall
 
     # Engine's ApplicationController parent
     param :application_controller_ancestor, '::ApplicationController'
+
+    param :mailers_parent_class, 'ActionMailer::Base'
 
     # Default layout used for the checkout
     param :default_layout

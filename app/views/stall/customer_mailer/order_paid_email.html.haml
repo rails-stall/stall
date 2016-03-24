@@ -1,0 +1,8 @@
+%table
+  %tr
+    %td
+      = t('stall.mailers.customer.order_paid_email.intro')
+
+  %tr
+    %td
+      = render partial: 'stall/shared/mailers/cart', locals: { cart: @cart }

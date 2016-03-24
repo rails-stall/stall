@@ -18,13 +18,13 @@
             %td= line_item_fields.object.price
             %td= link_to_remove_association '&times;'.html_safe, line_item_fields
 
-        - if @cart.subtotal != @cart.total
+        - if @cart.subtotal != @cart.total_price
           %tr
             %td{ colspan: 3 }= t('stall.carts.recap.subtotal')
             %td= number_to_currency(@cart.subtotal)
             %td
 
-        - if @cart.shipment && @cart.shipment
+        - if @cart.shipment && @cart.shipment.shipping_method
           %tr
             %td{ colspan: 3 }
               = t('stall.carts.recap.total_shipment_price')
