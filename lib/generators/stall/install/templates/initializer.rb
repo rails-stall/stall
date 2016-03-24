@@ -112,4 +112,11 @@ Stall.configure do |config|
   #   # Only inject in the :some step :
   #   step.inject(:ip, request.remote_ip) if SomeCheckoutStep === step
   # end
+
+  # Configure app services to override default Stall services and add
+  # functionalities to existing ones
+  #
+  # config.services = {
+  #   payment_notification: 'PaymentNotificationService'
+  # }
 end

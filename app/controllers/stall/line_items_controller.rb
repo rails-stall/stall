@@ -1,7 +1,7 @@
 module Stall
   class LineItemsController < Stall::ApplicationController
     def create
-      service = Stall::AddToCartService.new(cart, line_item_params)
+      service = Stall.config.service_for(:add_to_cart).new(cart, line_item_params)
 
       if service.call
         @quantity = params[:line_item][:quantity].to_i

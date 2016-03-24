@@ -25,6 +25,10 @@ module Stall
 
     private
 
+    def cart
+      gateway_response.cart
+    end
+
     def gateway_class
       @gateway_class ||= Stall::Payments.gateways[gateway_identifier]
     end

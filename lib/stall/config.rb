@@ -38,6 +38,8 @@ module Stall
     # Default step initialization hook
     param :_steps_initialization_callback
 
+    param :services, {}
+
     def shipping
       @shipping ||= Stall::Shipping::Config.new
     end
@@ -56,6 +58,25 @@ module Stall
 
     def default_app_domain
       _default_app_domain || ENV['APP_DOMAIN']
+    end
+
+    # Fetch user config and add top-namespace lookup to avoid collision
+    # with Stall module services
+    #
+    # Default allows looking up Stall namespace automatically, when no
+    # config has been given
+    def service_for(identifier)
+      class_name = if (service_name = services[identifier])
+        "::#{ services[identifier].gsub(/^::/, '') }"
+      else
+        "Stall::#{ identifier.to_s.camelize }Service"
+      end
+
+      class_name.constantize
+    end
+
+    def services=(value)
+      self.services.merge!(value)
     end
   end
 end

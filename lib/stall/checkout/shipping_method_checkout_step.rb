@@ -13,7 +13,8 @@ module Stall
       private
 
       def calculate_shipping_fee!
-        Stall::ShippingFeeCalculatorService.new(cart).call
+        service_class = Stall.config.service_for(:shipping_fee_calculator)
+        service_class.new(cart).call
       end
     end
   end

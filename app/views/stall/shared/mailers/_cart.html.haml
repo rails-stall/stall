@@ -6,6 +6,17 @@
           %tbody
             %tr
               %td
+                = t('stall.carts.recap.order_ref', ref: cart.reference)
+            %tr
+              %td
+                = t('stall.carts.recap.ordered_at', at: l(cart.created_at))
+
+    %tr
+      %td
+        %table
+          %tbody
+            %tr
+              %td
                 %h2= Cart.human_attribute_name(:billing_address)
                 = render partial: 'stall/shared/mailers/address', locals: { address: cart.billing_address }
 

@@ -1,0 +1,16 @@
+class <%= service_class_name %> < Stall::<%= service_class_name %>
+  # The call call method is the entry point for the service to process the data
+  # it was given at initialization
+  #
+  # Many overrides would want to call `super` to let the service do its
+  # classical job, then do something depending on the success or failure of
+  # the original work. This pattern is shown below.
+  #
+  # def call
+  #   if super
+  #     # Do something when it worked
+  #   else
+  #     # Do something when it didn't
+  #   end
+  # end
+end

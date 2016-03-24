@@ -11,6 +11,8 @@ fr:
           success: "Votre panier a bien été mis à jour."
           error: "Votre panier n'a pu être mis à jour, merci de vérifier les champs."
       recap:
+        order_ref: "Commande n°%{ref}"
+        ordered_at: "Passée le %{at}"
         subtotal: "Sous-total"
         total_shipment_price: "Livraison"
         total_eot_price: "Prix total HT"
