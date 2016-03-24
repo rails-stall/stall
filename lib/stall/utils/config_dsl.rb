@@ -10,8 +10,12 @@ module Stall
         instance_variable_name = :"@#{ name }"
 
         define_method(name) do
-          instance_variable_get(instance_variable_name) ||
+          if (value = instance_variable_get(instance_variable_name))
+            value
+          else
+            default = default.call if default.is_a?(Proc)
             instance_variable_set(instance_variable_name, default)
+          end
         end
       end
     end
