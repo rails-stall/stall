@@ -28,6 +28,8 @@ module Stall
         validate  :stock_availability
 
         before_validation :refresh_total_prices
+
+        scope :ordered, -> { order(created_at: :asc) }
       end
 
       def like?(other)
