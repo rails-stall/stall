@@ -59,6 +59,12 @@ module Stall
         address.assign_attributes(attributes)
         instance_variable_set(instance_variable_name, address)
       end
+
+      define_method(:"mark_address_ownership_as_#{ type }") do |ownership|
+        ownership.send(:"mark_as_#{ type }").tap do
+          instance_variable_set(instance_variable_name, ownership.address)
+        end
+      end
     end
   end
 end
