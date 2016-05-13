@@ -42,7 +42,7 @@ module Stall
       end
 
       def ensure_cart_checkoutable
-        unless @cart.checkoutable?
+        unless @cart.line_items.length > 0
           flash[:error] = t('stall.checkout.shared.not_checkoutable')
           redirect_to request.referrer || root_path
         end

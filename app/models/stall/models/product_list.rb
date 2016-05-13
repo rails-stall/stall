@@ -6,6 +6,8 @@ module Stall
       included do
         self.table_name = 'stall_product_lists'
 
+        store_accessor :data, :reference
+
         has_secure_token
 
         has_many :line_items, -> { ordered }, dependent: :destroy
@@ -18,6 +20,8 @@ module Stall
 
         after_initialize :ensure_currency
         after_initialize :ensure_state
+
+        after_save :ensure_reference, on: :create
       end
 
       def state
@@ -76,6 +80,20 @@ module Stall
 
       def items
         line_items.to_a
+      end
+
+      def ensure_reference
+        unless reference.present?
+          reference = [Time.now.strftime('%Y%m%d'), ('%05d' % id)].join('-')
+          self.reference = reference
+          save(validate: false)
+        end
+      end
+
+      module ClassMethods
+        def find_by_reference(reference)
+          where("data->>'reference' = ?", reference).first
+        end
       end
     end
   end

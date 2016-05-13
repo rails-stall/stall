@@ -32,7 +32,7 @@ module Stall
     private
 
     def load_cart
-      @cart = Cart.find_by_token(params[:id])
+      @cart = ProductList.find_by_token(params[:id])
     end
 
     def cart_params

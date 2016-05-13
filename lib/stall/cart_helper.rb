@@ -18,33 +18,37 @@ module Stall
       params[:cart_key].try(:to_sym) || :default
     end
 
-    def load_current_cart(type = current_cart_key)
-      if (cart = find_cart(type))
+    def load_current_cart(identifier = current_cart_key)
+      if (cart = find_cart(identifier))
         return cart
       end
 
       # If no token was stored or the token does not exist anymore, create a
       # new cart and store the new token
       #
-      Cart.create!(identifier: type).tap do |cart|
-        session[cart_key(type)] = cart.token
+      cart_class.create!(identifier: identifier).tap do |cart|
+        session[cart_key(identifier)] = cart.token
       end
     end
 
-    def find_cart(type)
-      if (cart_token = session[cart_key(type)])
-        if (current_cart = Cart.find_by_token(cart_token))
+    def find_cart(identifier)
+      if (cart_token = session[cart_key(identifier)])
+        if (current_cart = ProductList.find_by_token(cart_token))
           return current_cart
         end
       end
     end
 
-    def remove_cart_from_session(type = current_cart_key)
-      session.delete(cart_key(type))
+    def remove_cart_from_session(identifier = current_cart_key)
+      session.delete(cart_key(identifier))
     end
 
     def cart_key(identifier = current_cart_key)
       ['stall', 'cart', identifier.to_s].join('.')
+    end
+
+    def cart_class
+      Cart
     end
   end
 end
