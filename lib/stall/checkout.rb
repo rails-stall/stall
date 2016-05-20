@@ -10,6 +10,7 @@ module Stall
     autoload :ShippingMethodCheckoutStep
     autoload :PaymentMethodCheckoutStep
     autoload :PaymentCheckoutStep
+    autoload :PaymentReturnCheckoutStep
 
     class WizardNotFoundError < StandardError; end
   end
