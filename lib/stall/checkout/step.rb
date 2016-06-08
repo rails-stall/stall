@@ -28,7 +28,11 @@ module Stall
       end
 
       def cart_params
-        @cart_params ||= params.require(:cart).permit!
+        @cart_params ||= if params[:cart]
+          params.require(:cart).permit!
+        else
+          {}.with_indifferent_access
+        end
       end
 
       def skip?
