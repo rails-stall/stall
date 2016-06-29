@@ -4,7 +4,7 @@ module Stall
       include Stall::CartHelper
 
       def prepare
-        remove_cart_from_session(cart.identifier)
+        remove_cart_from_cookies(cart.identifier)
       end
     end
   end

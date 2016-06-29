@@ -55,6 +55,7 @@ module Stall
           # Inject request dependent data
           step.inject(:params, params)
           step.inject(:session, session)
+          step.inject(:cookies, cookies)
           step.inject(:request, request)
           step.inject(:flash, flash)
 

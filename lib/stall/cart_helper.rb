@@ -27,20 +27,20 @@ module Stall
       # new cart and store the new token
       #
       cart_class.create!(identifier: identifier).tap do |cart|
-        session[cart_key(identifier)] = cart.token
+        store_cart_cookie_for(identifier, cart)
       end
     end
 
     def find_cart(identifier)
-      if (cart_token = session[cart_key(identifier)])
+      if (cart_token = cookies[cart_key(identifier)])
         if (current_cart = ProductList.find_by_token(cart_token))
           return current_cart
         end
       end
     end
 
-    def remove_cart_from_session(identifier = current_cart_key)
-      session.delete(cart_key(identifier))
+    def remove_cart_from_cookies(identifier = current_cart_key)
+      cookies.delete(cart_key(identifier))
     end
 
     def cart_key(identifier = current_cart_key)
@@ -49,6 +49,10 @@ module Stall
 
     def cart_class
       Cart
+    end
+
+    def store_cart_cookie_for(identifier, cart)
+      cookies.permanent[cart_key(identifier)] = cart.token
     end
   end
 end
