@@ -9,6 +9,7 @@ module Stall
         has_many :shipments, dependent: :nullify
 
         scope :ordered, -> { order('stall_shipping_methods.name ASC') }
+        scope :active, -> { where(active: true) }
       end
     end
   end

@@ -5,7 +5,7 @@ module Stall
     end
 
     def available_shipping_methods_for(cart)
-      ShippingMethod.ordered.select do |shipping_method|
+      ShippingMethod.active.ordered.select do |shipping_method|
         calculator_class = Stall::Shipping::Calculator.for(shipping_method)
 
         unless calculator_class

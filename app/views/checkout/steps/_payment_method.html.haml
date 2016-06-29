@@ -2,7 +2,7 @@
 
 = simple_form_for cart, as: :cart, url: step_path(cart) do |form|
   = form.fields_for :payment do |payment_fields|
-    = payment_fields.association :payment_method, as: :radio_buttons
+    = payment_fields.association :payment_method, as: :radio_buttons, collection: PaymentMethod.active.ordered
 
   .form-actions
     %button.btn.btn-primary{ type: 'submit' }

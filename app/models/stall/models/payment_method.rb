@@ -9,6 +9,9 @@ module Stall
         has_many :payments, dependent: :nullify
 
         validates :name, :identifier, presence: true
+
+        scope :ordered, -> { order('stall_payment_methods.name ASC') }
+        scope :active, -> { where(active: true) }
       end
     end
   end
