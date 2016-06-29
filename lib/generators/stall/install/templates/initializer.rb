@@ -6,7 +6,11 @@ Stall.configure do |config|
 
   # Configure the admin e-mail to which order notifications will be sent
   #
-  # Either set the `STALL_ADMIN_EMAIL` env var or use the below config
+  # Either set the `STALL_ADMIN_EMAIL` env var or use the below config.
+  #
+  # You can also set that param as a proc / lambda that will get the cart
+  # as argument, allowing you to dynamically define which e-mail to send
+  # notifications *to*
   #
   # config.admin_email = ENV['STALL_ADMIN_EMAIL']
 
@@ -14,6 +18,10 @@ Stall.configure do |config|
   # order notifications
   #
   # Either set the `STALL_SENDER_EMAIL` env var or use the below config
+  #
+  # You can also set that param as a proc / lambda that will get the cart
+  # as argument, allowing you to dynamically define which e-mail to send
+  # notifications *from*
   #
   # config.sender_email = ENV['STALL_SENDER_EMAIL']
 

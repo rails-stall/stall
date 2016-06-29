@@ -40,6 +40,7 @@ module Stall
 
     param :services, {}
 
+
     def shipping
       @shipping ||= Stall::Shipping::Config.new
     end
