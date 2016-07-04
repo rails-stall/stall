@@ -14,7 +14,13 @@ module Stall
         cart.line_items << line_item
       end
 
-      cart.save
+      cart.save.tap do |saved|
+        return false unless saved
+
+        # Recalculate shipping fee if available for calculation to ensure
+        # that the fee us always up to date when displayed to the customer
+        shipping_fee_service.call if shipping_fee_service.available?
+      end
     end
 
     def line_item
@@ -47,6 +53,10 @@ module Stall
 
     def sellable_class
       @sellable_class ||= params[:sellable_type].camelize.constantize
+    end
+
+    def shipping_fee_service
+      @shipping_fee_service ||= Stall::ShippingFeeCalculatorService.new(cart)
     end
   end
 end

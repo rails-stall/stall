@@ -7,7 +7,9 @@ module Stall
 
     def update
       respond_to do |format|
-        if @cart.update_attributes(cart_params)
+        service = Stall::CartUpdateService.new(@cart, cart_params)
+
+        if service.call
           format.html.xhr do
             render 'show'
           end
