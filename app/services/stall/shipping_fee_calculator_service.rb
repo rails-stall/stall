@@ -25,9 +25,8 @@ module Stall
 
     def available?
       cart.line_items.length > 0 &&
-      cart.shipping_address &&
-      cart.shipment &&
-      cart.shipment.shipping_method
+      cart.try(:shipping_address) &&
+      cart.try(:shipment).try(:shipping_method)
     end
   end
 end
