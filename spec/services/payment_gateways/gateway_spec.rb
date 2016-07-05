@@ -30,19 +30,6 @@ RSpec.describe Stall::Payments::Gateway do
     end
   end
 
-  describe '.cart_id_from_transaction_id' do
-    it 'returns a cart id from a transaction_id' do
-      transaction_id = 'XXX-XXX-00001-XXX'
-      cart_id = Stall::Payments::Gateway.cart_id_from_transaction_id(transaction_id)
-      expect(cart_id).to eq(1)
-    end
-
-    it 'returns nil if transaction_id is nil' do
-      cart_id = Stall::Payments::Gateway.cart_id_from_transaction_id(nil)
-      expect(cart_id).to be_nil
-    end
-  end
-
   describe '#process_payment_for' do
     it 'raises if not overriden' do
       gateway = Stall::Payments::Gateway.new(double(:cart))

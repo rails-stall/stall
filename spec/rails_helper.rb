@@ -59,9 +59,12 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    RequestStore.begin!
   end
 
   config.after(:each) do
+    RequestStore.end!
+    RequestStore.clear!
     DatabaseCleaner.clean
   end
 

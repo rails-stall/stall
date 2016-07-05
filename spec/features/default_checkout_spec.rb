@@ -4,9 +4,7 @@ RSpec.feature 'The default cart check out' do
   scenario 'allows to first fill in your informations' do
     cart = build_cart
 
-    visit cart_path(cart)
-
-    click_on t('stall.carts.recap.validate')
+    visit checkout_step_path(cart_key: cart.identifier)
 
     fill_in Customer.human_attribute_name(:email), with: 'test@example.com'
 
@@ -71,7 +69,14 @@ RSpec.feature 'The default cart check out' do
 
   def build_cart
     book = create(:book, title: 'Alice in wonderland')
-    line_item = build(:line_item, sellable: book, quantity: 2)
-    create(:cart, line_items: [line_item])
+
+    visit books_path
+
+    within(:css, "[data-book-id='#{ book.id }']") do
+      click_on t('stall.line_items.form.add_to_cart')
+    end
+
+    token = find(:xpath, '//div[@data-cart-token]')['data-cart-token']
+    Cart.find_by_token!(token)
   end
 end

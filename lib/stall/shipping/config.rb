@@ -17,7 +17,11 @@ module Stall
 
       def method_missing(name, *args)
         if (calculator = Stall::Shipping::Calculator.for(name))
-          yield calculator
+          if block_given?
+            yield calculator
+          else
+            calculator
+          end
         else
           super
         end

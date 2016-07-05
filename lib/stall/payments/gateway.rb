@@ -23,14 +23,14 @@ module Stall
         String === gateway ? gateway.constantize : gateway
       end
 
-      def self.response(_request)
-        raise NoMethodError,
-          'Subclasses must implement the .response(request) class method '
-      end
-
       def self.request(cart)
         raise NoMethodError,
           'Subclasses must implement the .request(cart) class method '
+      end
+
+      def self.response(_request)
+        raise NoMethodError,
+          'Subclasses must implement the .response(request) class method '
       end
 
       def transaction_id

@@ -75,7 +75,7 @@ module Stall
       end
 
       def ensure_state
-        self.state ||= 'pending'
+        self.state ||= (wizard&.steps.first || 'pending')
       end
 
       def items

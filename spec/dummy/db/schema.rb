@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160201164154) do
+ActiveRecord::Schema.define(version: 20160705174246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,14 +58,29 @@ ActiveRecord::Schema.define(version: 20160201164154) do
     t.string   "phone"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "state"
   end
+
+  create_table "stall_adjustments", force: :cascade do |t|
+    t.string   "name",                        null: false
+    t.integer  "eot_price_cents", default: 0, null: false
+    t.integer  "price_cents",     default: 0, null: false
+    t.decimal  "vat_rate",                    null: false
+    t.string   "type"
+    t.integer  "cart_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "stall_adjustments", ["cart_id"], name: "index_stall_adjustments_on_cart_id", using: :btree
 
   create_table "stall_customers", force: :cascade do |t|
     t.string   "email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.integer  "user_id"
     t.string   "user_type"
+    t.string   "locale",     default: "en"
   end
 
   add_index "stall_customers", ["user_type", "user_id"], name: "index_stall_customers_on_user_type_and_user_id", using: :btree
@@ -81,7 +96,7 @@ ActiveRecord::Schema.define(version: 20160201164154) do
     t.integer  "eot_price_cents",      default: 0, null: false
     t.integer  "price_cents",          default: 0, null: false
     t.decimal  "vat_rate",                         null: false
-    t.json     "data"
+    t.jsonb    "data"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
   end
@@ -92,15 +107,16 @@ ActiveRecord::Schema.define(version: 20160201164154) do
   create_table "stall_payment_methods", force: :cascade do |t|
     t.string   "name"
     t.string   "identifier"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.boolean  "active",     default: true
   end
 
   create_table "stall_payments", force: :cascade do |t|
     t.integer  "payment_method_id"
     t.integer  "cart_id"
     t.datetime "paid_at"
-    t.json     "data"
+    t.jsonb    "data"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end
@@ -109,14 +125,15 @@ ActiveRecord::Schema.define(version: 20160201164154) do
   add_index "stall_payments", ["payment_method_id"], name: "index_stall_payments_on_payment_method_id", using: :btree
 
   create_table "stall_product_lists", force: :cascade do |t|
-    t.string   "state",       null: false
-    t.string   "type",        null: false
-    t.string   "currency",    null: false
+    t.string   "state",                           null: false
+    t.string   "type",                            null: false
+    t.string   "currency",                        null: false
     t.integer  "customer_id"
-    t.string   "token",       null: false
-    t.json     "data"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.string   "token",                           null: false
+    t.jsonb    "data"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "identifier",  default: "default", null: false
   end
 
   add_index "stall_product_lists", ["customer_id"], name: "index_stall_product_lists_on_customer_id", using: :btree
@@ -130,6 +147,8 @@ ActiveRecord::Schema.define(version: 20160201164154) do
     t.datetime "sent_at"
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+    t.jsonb    "data"
+    t.integer  "state",              default: 0
   end
 
   add_index "stall_shipments", ["cart_id"], name: "index_stall_shipments_on_cart_id", using: :btree
@@ -138,12 +157,14 @@ ActiveRecord::Schema.define(version: 20160201164154) do
   create_table "stall_shipping_methods", force: :cascade do |t|
     t.string   "name"
     t.string   "identifier"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.boolean  "active",     default: true
   end
 
   add_foreign_key "books", "categories"
   add_foreign_key "stall_address_ownerships", "stall_addresses", column: "address_id"
+  add_foreign_key "stall_adjustments", "stall_product_lists", column: "cart_id"
   add_foreign_key "stall_line_items", "stall_product_lists", column: "product_list_id"
   add_foreign_key "stall_payments", "stall_payment_methods", column: "payment_method_id"
   add_foreign_key "stall_payments", "stall_product_lists", column: "cart_id"
