@@ -20,14 +20,23 @@ module Stall
 
     def load_current_cart(identifier = current_cart_key)
       if (cart = find_cart(identifier))
-        return cart
+        return prepare_cart(cart)
       end
 
       # If no token was stored or the token does not exist anymore, create a
       # new cart and store the new token
       #
-      cart_class.create!(identifier: identifier).tap do |cart|
-        store_cart_cookie_for(identifier, cart)
+      prepare_cart(cart_class.new(identifier: identifier))
+    end
+
+    def prepare_cart(cart)
+      cart.tap do |cart|
+        # Keep track of potential customer locale switching to allow e-mailing
+        # him in his last used locale
+        cart.customer&.locale = I18n.locale
+        cart.save
+
+        store_cart_cookie_for(cart.identifier, cart)
       end
     end
 
