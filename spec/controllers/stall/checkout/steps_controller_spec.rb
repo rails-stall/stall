@@ -1,25 +1,8 @@
 require 'rails_helper'
 
-class FakeCheckoutWizard < Stall::Checkout::Wizard
-  steps :fake, :final
-end
-
-class FakeCheckoutStep < Stall::Checkout::Step
-  def process
-    false
-  end
-end
-
-class FinalCheckoutStep < Stall::Checkout::Step
-end
-
-class FakeCart < Stall::Cart
-  def wizard
-    FakeCheckoutWizard
-  end
-end
-
 RSpec.describe Stall::Checkout::StepsController do
+  include CheckoutSpecHelper
+
   describe '#show' do
     it 'injects needed dependencies to the step' do
       with_config :steps_initialization, ->(step) { step.inject(:foo, 'bar') } do
@@ -66,16 +49,6 @@ RSpec.describe Stall::Checkout::StepsController do
 
       expect(cart.reload.state).to eq(:fake)
       expect(flash[:error]).not_to be_nil
-    end
-  end
-
-  def create_cart(options = {})
-    allow(controller).to receive(:cart_class).and_return(FakeCart)
-
-    controller.current_cart.reload.tap do |cart|
-      cart.line_items << build(:line_item) unless options[:line_items]
-      cart.assign_attributes(options)
-      cart.save!
     end
   end
 end
