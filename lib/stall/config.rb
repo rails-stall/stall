@@ -40,6 +40,12 @@ module Stall
 
     param :services, {}
 
+    # Duration after which an empty cart is cleaned out by the rake task
+    param :empty_carts_expires_after, 1.day
+
+    # Duration after which an aborted is cleaned out by the rake task
+    param :aborted_carts_expires_after, 14.days
+
 
     def shipping
       @shipping ||= Stall::Shipping::Config.new

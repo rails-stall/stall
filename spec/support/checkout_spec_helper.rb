@@ -12,7 +12,7 @@ class FinalCheckoutStep < Stall::Checkout::Step
 end
 
 class FakeCart < Stall::Cart
-  def wizard
+  def self.wizard
     FakeCheckoutWizard
   end
 end

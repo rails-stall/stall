@@ -65,6 +65,51 @@ The checkout process is completely flexible and can be overriden easily.
 Please see the Wiki page :
 [The checkout process](https://github.com/rails-stall/stall/wiki/The-checkout-process)
 
+
+### Cleaning up aborted carts
+
+A cart is created for each new visit on the app. You may want to clean
+aborted carts to avoid the table to grow too big.
+
+You can setup the provided `rake` task in a cron :
+
+```bash
+rake stall:carts:clean
+```
+
+#### Configuring what is cleaned in the task
+
+Two types of aborted carts are cleaned :
+
+- Empty carts older than 24h
+- Aborted carts, with products added, older than 2 weeks
+
+You can configure both delays with the following config in the stall initializer :
+
+```ruby
+config.empty_carts_expires_after = 1.day
+config.aborted_carts_expires_after = 14.days
+```
+
+#### Cleaning other types of ProductList
+
+You can create your own cart classes by extending the `Cart` or `ProductList`
+model in your app.
+
+To clean those models, you just need to pass the cart class name to the rake
+task when calling it. For a `TestCart` model, you'd do :
+
+```bash
+rake stall:carts:clean[TestCart]
+```
+
+> **Note** : that double-quotes may be needed around the task name to make that
+syntax work with some shells (e.g. zsh) : `rake "stall:carts:clean[TestCart]"`
+
+You can also override in your subclass the way that the task retrieves aborted
+carts by defining a scope or class method `.aborted(options)` where `options`
+may contain a `:before` option.
+
 # Licence
 
 This project rocks and uses MIT-LICENSE.

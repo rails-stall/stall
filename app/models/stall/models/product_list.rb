@@ -22,6 +22,17 @@ module Stall
         after_initialize :ensure_state
 
         after_save :ensure_reference, on: :create
+
+        scope :empty, -> {
+          joins(
+            'LEFT JOIN stall_line_items ' \
+            'ON stall_product_lists.id = stall_line_items.product_list_id'
+          ).where(stall_line_items: { id: nil })
+        }
+
+        scope :older_than, ->(date) {
+          where('stall_product_lists.updated_at < ?', date)
+        }
       end
 
       def state
@@ -55,17 +66,7 @@ module Stall
       end
 
       def wizard
-        @wizard ||= begin
-          wizard_name = Stall.config.default_checkout_wizard
-
-          if (wizard = Stall::Utils.try_load_constant(wizard_name))
-            wizard
-          else
-            raise Stall::Checkout::WizardNotFoundError.new,
-              "The checkout wizard #{ wizard_name } was not found. You must generate it " +
-              "with `rails g stall:wizard #{ wizard_name.underscore.gsub('_checkout_wizard', '') }`"
-          end
-        end
+        @wizard ||= self.class.wizard
       end
 
       private
@@ -93,6 +94,27 @@ module Stall
       module ClassMethods
         def find_by_reference(reference)
           where("data->>'reference' = ?", reference).first
+        end
+
+        def aborted(options = {})
+          where.not(state: wizard.steps.last)
+            .older_than(options.fetch(:before, 1.day.ago))
+        end
+
+        def finalized
+          where(state: wizard.steps.last)
+        end
+
+        def wizard
+        wizard_name = Stall.config.default_checkout_wizard
+
+        if (wizard = Stall::Utils.try_load_constant(wizard_name))
+            wizard
+          else
+            raise Stall::Checkout::WizardNotFoundError.new,
+              "The checkout wizard #{ wizard_name } was not found. You must generate it " +
+              "with `rails g stall:wizard #{ wizard_name.underscore.gsub('_checkout_wizard', '') }`"
+          end
         end
       end
     end

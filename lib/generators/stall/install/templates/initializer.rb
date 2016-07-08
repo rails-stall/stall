@@ -127,4 +127,15 @@ Stall.configure do |config|
   # config.services = {
   #   payment_notification: 'PaymentNotificationService'
   # }
+
+  # Delay before empty carts are cleaned with the `stall:carts:clean` task
+  #
+  # config.empty_carts_expires_after = 1.day
+
+  # Delay before aborted carts are cleaned with the `stall:carts:clean` task
+  #
+  # Aborted carts are controlled with a scope on the cart model. To change
+  # the `aborted` behavior, you can override the `.aborted` scope in your model.
+  #
+  # config.aborted_carts_expires_after = 14.days
 end
