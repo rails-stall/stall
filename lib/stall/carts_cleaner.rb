@@ -21,9 +21,9 @@ module Stall
     def clean_empty_carts
       carts = cart_model.empty.older_than(Stall.config.empty_carts_expires_after.ago)
 
-      puts "Cleaning #{ carts.count } empty carts ..."
+      log "Cleaning #{ carts.count } empty carts ..."
       carts.delete_all
-      puts "Done."
+      log "Done."
     end
 
     # Unpaid carts have line items and other models related. Since empty carts
@@ -34,9 +34,13 @@ module Stall
     def clean_aborted_carts
       carts = cart_model.aborted(before: Stall.config.aborted_carts_expires_after.ago)
 
-      puts "Cleaning #{ carts.count } aborted carts ..."
+      log "Cleaning #{ carts.count } aborted carts ..."
       carts.destroy_all
-      puts "Done."
+      log "Done."
+    end
+
+    def log(*args)
+      puts(*args) unless Rails.env.test?
     end
   end
 end

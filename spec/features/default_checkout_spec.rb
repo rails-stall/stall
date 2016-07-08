@@ -67,6 +67,43 @@ RSpec.feature 'The default cart check out' do
     expect(cart.payment.payment_method.name).to eq('Fake payment gateway')
   end
 
+  scenario 'shows the payment form to access target gateway' do
+    payment_method = create(:payment_method, name: 'Fake payment gateway', identifier: 'fake-payment-gateway')
+    cart = build_cart
+    cart.state = :payment
+    cart.build_payment(payment_method: payment_method)
+    cart.save!
+
+    visit checkout_step_path(cart.wizard.route_key, cart)
+
+    expect(page).to have_content('Pay')
+  end
+
+  scenario 'displays back the payment button form if the payment was aborted' do
+    payment_method = create_payment_method
+    cart = build_cart
+    cart.state = :payment
+    cart.build_payment(payment_method: payment_method)
+    cart.save!
+
+    visit process_checkout_step_path(cart.wizard.route_key, cart)
+
+    expect(page).to have_content('Pay')
+  end
+
+  scenario 'redirects to a thanks screen if the payment succeeded' do
+    payment_method = create_payment_method
+    cart = build_cart
+    cart.state = :payment
+    cart.build_payment(payment_method: payment_method)
+    cart.save!
+
+    visit process_checkout_step_path(cart.wizard.route_key, cart, succeeded: true)
+
+    expect(cart.reload.state).to eq(:payment_return)
+    expect(page).to have_content(t('stall.checkout.payment_return.title'))
+  end
+
   def build_cart
     book = create(:book, title: 'Alice in wonderland')
 
@@ -78,5 +115,9 @@ RSpec.feature 'The default cart check out' do
 
     token = find(:xpath, '//div[@data-cart-token]')['data-cart-token']
     Cart.find_by_token!(token)
+  end
+
+  def create_payment_method
+    create(:payment_method, name: 'Fake payment gateway', identifier: 'fake-payment-gateway')
   end
 end
