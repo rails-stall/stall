@@ -33,7 +33,7 @@ module Stall
       cart.tap do |cart|
         # Keep track of potential customer locale switching to allow e-mailing
         # him in his last used locale
-        cart.customer&.locale = I18n.locale
+        cart.customer.try(:locale=, I18n.locale)
         cart.save
 
         store_cart_cookie_for(cart.identifier, cart)
