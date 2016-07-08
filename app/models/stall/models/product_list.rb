@@ -30,6 +30,8 @@ module Stall
           ).where(stall_line_items: { id: nil })
         }
 
+        scope :filled, -> { joins(:line_items) }
+
         scope :older_than, ->(date) {
           where('stall_product_lists.updated_at < ?', date)
         }
