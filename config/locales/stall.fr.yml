@@ -124,17 +124,18 @@ fr:
         country: "Pays"
         phone: "Téléphone"
         state: "État"
-      cart:
+      product_list:
         reference: "Référence"
-        state: "Étape du panier"
         customer: "Client"
-        total_price: "Montant total"
         created_at: "Date"
+        line_items: "Produits"
+      cart:
+        state: "Étape du panier"
+        total_price: "Montant total"
         payment: "Paiement"
         shipment: "Livraison"
         shipping_address: "Adresse de livraison"
         billing_address: "Adresse de facturation"
-        line_items: "Produits commandés"
       shipment:
         price: "Prix"
         eot_price: "Prix HT"
