@@ -25,7 +25,7 @@ module Stall
       end
 
       def default_config
-        -> urls {
+        ->(urls) {
           urls.payment_notification_url   = notify_payment_url(gateway: gateway_identifier, host: Stall.config.default_app_domain)
           urls.payment_success_return_url = process_checkout_step_url(cart.identifier, host: Stall.config.default_app_domain)
           urls.payment_failure_return_url = process_checkout_step_url(cart.identifier, host: Stall.config.default_app_domain)

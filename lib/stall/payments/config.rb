@@ -21,13 +21,13 @@ module Stall
         Stall::Payments::UrlsConfig.config_block = block
       end
 
-      def urls_for(cart)
-        Stall::Payments::UrlsConfig.new(cart).parse
-      end
-
       def method_missing(name, *args)
         if (gateway = Stall::Payments::Gateway.for(name))
-          yield gateway
+          if block_given?
+            yield gateway
+          else
+            gateway
+          end
         else
           super
         end
