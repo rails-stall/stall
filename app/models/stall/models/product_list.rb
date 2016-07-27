@@ -49,6 +49,16 @@ module Stall
         token
       end
 
+      def subtotal
+        price = line_items.map(&:price).sum
+        price = Money.new(price, currency) unless Money === price
+        price
+      end
+
+      def eot_subtotal
+        line_items.map(&:eot_price).sum
+      end
+
       def total_price
         price = items.map(&:price).sum
         price = Money.new(price, currency) unless Money === price
@@ -108,9 +118,9 @@ module Stall
         end
 
         def wizard
-        wizard_name = Stall.config.default_checkout_wizard
+          wizard_name = Stall.config.default_checkout_wizard
 
-        if (wizard = Stall::Utils.try_load_constant(wizard_name))
+          if (wizard = Stall::Utils.try_load_constant(wizard_name))
             wizard
           else
             raise Stall::Checkout::WizardNotFoundError.new,

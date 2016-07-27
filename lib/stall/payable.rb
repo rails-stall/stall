@@ -3,7 +3,9 @@ module Stall
     extend ActiveSupport::Concern
 
     included do
-      has_one :payment, dependent: :destroy, inverse_of: :cart
+      has_one :payment, dependent: :destroy,
+                        inverse_of: :cart,
+                        foreign_key: :cart_id
       accepts_nested_attributes_for :payment
 
       scope :paid, -> {

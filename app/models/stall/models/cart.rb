@@ -14,16 +14,6 @@ module Stall
         accepts_nested_attributes_for :adjustments
       end
 
-      def subtotal
-        price = line_items.map(&:price).sum
-        price = Money.new(price, currency) unless Money === price
-        price
-      end
-
-      def eot_subtotal
-        line_items.map(&:eot_price).sum
-      end
-
       def total_weight
         line_items.reduce(0) do |total, line_item|
           total + (line_item.weight || Stall.config.default_product_weight)
