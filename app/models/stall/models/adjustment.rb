@@ -16,14 +16,22 @@ module Stall
         validates :name, :price, :eot_price, :vat_rate, :cart, presence: true
 
         before_validation :fill_eot_price_and_vat_rate
-      end
 
-      def eot_price
-        read_attribute(:eot_price) || default_eot_price
+        define_method(:eot_price) do
+          if (eot_price = read_attribute(:eot_price)) && eot_price.to_f != 0
+            eot_price
+          else
+            default_eot_price
+          end
+        end
       end
 
       def vat_rate
         read_attribute(:vat_rate) || Stall.config.vat_rate
+      end
+
+      def vat
+        price - eot_price
       end
 
       private
@@ -34,7 +42,7 @@ module Stall
       end
 
       def default_eot_price
-        (price / (1 + (vat_rate / 100))) if price && vat_rate
+        (price / (1.0 + (vat_rate / 100.0))) if price && vat_rate
       end
     end
   end
