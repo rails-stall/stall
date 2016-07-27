@@ -17,6 +17,7 @@ module Stall
   autoload :Sellable
   autoload :Addressable
   autoload :Priceable
+  autoload :Payable
 
   autoload :Checkout
   autoload :Shipping

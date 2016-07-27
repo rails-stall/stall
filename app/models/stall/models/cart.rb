@@ -5,27 +5,13 @@ module Stall
 
       included do
         include Stall::Addressable
+        include Stall::Payable
 
         has_one :shipment, dependent: :destroy, inverse_of: :cart
         accepts_nested_attributes_for :shipment
 
-        has_one :payment, dependent: :destroy, inverse_of: :cart
-        accepts_nested_attributes_for :payment
-
         has_many :adjustments, dependent: :destroy, inverse_of: :cart
         accepts_nested_attributes_for :adjustments
-
-        scope :paid, -> {
-          joins(:payment).where.not(stall_payments: { paid_at: nil })
-        }
-
-        scope :finalized, -> { paid }
-
-        scope :aborted, ->(options = {}) {
-          joins('LEFT JOIN stall_payments ON stall_payments.cart_id = stall_product_lists.id')
-            .where(stall_payments: { paid_at: nil })
-            .older_than(options.fetch(:before, 1.day.ago))
-        }
       end
 
       def subtotal
