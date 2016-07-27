@@ -12,6 +12,9 @@ module Stall
         belongs_to :cart
 
         validates :cart, :payment_method, presence: true
+
+        scope :pending, -> { where(paid_at: nil) }
+        scope :paid, -> { where.not(paid_at: nil) }
       end
 
       def pay!
