@@ -81,6 +81,10 @@ module Stall
         @wizard ||= self.class.wizard
       end
 
+      def checkoutable?
+        line_items.length > 0
+      end
+
       private
 
       def ensure_currency
