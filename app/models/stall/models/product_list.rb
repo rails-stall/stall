@@ -112,6 +112,11 @@ module Stall
           where("data->>'reference' = ?", reference).first
         end
 
+        # The .aborted and .finalized scopes cannot be declared as actual rails
+        # scopes since subclasses that override the .wizard method wouldn't
+        # be taken into account, scopes being executed in the context of the
+        # declaring class
+        #
         def aborted(options = {})
           where.not(state: wizard.steps.last)
             .older_than(options.fetch(:before, 1.day.ago))
