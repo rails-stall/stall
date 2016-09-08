@@ -19,6 +19,8 @@ module Stall
           .where(stall_payments: { paid_at: nil })
           .older_than(options.fetch(:before, 1.day.ago))
       }
+
+      delegate :paid?, to: :payment, allow_nil: true
     end
   end
 end

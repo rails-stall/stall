@@ -1,8 +1,9 @@
 module Stall
   class CartsController < Stall::ApplicationController
-    before_action :load_cart
+    before_action :load_cart, except: :show
 
     def show
+      @cart = ProductList.find_by_token(params[:id]) || current_cart
     end
 
     def update

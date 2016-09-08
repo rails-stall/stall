@@ -20,7 +20,7 @@ module Stall
     end
 
     def cart
-      @cart ||= ProductList.find_by_token(params[:cart_id])
+      @cart ||= ProductList.find_by_token(params[:cart_id]) || current_cart
     end
   end
 end

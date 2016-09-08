@@ -20,6 +20,10 @@ module Stall
         end
       end
 
+      def active?
+        !paid?
+      end
+
       private
 
       def items

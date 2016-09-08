@@ -46,7 +46,7 @@ module Stall
       end
 
       def to_param
-        token
+        persisted? ? token : 'empty-cart'
       end
 
       def subtotal
@@ -83,6 +83,10 @@ module Stall
 
       def checkoutable?
         line_items.length > 0
+      end
+
+      def active?
+        true
       end
 
       private
