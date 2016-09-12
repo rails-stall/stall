@@ -42,7 +42,8 @@ module Stall
       end
 
       def reset_state!
-        update_column(:state, wizard.steps.first)
+        self.state = wizard.steps.first
+        save(validate: false) if persisted?
       end
 
       def to_param
