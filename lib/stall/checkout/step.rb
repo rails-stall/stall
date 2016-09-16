@@ -50,6 +50,18 @@ module Stall
         end
       end
 
+      # Allows subclasses to override this value with `true` to allow paid carts
+      # to be processed by that step too.
+      #
+      # Returning false redirects the user telling him that his cart is empty
+      #
+      # By default, the `PaymentReturn` checkout step returns true, since it's
+      # always called after the cart is paid
+      #
+      def allow_inactive_carts?
+        false
+      end
+
       # Abstracts the simple case of assigning the submitted parameters to the
       # cart object, running the step validations and saving the cart
       def save

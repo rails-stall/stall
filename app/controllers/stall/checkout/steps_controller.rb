@@ -4,8 +4,8 @@ module Stall
       include Stall::CheckoutHelper
 
       before_action :load_cart
-      before_action :ensure_cart_checkoutable
       before_action :load_step
+      before_action :ensure_cart_checkoutable
 
       def show
         @step.prepare
@@ -41,7 +41,16 @@ module Stall
         @cart = current_cart
       end
 
+      def find_cart(identifier, ensure_active_cart = true)
+        super(identifier, false)
+      end
+
       def ensure_cart_checkoutable
+        unless @cart.active? || @step.allow_inactive_carts?
+          remove_cart_from_cookies(@cart.identifier)
+          @cart = @cart.class.new
+        end
+
         unless @cart.checkoutable?
           flash[:error] = t('stall.checkout.shared.not_checkoutable')
           redirect_to request.referrer || root_path

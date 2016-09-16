@@ -46,9 +46,11 @@ module Stall
       end
     end
 
-    def find_cart(identifier)
+    def find_cart(identifier, ensure_active_cart = true)
       if (cart_token = cookies.encrypted[cart_key(identifier)])
-        if (current_cart = ProductList.find_by_token(cart_token)) && current_cart.active?
+        if (current_cart = ProductList.find_by_token(cart_token)) &&
+           (!ensure_active_cart || current_cart.active?)
+        then
           return current_cart
         else
           # Remove any cart that can't be fetched, either because it's already
