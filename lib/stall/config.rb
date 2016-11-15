@@ -9,6 +9,9 @@ module Stall
     # E-mail address used to send e-mails to customers
     param :sender_email, -> { ENV['STALL_SENDER_EMAIL'] || 'shop.change_me_in.stall.rb@example.com' }
 
+    # Email regex validation. Taken from Devise
+    param :email_regexp, -> { (defined?(Devise) && Devise.email_regexp) || /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/ }
+
     # Default VAT rate
     param :vat_rate, BigDecimal.new('20.0')
 
