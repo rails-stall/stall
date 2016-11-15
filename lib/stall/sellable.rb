@@ -10,8 +10,8 @@ module Stall
 
     def to_line_item
       line_items.build(
-        name: (respond_to?(:name) && name) || (respond_to?(:title) && title),
-        unit_price: (respond_to?(:price) && price),
+        name: (try(:name) || try(:title)),
+        unit_price: try(:price),
         unit_eot_price: eot_price,
         vat_rate: vat_rate,
       )
@@ -24,13 +24,19 @@ module Stall
     private
 
     def default_eot_price
-      price && (price / vat_ratio)
+      if (price = try(:price))
+        price / vat_ratio
+      end
     end
 
     def default_vat_rate
       @default_vat_rate ||= Stall.config.vat_rate
     end
 
+    # Create default handlers for the `#eot_price` and `#vat_rate` methods that
+    # don't need to be explictly defined if the whole shop has a single VAT rate
+    # for all products
+    #
     def method_missing(name, *args, &block)
       if [:eot_price, :vat_rate].include?(name)
         send(:"default_#{ name }")
