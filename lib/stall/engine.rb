@@ -4,6 +4,12 @@ module Stall
       Money.default_currency = Stall.config.default_currency
     end
 
+    initializer 'stall.add_routing_mapper_extension' do
+      ActiveSupport.on_load(:action_controller) do
+        ActionDispatch::Routing::Mapper.send(:include, Stall::RoutingMapper)
+      end
+    end
+
     initializer 'stall.override_actionview_number_helpers' do
       ActiveSupport.on_load(:action_view) do
         include Stall::CurrencyHelper
