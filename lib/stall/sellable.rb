@@ -21,6 +21,10 @@ module Stall
       (vat_rate / 100.0) + 1
     end
 
+    def currency
+      Money::Currency.new(Stall.config.default_currency)
+    end
+
     private
 
     def default_eot_price
