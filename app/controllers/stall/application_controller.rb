@@ -17,7 +17,7 @@ module Stall
       return Stall.config.default_layout if Stall.config.default_layout
 
       parent_controller = self.class.ancestors.find do |ancestor|
-        !ancestor.name.match(/^Stall::/)
+        !ancestor.name.to_s.match(/^Stall::/) && Class === ancestor
       end
 
       parent_controller._layout ||= 'application'

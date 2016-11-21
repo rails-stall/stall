@@ -40,9 +40,7 @@ module Stall
 
     def cart_params
       params.require(:cart).permit(
-        line_items_attributes: [
-          :id, :quantity, :_destroy
-        ]
+        line_items_attributes: [:id, :quantity, :_destroy]
       )
     end
   end
