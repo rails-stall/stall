@@ -32,6 +32,9 @@ fr:
       add_error:
         title: "Votre produit n'a pu être ajouté"
         description: "Merci de vérifier que vous avez bien rempli la quantité avant d'ajouter le produit au panier."
+      errors:
+        choose: "Merci de choisir un produit afin de l'ajouter au panier"
+        quantity: "Merci de choisir une quantité à ajouter au panier"
 
     checkout:
       shared:

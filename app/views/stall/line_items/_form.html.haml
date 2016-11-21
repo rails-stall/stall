@@ -1,4 +1,4 @@
-= simple_form_for line_item, as: :line_item, url: cart_line_items_path(cart), remote: true, data: { :'add-to-cart-form' => true } do |form|
+= simple_form_for line_item, as: :line_item, url: cart_line_items_path(cart), remote: true, data: { :'add-to-cart-form' => true, :'error-messages' => { choose: t('stall.line_items.errors.choose'), quantity: t('stall.line_items.errors.quantity') } } do |form|
   = form.hidden_field :sellable_type
   = form.hidden_field :sellable_id
 
