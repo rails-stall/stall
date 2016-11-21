@@ -13,5 +13,11 @@ module Stall
     def copy_default_checkout_wizard
       generate 'stall:checkout:wizard', 'default'
     end
+
+    def mount_engine_in_routes
+      say "Mounting Stall engine in routes"
+      gsub_file 'config/routes.rb', /mount_stall.+\n/, ''
+      route "mount_stall '/'"
+    end
   end
 end
