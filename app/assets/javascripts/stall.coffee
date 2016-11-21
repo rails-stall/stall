@@ -7,7 +7,7 @@
 @Stall =
   onDomReady: (callback) ->
     event = if window.Turbolinks && window.Turbolinks.supported
-      'page:change'
+      'page:change turbolinks:load'
     else
       'ready'
 
