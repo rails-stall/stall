@@ -11,12 +11,12 @@
 
       %tbody
         = form.fields_for :line_items do |line_item_fields|
-          %tr{ data: { :'line-item-id' => line_item_fields.object.id } }
+          %tr.line-item-row{ data: { :'line-item-id' => line_item_fields.object.id } }
             %td= line_item_fields.object.name
             %td= line_item_fields.object.unit_price
             %td= line_item_fields.input_field :quantity, spinner: false, class: 'form-control', data: { :'quantity-field' => true }
             %td= line_item_fields.object.price
-            %td= link_to_remove_association '&times;'.html_safe, line_item_fields
+            %td= link_to_remove_association '&times;'.html_safe, line_item_fields, wrapper_class: 'line-item-row'
 
         - if @cart.subtotal != @cart.total_price
           %tr
