@@ -24,11 +24,11 @@ module Stall
     private
 
     def source_path_for(file_path)
-      @source_path ||= File.join(VIEWS_DIR, file_path_with_ext_for(file_path))
+      File.join(VIEWS_DIR, file_path_with_ext_for(file_path))
     end
 
     def file_path_with_ext_for(file_path)
-      @file_path_with_ext ||= if file_path.match(/\.html\.haml\z/)
+      if file_path.match(/\.html\.haml\z/)
         file_path
       else
         "#{ file_path }.html.haml"

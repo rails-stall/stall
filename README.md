@@ -66,6 +66,21 @@ Please see the Wiki page :
 [The checkout process](https://github.com/rails-stall/stall/wiki/The-checkout-process)
 
 
+### Customizing views
+
+You can copy stall views to your app with the `stall:view` generator.
+The less you customize the views, the more you get it to work with future
+Stall versions.
+
+Find the templates you need by browsing the source code (ex: `bundle open stall`)
+and generate the needed views. You can pass any number of views at a time.
+
+Example :
+
+```bash
+rails generate stall:view checkout/steps/_informations checkout/steps/_payment stall/carts/_cart
+```
+
 ### Cleaning up aborted carts
 
 A cart is created for each new visit on the app. You may want to clean
