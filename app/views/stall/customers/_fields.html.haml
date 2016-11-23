@@ -1,0 +1,21 @@
+- if stall_user_signed_in?
+  .alert.alert-info
+    %i.fa.fa-info-circle
+    = t('stall.checkout.informations.signed_in_as', email: current_stall_user.email)
+
+- else
+  = form.fields_for :customer do |customer_form|
+    = customer_form.input :email
+
+  %p.help-block
+    %label
+      = check_box_tag :create_account, '1', (params[:create_account] == '1'), class: 'collapsed', data: { target: '[data-user-fields]', toggle: 'collapse' }
+      = t('stall.checkout.informations.create_an_account')
+
+  = form.fields_for :customer do |customer_form|
+    = customer_form.fields_for :user, customer_form.object.user_or_default do |user_form|
+      %fieldset.collapse{ data: { :'user-fields' => true } }
+        = user_form.input :password
+        = user_form.input :password_confirmation
+
+%hr

@@ -3,8 +3,10 @@ module Stall
     extend ActiveSupport::Concern
 
     included do
+      include Stall::CustomersHelper
+
       if respond_to?(:helper_method)
-        helper_method :current_cart, :current_cart_key
+        helper_method :current_cart, :current_cart_key, :current_customer
       end
 
       if respond_to?(:after_action)
@@ -14,6 +16,16 @@ module Stall
 
     def current_cart
       RequestStore.store[cart_key] ||= load_current_cart
+    end
+
+    def current_customer
+      @current_customer ||= if stall_user_signed_in?
+        if (customer = current_stall_user.customer)
+          customer
+        else
+          current_stall_user.create_customer(email: current_stall_user.email)
+        end
+      end
     end
 
     protected
@@ -35,6 +47,7 @@ module Stall
 
     def prepare_cart(cart)
       cart.tap do |cart|
+        cart.customer = current_customer if current_customer
         # Keep track of potential customer locale switching to allow e-mailing
         # him in his last used locale
         cart.customer.locale = I18n.locale if cart.customer

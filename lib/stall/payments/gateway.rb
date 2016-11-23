@@ -1,8 +1,6 @@
 module Stall
   module Payments
     class Gateway
-      TRANSACTION_ID_FORMAT = 'ESHOP-%{cart_id}-%{transaction_index}'
-
       attr_reader :cart
 
       def initialize(cart)
@@ -33,9 +31,9 @@ module Stall
           'Subclasses must implement the .response(request) class method '
       end
 
-      def transaction_id
+      def transaction_id(refresh: false)
         @transaction_id ||= begin
-          unless (id = cart.payment.transaction_id)
+          if refresh || !(id = cart.payment.transaction_id)
             id = next_transaction_id
             cart.payment.update_attributes(transaction_id: id)
           end
@@ -71,9 +69,13 @@ module Stall
       end
 
       def transaction_id_for(index)
-        TRANSACTION_ID_FORMAT
+        transaction_id_format
           .gsub('%{cart_id}', cart.reference)
           .gsub('%{transaction_index}', ('%05d' % index))
+      end
+
+      def transaction_id_format
+        'ESHOP-%{cart_id}-%{transaction_index}'
       end
     end
   end

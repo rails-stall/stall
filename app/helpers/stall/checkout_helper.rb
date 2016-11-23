@@ -9,14 +9,13 @@ module Stall
         calculator_class = Stall::Shipping::Calculator.for(shipping_method)
 
         unless calculator_class
-          raise Stall::Shipping::CalculatorNotFound,
-                "No calculator found for the shipping method : " +
-                "#{ shipping_method.name } " +
-                "(#{ shipping_method.identifier }). " +
-                "Please remove the Stall::ShippingMethod with id " +
-                "#{ shipping_method.id } or create the associated " +
-                "calculator with `rails g stall:shipping:calculator " +
-                "#{ shipping_method.identifier }`"
+          raise Stall::Shipping::CalculatorNotFound, <<-MSG.squish
+            No calculator found for the shipping method : #{ shipping_method.name }
+            (#{ shipping_method.identifier }).
+            Please remove the Stall::ShippingMethod with id #{ shipping_method.id }
+            or create the associated calculator with
+            `rails g stall:shipping:calculator #{ shipping_method.identifier }`
+          MSG
         end
 
         calculator = calculator_class.new(cart, shipping_method)

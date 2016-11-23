@@ -1,0 +1,16 @@
+.addresses-fields{ data: { :'addresses-fields' => true } }
+  = form.fields_for :address_ownerships, [cart.address_ownership_for(:shipping)] do |ownership_form|
+    %fieldset{ data: { :'address-form' => :shipping } }
+      = ownership_form.hidden_field :shipping
+
+      = ownership_form.fields_for :address do |address_form|
+        = render partial: 'stall/addresses/nested_fields', locals: { form: address_form }
+
+  = form.input :use_another_address_for_billing, as: :boolean, input_html: { data: { :'use-another-address-for-billing' => true } }
+
+  = form.fields_for :address_ownerships, [cart.address_ownership_for(:billing)] do |ownership_form|
+    %fieldset{ class: ('hidden' unless params[:use_another_address_for_billing] == '1'), data: { :'address-form' => :billing } }
+      = ownership_form.hidden_field :billing
+
+      = ownership_form.fields_for :address do |address_form|
+        = render partial: 'stall/addresses/nested_fields', locals: { form: address_form }

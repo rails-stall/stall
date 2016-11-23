@@ -1,0 +1,2 @@
+= form.fields_for :payment do |payment_fields|
+  = payment_fields.association :payment_method, as: :radio_buttons, collection: PaymentMethod.active.ordered

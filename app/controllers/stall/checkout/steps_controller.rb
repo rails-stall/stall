@@ -53,7 +53,7 @@ module Stall
 
         unless @cart.checkoutable?
           flash[:error] = t('stall.checkout.shared.not_checkoutable')
-          redirect_to request.referrer || root_path
+          redirect_to_referrer_or_root
         end
       end
 
@@ -72,6 +72,18 @@ module Stall
             instance_exec(step, &Stall.config.steps_initialization)
           end
         end
+      end
+
+      def redirect_to_referrer_or_root
+        referrer = URI.parse(request.referrer).path if request.referrer
+
+        redirect_target = if referrer && referrer != request.path
+          request.referrer
+        else
+          root_path
+        end
+
+        redirect_to redirect_target
       end
     end
   end

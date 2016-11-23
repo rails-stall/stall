@@ -2,14 +2,17 @@ fr:
   stall:
     shared:
       close: "Fermer"
+      sending: "Envoi en cours ..."
 
     carts:
       formats:
         name: "Commande n°%{ref}"
+
       flashes:
         update:
           success: "Votre panier a bien été mis à jour."
           error: "Votre panier n'a pu être mis à jour, merci de vérifier les champs."
+
       recap:
         order_ref: "Commande n°%{ref}"
         ordered_at: "Passée le %{at}"
@@ -38,17 +41,22 @@ fr:
 
     checkout:
       shared:
-        not_checkoutable: "Aucun produit dans le panier, impossible de passer la commande."
+        not_checkoutable: "Le panier a expiré, celui-ci a probablement déjà été payé."
       informations:
         title: "Vos informations"
-        validate: "Valider mes adresses"
+        validate: "Valider la commande et passer au paiement"
         error: "Vos informations n'ont pu être enregistrées, merci de vérifier les champs"
-      shipping_method:
-        title: "Mode de livraison"
-        validate: "Valider mon mode de livraison"
-      payment_method:
-        title: "Mode de paiement"
-        validate: "Valider mon mode de paiement"
+        signed_in_as: "Vous êtes actuellement connectés en tant que %{email}"
+        create_an_account: "Me créer un compte"
+        accept_the: "J'accepte les "
+      sign_in:
+        already_have_an_account: "J'ai déjà un compte :"
+        click_to_sign_in: "Cliquez-ici pour vous connecter"
+        sign_in_instructions: |
+          Renseigez dans les champs suivant vos identifiants de connexion puis
+          cliquez sur le bouton "%{label}"
+        button_label: "Me connecter"
+
       payment:
         title: "Paiement"
         error: |
@@ -94,6 +102,7 @@ fr:
         state:
           pending: "En attente"
           shipped: "Payé"
+
     models:
       line_item: "Produit"
       customer: "Client"
@@ -101,6 +110,7 @@ fr:
       cart: "Panier"
       shipment: "Livraison"
       payment: "Paiement"
+
     attributes:
       line_item:
         sellable: "Produit source"
@@ -132,6 +142,7 @@ fr:
         customer: "Client"
         created_at: "Date"
         line_items: "Produits"
+        use_another_address_for_billing: "Utiliser une autre adresse pour la facturation"
       cart:
         state: "Étape du panier"
         total_price: "Montant total"
@@ -139,6 +150,7 @@ fr:
         shipment: "Livraison"
         shipping_address: "Adresse de livraison"
         billing_address: "Adresse de facturation"
+        terms: "Conditions générales de vente"
       shipment:
         price: "Prix"
         eot_price: "Prix HT"
@@ -152,3 +164,15 @@ fr:
         paid_at: "Payé le"
         transaction_id: "Numéro de transaction"
         state: "État"
+
+  simple_form:
+    placeholders:
+      address:
+        first_name: "Votre prénom"
+        last_name: "Votre nom"
+        address: "Numéro et rue"
+        address_details: "Autres informations : bâtiment, escalier, interphone etc."
+        country: "Votre pays"
+        zip: "Votre code postal"
+        city: "Votre ville"
+        phone: "Votre numéro de téléphone (portable / fixe)"

@@ -23,6 +23,9 @@ module Stall
         nested_forms[type] = build(&block)
       end
 
+      # Build an dynamic StepForm subclass with the given block as the body
+      # of the class
+      #
       def self.build(&block)
         Class.new(StepForm, &block)
       end

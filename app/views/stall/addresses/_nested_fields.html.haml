@@ -1,0 +1,14 @@
+.row
+  .col-md-2= form.input :civility, collection: Address.civility_enum
+  .col-md-5= form.input :first_name
+  .col-md-5= form.input :last_name
+.row
+  .col-xs-12= form.input :address, input_html: { rows: 1 }
+.row
+  .col-xs-12= form.input :address_details, label: false, input_html: { rows: 1 }
+.row
+  .col-md-4= form.input :country
+  .col-md-4= form.input :zip
+  .col-md-4= form.input :city
+.row
+  .col-xs-12= form.input :phone

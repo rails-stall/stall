@@ -90,6 +90,11 @@ module Stall
         true
       end
 
+      def currency
+        @currency ||= Money::Currency.new(read_attribute(:currency)) ||
+                        Money.default_currency
+      end
+
       private
 
       def ensure_currency

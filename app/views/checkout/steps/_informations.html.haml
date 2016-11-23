@@ -1,41 +1,30 @@
+-# Display sign in form for users that are not signed in
+- unless stall_user_signed_in?
+  - resource = Stall.config.default_user_model.new
+  = render partial: 'stall/customers/sign_in', locals: { resource: resource, resource_name: resource.model_name.element }
+
 %h1= t('stall.checkout.informations.title')
 
 = simple_form_for cart, as: :cart, url: step_path do |form|
-  = form.fields_for :customer do |customer_form|
-    = customer_form.input :email
+  .row
+    .col-md-7
+      = render partial: 'stall/customers/fields', locals: { form: form, cart: cart }
+      = render partial: 'stall/addresses/fields', locals: { form: form, cart: cart }
 
-  = form.fields_for :address_ownerships, [cart.address_ownership_for(:shipping)] do |ownership_form|
-    %fieldset{ data: { :'address-form' => :shipping } }
-      = ownership_form.hidden_field :shipping
+    .col-md-5
+      = render partial: 'stall/carts/cart', locals: { cart: cart }
+      = render partial: 'stall/shipments/fields', locals: { form: form, cart: cart }
+      = render partial: 'stall/payments/fields',  locals: { form: form, cart: cart }
 
-      = ownership_form.fields_for :address do |address_form|
-        = address_form.input :civility, collection: Address.civility_enum
-        = address_form.input :first_name
-        = address_form.input :last_name
-        = address_form.input :address
-        = address_form.input :address_details
-        = address_form.input :zip
-        = address_form.input :city
-        = address_form.input :country
-        = address_form.input :phone
+      -# Basic implementation to display the terms acceptance checkbox before
+      -# the order is placed. Just fill in the `config.terms_path` in the
+      -# Stall initializer if you want to change the terms URL, but feel free
+      -# to customize further if needed.
+      = form.input :terms, label: false do
+        = form.check_box :terms
+        = form.label :terms, t('stall.checkout.informations.accept_the')
+        = link_to Stall.config.terms_path, target: '_blank' do
+          = form.object.class.human_attribute_name(:terms)
 
-  = form.input :use_another_address_for_billing do
-    = check_box_tag :use_another_address_for_billing, '1', params[:use_another_address_for_billing]
-
-  = form.fields_for :address_ownerships, [cart.address_ownership_for(:billing)] do |ownership_form|
-    %fieldset{ data: { :'address-form' => :billing } }
-      = ownership_form.hidden_field :billing
-
-      = ownership_form.fields_for :address do |address_form|
-        = address_form.input :civility, collection: Address.civility_enum
-        = address_form.input :first_name
-        = address_form.input :last_name
-        = address_form.input :address
-        = address_form.input :address_details
-        = address_form.input :zip
-        = address_form.input :city
-        = address_form.input :country
-        = address_form.input :phone
-
-  %button.btn.btn-primary{ type: 'submit' }
-    = t('stall.checkout.informations.validate')
+      %button.btn.btn-primary.btn-lg.btn-block{ type: 'submit' }
+        = t('stall.checkout.informations.validate')

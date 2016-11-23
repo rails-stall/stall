@@ -12,6 +12,8 @@ module Stall
 
         has_many :adjustments, dependent: :destroy, inverse_of: :cart
         accepts_nested_attributes_for :adjustments
+
+        attr_accessor :terms
       end
 
       def total_weight

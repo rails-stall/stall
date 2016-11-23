@@ -3,6 +3,8 @@
 #= require_self
 #= require stall/add-to-cart-form
 #= require stall/cart-form
+#= require stall/addresses-fields
+#= require stall/remote-sign-in-form
 
 @Stall =
   onDomReady: (callback) ->

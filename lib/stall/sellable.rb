@@ -22,7 +22,7 @@ module Stall
     end
 
     def currency
-      Money::Currency.new(Stall.config.default_currency)
+      Money.default_currency
     end
 
     private

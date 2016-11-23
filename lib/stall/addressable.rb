@@ -11,6 +11,8 @@ module Stall
 
       has_many :addresses, through: :address_ownerships
       accepts_nested_attributes_for :address_ownerships, allow_destroy: true
+
+      attr_accessor :use_another_address_for_billing
     end
 
     def address_ownership_for(type)

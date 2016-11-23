@@ -1,6 +1,8 @@
 module Stall
   class Config
     extend Stall::Utils::ConfigDSL
+    # Store name used in e-mails and other interfaces duisplaying such an
+    # information
     param :store_name
 
     # Admin e-mail address to which order notifications will be sent
@@ -46,9 +48,14 @@ module Stall
     # Duration after which an empty cart is cleaned out by the rake task
     param :empty_carts_expires_after, 1.day
 
-    # Duration after which an aborted is cleaned out by the rake task
+    # Duration after which an aborted cart is cleaned out by the rake task
     param :aborted_carts_expires_after, 14.days
 
+    param :default_user_model_name, 'User'
+    param :default_user_helper_method, :current_user
+
+    # Configure the terms of service page path
+    param :terms_path, 'about:blank'
 
     def shipping
       @shipping ||= Stall::Shipping::Config.new
@@ -87,6 +94,10 @@ module Stall
 
     def services=(value)
       self.services.merge!(value)
+    end
+
+    def default_user_model
+      default_user_model_name.try(:constantize)
     end
   end
 end
