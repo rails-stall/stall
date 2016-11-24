@@ -3,6 +3,7 @@ module Stall
     class StepsController < Stall::ApplicationController
       include Stall::CheckoutHelper
 
+      skip_before_action :verify_authenticity_token, on: :foreign_update
       before_action :load_cart
       before_action :load_step
       before_action :ensure_cart_checkoutable
@@ -21,6 +22,8 @@ module Stall
           render 'show'
         end
       end
+
+      alias_method :foreign_update, :update
 
       def change
         target_step = params[:step]

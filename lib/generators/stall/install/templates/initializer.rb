@@ -56,7 +56,7 @@ Stall.configure do |config|
   # that you create your line items, carts and orders with the right currency
   # set.
   #
-  # param :default_currency, 'EUR'
+  # config.default_currency = 'EUR'
 
   # Default app domain use for building URLs in payment gateway forms and in
   # e-mails.
@@ -74,6 +74,15 @@ Stall.configure do |config|
   #
   # A default one is generated on stall's installation and can be found in your
   # app at : lib/default_checkout_wizard.rb
+  #
+  # Note :
+  #
+  #   If you do not autoload files in your app's lib folder, please require your
+  #   checkout wizard with the following command here
+  #
+  #     require 'default_checkout_wizard'
+  #
+  #
   #
   # config.default_checkout_wizard = 'DefaultCheckoutWizard'
 

@@ -48,7 +48,7 @@ module Stall
       # Most of the gateways expect some specific return, so this is to be
       # overriden by subclasses
       def rendering_options
-        { text: nil }
+        { nothing: false }
       end
 
       def payment_urls

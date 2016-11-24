@@ -78,37 +78,39 @@
       %td
         %table
           %tbody
-            %tr
-              %td{ colspan: 2 }
-                %strong= Cart.human_attribute_name(:payment)
+            - if cart.payment && cart.payment.payment_method
+              %tr
+                %td{ colspan: 2 }
+                  %strong= Cart.human_attribute_name(:payment)
 
-            %tr
-              %td
-                = Payment.human_attribute_name(:payment_method)
-              %td
-                = cart.payment.payment_method.name
+              %tr
+                %td
+                  = Payment.human_attribute_name(:payment_method)
+                %td
+                  = cart.payment.payment_method.name
 
-            %tr
-              %td
-                = Payment.human_attribute_name(:state)
-              %td
-                - if cart.payment.paid?
-                  = t("stall.carts.recap.paid_at", at: cart.payment.paid_at)
-                - else
-                  = t("activerecord.enums.payment.state.#{ cart.payment.state }")
+              %tr
+                %td
+                  = Payment.human_attribute_name(:state)
+                %td
+                  - if cart.payment.paid?
+                    = t("stall.carts.recap.paid_at", at: cart.payment.paid_at)
+                  - else
+                    = t("activerecord.enums.payment.state.#{ cart.payment.state }")
 
-            %tr
-              %td{ colspan: 2 }
-                %strong= Cart.human_attribute_name(:shipment)
+            - if cart.shipment && cart.shipment.shipping_method
+              %tr
+                %td{ colspan: 2 }
+                  %strong= Cart.human_attribute_name(:shipment)
 
-            %tr
-              %td
-                = Shipment.human_attribute_name(:shipping_method)
-              %td
-                = cart.shipment.shipping_method.name
+              %tr
+                %td
+                  = Shipment.human_attribute_name(:shipping_method)
+                %td
+                  = cart.shipment.shipping_method.name
 
-            %tr
-              %td
-                = Shipment.human_attribute_name(:state)
-              %td
-                = t("activerecord.enums.payment.state.#{ cart.shipment.state }")
+              %tr
+                %td
+                  = Shipment.human_attribute_name(:state)
+                %td
+                  = t("activerecord.enums.payment.state.#{ cart.shipment.state }")

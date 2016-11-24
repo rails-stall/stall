@@ -38,7 +38,16 @@ This will generate :
 
 ## Usage
 
-### Making a model sellable
+In the following sections, you'll find the following informations :
+
+1. [Making a model sellable](#1--Making-a-model-sellable)
+2. [Configuring shop defaults](#2--Configuring-shop-defaults)
+3. [Configuring the checkout flow](#3--Configuring-the-checkout-flow)
+4. [Customizing views](#4--Customizing-views)
+5. [Cleaning up aborted carts](#5--Cleaning-up-aborted-carts)
+
+
+### 1. Making a model sellable
 
 Stall allows you to make any model sellable by including the `Stall::Sellable`
 mixin into your model :
@@ -58,7 +67,21 @@ You can now add the "Add to cart" button to your templates :
 For more informations see the Wiki page :
 [Allowing customers to add products to cart](https://github.com/rails-stall/stall/wiki/Allowing-customers-to-add-products-to-cart)
 
-### Configuring the checkout flow
+### 2. Configuring shop defaults
+
+Before running the shop, please read through the generated Stall initializer
+file at `config/initializers/stall.rb` and customize their values to your
+fir your desired shop behavior.
+
+Here are the mandatory ones :
+
+- `store_name`
+- `admin_email`
+- `sender_email`
+- `default_app_domain`
+
+
+### 3. Configuring the checkout flow
 
 The checkout process is completely flexible and can be overriden easily.
 
@@ -66,7 +89,7 @@ Please see the Wiki page :
 [The checkout process](https://github.com/rails-stall/stall/wiki/The-checkout-process)
 
 
-### Customizing views
+### 4. Customizing views
 
 You can copy stall views to your app with the `stall:view` generator.
 The less you customize the views, the more you get it to work with future
@@ -81,7 +104,7 @@ Example :
 rails generate stall:view checkout/steps/_informations checkout/steps/_payment stall/carts/_cart
 ```
 
-### Cleaning up aborted carts
+### 5. Cleaning up aborted carts
 
 A cart is created for each new visit on the app. You may want to clean
 aborted carts to avoid the table to grow too big.

@@ -4,18 +4,22 @@ class Stall.AddToCartForm extends Vertebra.View
       instance = new Stall.AddToCartForm(el: $el)
       $el.data('stall.add-to-cart-form', instance)
 
-    instance.authorizeRequest()
+    instance.sendRequest()
 
   events:
     'ajax:success': 'onSuccess'
+    'ajax:complete': 'onComplete'
     'change [name$="[sellable_id]"]': 'onValidatableFieldChanged'
     'change [name$="[quantity]"]': 'onValidatableFieldChanged'
 
   initialize: ->
+    @$button = @$('[type="submit"]')
     @errorMessages = @$el.data('error-messages')
 
-  authorizeRequest: ->
-    @validate(submit: true) and !@errors.length
+  sendRequest: ->
+    return false unless @validate(submit: true) and !@errors.length
+    @setLoading(true)
+    true
 
   onValidatableFieldChanged: ->
     @validate()
@@ -28,6 +32,9 @@ class Stall.AddToCartForm extends Vertebra.View
     @errors = []
     @errors.push('choose') unless @$('[name$="[sellable_id]"]').val()
     @errors.push('quantity') unless @$('[name$="[quantity]"]').val()
+
+  onComplete: ->
+    @setLoading(false)
 
   onSuccess: (e, resp) ->
     @$modal = $(resp).appendTo('body').modal()
@@ -42,7 +49,6 @@ class Stall.AddToCartForm extends Vertebra.View
   # Displays errors in a tooltip on the form submit button, listing different
   # errors and disabling the submit button
   refreshErrorsDisplay: (options = {}) ->
-    @$button = @$('[type="submit"]')
     buttonIsTooltip = @$button.data('bs.tooltip')
 
     if @errors.length
@@ -57,6 +63,11 @@ class Stall.AddToCartForm extends Vertebra.View
       @$button.attr(title: '')
       @$button.tooltip('destroy') if buttonIsTooltip
       @$button.prop('disabled', false)
+
+  setLoading: (loading) ->
+    state = if loading then 'loading' else 'reset'
+    @$button.button(state)
+
 
 Stall.onDomReady ->
   $('body').on 'ajax:beforeSend', '[data-add-to-cart-form]', (e) ->

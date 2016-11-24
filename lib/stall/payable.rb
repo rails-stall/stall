@@ -22,5 +22,14 @@ module Stall
 
       delegate :paid?, to: :payment, allow_nil: true
     end
+
+    module ClassMethods
+      def find_by_payment_transaction_id(transaction_id)
+        joins(:payment).where(
+          "stall_payments.data->>'transaction_id' = ?",
+          transaction_id
+        ).first
+      end
+    end
   end
 end

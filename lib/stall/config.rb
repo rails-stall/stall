@@ -32,7 +32,7 @@ module Stall
     param :default_currency, 'EUR'
 
     # Default app domain for building routes
-    param :_default_app_domain
+    param :default_app_domain
 
     # Default checkout wizard used
     param :default_checkout_wizard, 'DefaultCheckoutWizard'
@@ -74,7 +74,7 @@ module Stall
     end
 
     def default_app_domain
-      _default_app_domain || ENV['APP_DOMAIN']
+      @default_app_domain || ENV['APP_DOMAIN']
     end
 
     # Fetch user config and add top-namespace lookup to avoid collision

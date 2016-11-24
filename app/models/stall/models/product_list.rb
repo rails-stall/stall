@@ -91,8 +91,11 @@ module Stall
       end
 
       def currency
-        @currency ||= Money::Currency.new(read_attribute(:currency)) ||
-                        Money.default_currency
+        @currency ||= if (currency = read_attribute(:currency).presence)
+          Money::Currency.new(currency)
+        else
+          self.currency = Money.default_currency
+        end
       end
 
       private

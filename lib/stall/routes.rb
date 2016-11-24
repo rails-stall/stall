@@ -19,7 +19,10 @@ module Stall
             scope '(:cart_key)' do
               resource :step, only: [:show, :update] do
                 post '/', action: :update, as: :update
-                get '/process', action: :update, as: :process
+                get  '/process', action: :update, as: :process
+                # Allow external URLs process steps, allowing some payment
+                # gateways to return the user through a POST request
+                post '/process', action: :foreign_update
                 get 'change/:step', action: :change, as: :change
               end
             end
