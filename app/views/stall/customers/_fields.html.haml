@@ -1,21 +1,32 @@
+-# When stall a user is signed in, a customer autoatically exist and is assigned
+-# to the cart, by default, we notify the visitor that he's signed in and will
+-# order with that account, making customer and user related fields unnecessary
 - if stall_user_signed_in?
   .alert.alert-info
     %i.fa.fa-info-circle
     = t('stall.checkout.informations.signed_in_as', email: current_stall_user.email)
 
 - else
-  = form.fields_for :customer do |customer_form|
+  -# The `#with_errors_from_user` helper ensures that user e-mail errors, like
+  -# format or uniqueness, are actually bubbled up to the customer e-mail field.
+  = form.fields_for :customer, with_errors_from_user(form.object.customer) do |customer_form|
     = customer_form.input :email
-
-  %p.help-block
-    %label
-      = check_box_tag :create_account, '1', (params[:create_account] == '1'), class: 'collapsed', data: { target: '[data-user-fields]', toggle: 'collapse' }
-      = t('stall.checkout.informations.create_an_account')
 
   = form.fields_for :customer do |customer_form|
     = customer_form.fields_for :user, customer_form.object.user_or_default do |user_form|
-      %fieldset.collapse{ data: { :'user-fields' => true } }
+      %fieldset.collapse{ class: ('in' if params[:create_account] == '1'), data: { :'user-fields' => true } }
         = user_form.input :password
         = user_form.input :password_confirmation
 
+  %p.help-block
+    %label
+      -# This field allows the step to determine wether an account should be
+      -# created or not while creating the customer, allowing it to clean
+      -# user related fields if it's not needed.
+      -#
+      -# The `autocomplete="off"` clears the Firefox cache that autofills the
+      -# checked attribute and breaks the unerlying basic bootstrap collapse
+      -# behavior
+      = check_box_tag :create_account, '1', (params[:create_account] == '1'), class: 'collapsed', autocomplete: 'off', data: { target: '[data-user-fields]', toggle: 'collapse' }
+      = t('stall.checkout.informations.create_an_account')
 %hr

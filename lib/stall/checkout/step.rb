@@ -3,6 +3,8 @@ module Stall
     class StepNotFoundError < StandardError; end
 
     class Step
+      class_attribute :_validations
+
       attr_reader :cart
 
       def initialize(cart)
@@ -25,14 +27,6 @@ module Stall
 
       def process
         save
-      end
-
-      def cart_params
-        @cart_params ||= if params[:cart]
-          params.require(:cart).permit!
-        else
-          {}.with_indifferent_access
-        end
       end
 
       def skip?
@@ -62,11 +56,29 @@ module Stall
         false
       end
 
+      # Run cart validations then step validations, and cart validations, returning wether they're both valid or
+      # not, allowing to display all involved errors to the visitor in one time
+      #
+      def valid?
+        cart.validate
+        run_step_validations!(clear:  false)
+
+        cart.errors.empty?
+      end
+
       # Abstracts the simple case of assigning the submitted parameters to the
       # cart object, running the step validations and saving the cart
       def save
         cart.assign_attributes(cart_params)
         cart.save if valid?
+      end
+
+      private
+
+      def run_step_validations!(clear: true)
+        if (validations = self.class.validations)
+          validations.new(cart, self, clear: clear).validate
+        end
       end
 
       # Handles conversion from an identifier to a checkout step class, allowing
@@ -92,13 +104,8 @@ module Stall
       end
 
       def self.validations(&block)
-        return @validations unless block
-        @validations = Stall::Checkout::StepForm.build(&block)
-      end
-
-      def valid?
-        return true unless (validations = self.class.validations)
-        validations.new(cart, self).validate
+        return _validations unless block
+        self._validations = Stall::Checkout::StepForm.build(&block)
       end
     end
   end

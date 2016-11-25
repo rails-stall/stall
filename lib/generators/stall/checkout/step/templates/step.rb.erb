@@ -24,4 +24,13 @@ class <%= class_name %> < Stall::Checkout::Step
   # def skip?
   #   false
   # end
+
+  private
+
+  # Process `params` here, defaults to assigning the cart with `cart_params`
+  # (params[:cart]) to the cart, running the step validations
+  #
+  def cart_params
+    params.require(:cart).permit({})
+  end
 end

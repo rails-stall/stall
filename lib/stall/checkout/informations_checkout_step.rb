@@ -30,19 +30,38 @@ module Stall
       end
 
       def process
-        clean_passwords!
+        prepare_user_attributes
         cart.assign_attributes(cart_params)
         process_addresses
 
         return unless valid?
 
-        cart.save.tap do
+        cart.save.tap do |valid|
           assign_addresses_to_customer!
           calculate_shipping_fee!
         end
       end
 
       private
+
+      def cart_params
+        params.require(:cart).permit(
+          :use_another_address_for_billing, :terms,
+          :payment_method_id, :shipping_method_id,
+          customer_attributes: [
+            :email, user_attributes: [
+              :password, :password_confirmation
+            ]
+          ],
+          address_ownerships_attributes: [
+            :id, :shipping, :billing,
+            address_attributes: [
+              :id, :civility, :first_name, :last_name, :address,
+              :address_details, :country, :zip, :city, :phone
+            ]
+          ]
+        )
+      end
 
       def ensure_customer
         cart.build_customer unless cart.customer
@@ -73,18 +92,20 @@ module Stall
         cart.build_payment unless cart.payment
       end
 
-      def clean_passwords!
-        if params[:create_account] != '1' &&
-          (
-            user_attributes = cart_params[:customer_attributes] &&
-              cart_params[:customer_attributes][:user_attributes]
-          )
-        then
-          user_attributes.delete(:password)
-          user_attributes.delete(:password_confirmation)
-        end
+      # Remvove user attributes when no account should be created, for an
+      # "anonymous" order creation.
+      #
+      def prepare_user_attributes
+        return unless cart_params[:customer_attributes] &&
+          cart_params[:customer_attributes][:user_attributes] &&
+          params[:create_account] == '1'
+
+        cart_params[:customer_attributes].delete(:user_attributes)
       end
 
+      # Merges shipping and billing addresses into one address when the visitor
+      # has chosen to use the shipping address for both.
+      #
       def process_addresses
         return if use_another_address_for_billing?
 
@@ -101,15 +122,24 @@ module Stall
         cart.mark_address_ownership_as_billing(shipping_ownership) if shipping_ownership
       end
 
+      # Assigns the shipping fees to the cart based on the selected shipping
+      # method
+      #
       def calculate_shipping_fee!
         service_class = Stall.config.service_for(:shipping_fee_calculator)
         service_class.new(cart).call
       end
 
+      # Fetches addresses from the customer account and copy them to the
+      # cart to pre-fill the fields for the user
+      #
       def prefill_addresses_from_customer
         Stall::Addresses::PrefillTargetFromSource.new(cart.customer, cart).copy
       end
 
+      # Copies the addresses filled in the cart to the customer account for
+      # next orders informations pre-filling
+      #
       def assign_addresses_to_customer!
         Stall::Addresses::CopySourceToTarget.new(cart, cart.customer).copy!
       end

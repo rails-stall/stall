@@ -21,6 +21,7 @@ module Stall
         after_initialize :ensure_currency
         after_initialize :ensure_state
 
+        before_save :save_customer_if_changed
         after_save :ensure_reference, on: :create
 
         scope :empty, -> {
@@ -118,6 +119,10 @@ module Stall
           self.reference = reference
           save(validate: false)
         end
+      end
+
+      def save_customer_if_changed
+        customer.save if customer && customer.changed?
       end
 
       module ClassMethods

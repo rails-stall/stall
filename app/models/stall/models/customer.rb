@@ -13,10 +13,24 @@ module Stall
 
         has_many :product_lists, dependent: :destroy
 
-        validates :email, format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/ }, allow_blank: true
+        validates :email, format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/ },
+                          allow_blank: true
+
+        before_validation :ensure_user_email
 
         def user_or_default
-          self.user ||= Stall.config.default_user_model.new
+          user || build_user
+        end
+
+        def build_user(attributes = {})
+          attributes.reverse_merge!(customer: self)
+          self.user = Stall.config.default_user_model.new(attributes)
+        end
+
+        private
+
+        def ensure_user_email
+          user.email = email unless user && user.email.present?
         end
       end
     end

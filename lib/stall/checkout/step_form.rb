@@ -5,17 +5,28 @@ module Stall
 
       class_attribute :nested_forms
 
-      attr_reader :object, :step
+      attr_reader :object, :step, :clear_cart_errors_before_validation
 
       delegate :errors, to: :object
 
-      def initialize(object, step)
+      def initialize(object, step, clear: true)
         @object = object
         @step = step
+        @clear_cart_errors_before_validation = clear
       end
 
+      # Runs form and nested forms validations and returns wether they all
+      # passed or not
+      #
+      # Only clear validation errors on the cart if needed, allowing to run
+      # cart validations before the step ones, passing clear: false in the
+      # form constructor, aggregating both validation sources' errors
+      #
       def validate
-        super && validate_nested_forms
+        errors.clear if clear_cart_errors_before_validation
+        run_validations!
+        validate_nested_forms
+        !errors.any?
       end
 
       def self.nested(type, &block)
@@ -43,7 +54,7 @@ module Stall
       # Override model name instanciation to add a name, since the form classes
       # are anonymous, and ActiveModel::Name does not support unnamed classes
       def model_name
-        @model_name ||= ActiveModel::Name.new(self, nil, object.class.name)
+        @model_name ||= ActiveModel::Name.new(self, nil, self.class.name)
       end
 
       private
@@ -57,12 +68,12 @@ module Stall
       def validate_nested_forms
         # If no nested forms are present in the class, just return true since
         # no validation should be tested
-        return true unless self.class.nested_forms
+        return true unless nested_forms
 
         # Run all validations on all nested forms and ensure they're all valid
-        self.class.nested_forms.map do |name, form|
-          if object.respond_to?(name) && (model = object.send(name))
-            Array.wrap(model).map { |m| form.new(m, step).validate }.all?
+        nested_forms.map do |name, form|
+          if object.respond_to?(name) && (resource = object.send(name))
+            Array.wrap(resource).map { |m| form.new(m, step).validate }.all?
           else
             # Nested validations shouldn't be run on undefined relations
             true
