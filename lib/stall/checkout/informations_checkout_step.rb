@@ -3,13 +3,10 @@ module Stall
     class InformationsCheckoutStep < Stall::Checkout::Step
       validations do
         validate :customer_accepts_terms
-
-        validates :customer, presence: true
+        validates :customer, :shipping_address, presence: true
 
         validates :billing_address, presence: true,
           if: :use_another_address_for_billing?
-
-        validates :shipping_address, presence: true
 
         nested :shipping_address do
           validates :civility, :first_name, :last_name, :address, :country,
@@ -96,11 +93,15 @@ module Stall
       # "anonymous" order creation.
       #
       def prepare_user_attributes
-        return unless cart_params[:customer_attributes] &&
-          cart_params[:customer_attributes][:user_attributes] &&
-          params[:create_account] == '1'
+        return if params[:create_account] == '1'
 
-        cart_params[:customer_attributes].delete(:user_attributes)
+        if cart_params[:customer_attributes] && cart_params[:customer_attributes][:user_attributes]
+          cart_params[:customer_attributes].delete(:user_attributes)
+        end
+
+        # Remove user from customer to avoid automatic validation of the user
+        # if no user should be saved with the customer
+        cart.customer.user = nil unless stall_user_signed_in? || cart
       end
 
       # Merges shipping and billing addresses into one address when the visitor
@@ -114,10 +115,10 @@ module Stall
 
         return if billing_ownership == shipping_ownership
 
-        # If the user choosed to receive his order by shipping and that he choosed
-        # not to fill a billing address, we remove the billing address hidden form
-        # that was submitted in the step, and make the shipping address be used as
-        # billing address too
+        # If the user choosed to receive his order by shipping and that he
+        # choosed not to fill a billing address, we remove the billing address
+        # hidden form that was submitted in the step, and make the shipping
+        # address be used as billing address too
         cart.address_ownerships.destroy(billing_ownership) if billing_ownership
         cart.mark_address_ownership_as_billing(shipping_ownership) if shipping_ownership
       end
