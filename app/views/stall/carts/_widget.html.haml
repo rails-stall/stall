@@ -1,0 +1,26 @@
+.dropdown{ data: { :'cart-widget' => true } }
+  %button.btn.btn-primary{ data: { toggle: 'dropdown' } }
+    %i.fa.fa-shopping-cart
+    %span.label.label-default= cart.total_quantity
+    %span.caret
+
+  .dropdown-menu
+    %table.table
+      %tbody
+        - cart.line_items.each do |line_item|
+          %tr
+            %td
+              = line_item.name
+              x
+              = line_item.quantity
+            %td
+              = number_to_currency(line_item.price)
+      %tfoot
+        %tr
+          %td= t('stall.carts.recap.total_price')
+          %td
+            = number_to_currency(cart.total_price)
+        %tr
+          %td{ colspan: 2 }
+            = link_to cart_path(cart), class: 'btn btn-primary btn-block' do
+              = t('stall.carts.actions.view_cart')

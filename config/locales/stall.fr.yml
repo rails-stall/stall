@@ -5,6 +5,8 @@ fr:
       sending: "Envoi en cours ..."
 
     carts:
+      actions:
+        view_cart: "Voir mon panier"
       formats:
         name: "Commande n°%{ref}"
 
@@ -31,7 +33,6 @@ fr:
       added:
         title: "Votre produit a bien été ajouté à votre panier"
         continue_shopping: "Continuer mes achats"
-        view_cart: "Voir mon panier"
       add_error:
         title: "Votre produit n'a pu être ajouté"
         description: "Merci de vérifier que vous avez bien rempli la quantité avant d'ajouter le produit au panier."

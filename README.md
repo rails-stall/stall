@@ -40,14 +40,28 @@ This will generate :
 
 In the following sections, you'll find the following informations :
 
-1. [Making a model sellable](#1--Making-a-model-sellable)
-2. [Configuring shop defaults](#2--Configuring-shop-defaults)
+1. [Configuring shop defaults](#2--Configuring-shop-defaults)
+2. [Making a model sellable](#1--Making-a-model-sellable)
 3. [Configuring the checkout flow](#3--Configuring-the-checkout-flow)
 4. [Customizing views](#4--Customizing-views)
 5. [Cleaning up aborted carts](#5--Cleaning-up-aborted-carts)
 
 
-### 1. Making a model sellable
+### 1. Configuring shop defaults
+
+Before running the shop, please read through the generated Stall initializer
+file at `config/initializers/stall.rb` and customize the default values to fit
+your desired shop behavior.
+
+Here are the mandatory ones :
+
+- `store_name`
+- `admin_email`
+- `sender_email`
+- `default_app_domain`
+
+
+### 2. Making a model sellable
 
 Stall allows you to make any model sellable by including the `Stall::Sellable`
 mixin into your model :
@@ -64,21 +78,14 @@ You can now add the "Add to cart" button to your templates :
 = add_to_cart_form_for(@book)
 ```
 
+To display the cart widget in your layout, just render the cart widget partial :
+
+```ruby
+= render partial: 'stall/carts/widget', locals: { cart: current_cart }
+```
+
 For more informations see the Wiki page :
 [Allowing customers to add products to cart](https://github.com/rails-stall/stall/wiki/Allowing-customers-to-add-products-to-cart)
-
-### 2. Configuring shop defaults
-
-Before running the shop, please read through the generated Stall initializer
-file at `config/initializers/stall.rb` and customize their values to your
-fir your desired shop behavior.
-
-Here are the mandatory ones :
-
-- `store_name`
-- `admin_email`
-- `sender_email`
-- `default_app_domain`
 
 
 ### 3. Configuring the checkout flow

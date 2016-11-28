@@ -57,8 +57,13 @@ module Stall
         step_index && step_index >= steps_count - 1
       end
 
-      def step_complete?(step_identifier)
-        steps.index(cart.state) > steps.index(step_identifier.to_sym)
+      def steps
+        @steps ||= self.class.steps
+      end
+
+      def step_complete?(step)
+        step_identifier = (Step === step ? step.identifier : step.to_sym)
+        steps.index(cart.state) > steps.index(step_identifier)
       end
 
       def steps_count
@@ -86,10 +91,6 @@ module Stall
       end
 
       private
-
-      def steps
-        @steps ||= self.class.steps
-      end
 
       def step_name_for(index)
         steps[index]

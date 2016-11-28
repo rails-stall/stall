@@ -33,8 +33,9 @@ module Stall
         false
       end
 
-      def is?(key)
-        identifier == key
+      def is?(other)
+        step_identifier = (Step === other ? other.identifier : other.to_sym)
+        identifier == step_identifier
       end
 
       def identifier

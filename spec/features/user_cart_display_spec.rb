@@ -23,7 +23,7 @@ RSpec.feature 'The user cart' do
       click_on t('stall.line_items.form.add_to_cart')
     end
 
-    click_on t('stall.line_items.added.view_cart')
+    click_on t('stall.carts.actions.view_cart')
 
     expect(page).to have_content('Alice in wonderland')
   end
