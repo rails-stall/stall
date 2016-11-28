@@ -30,7 +30,7 @@ module Stall
         private
 
         def ensure_user_email
-          user.email = email unless user && user.email.present?
+          user.email = email if user && user.email.blank?
         end
       end
     end

@@ -42,7 +42,7 @@ module Stall
       private
 
       def cart_params
-        params.require(:cart).permit(
+        @cart_params ||= params.require(:cart).permit(
           :use_another_address_for_billing, :terms,
           :payment_method_id, :shipping_method_id,
           customer_attributes: [
@@ -101,7 +101,11 @@ module Stall
 
         # Remove user from customer to avoid automatic validation of the user
         # if no user should be saved with the customer
-        cart.customer.user = nil unless stall_user_signed_in? || cart
+        unless stall_user_signed_in? || cart.customer.try(:user).try(:persisted?) ||
+          !cart.customer
+        then
+          cart.customer.user = nil
+        end
       end
 
       # Merges shipping and billing addresses into one address when the visitor
