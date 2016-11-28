@@ -41,23 +41,50 @@ module Stall
 
       private
 
-      def cart_params
+      # To easily add permitted parameters, use the following method in your
+      # subclass :
+      #
+      #   def cart_params
+      #     super(customer_attributes: [nested: :attribute])
+      #   end
+      #
+      # Note : If you want to remove permitted parameters, you need to rewrite
+      # the full permissions nested array
+      #
+      def cart_params(*attributes)
         @cart_params ||= params.require(:cart).permit(
-          :use_another_address_for_billing, :terms,
-          :payment_method_id, :shipping_method_id,
-          customer_attributes: [
-            :email, user_attributes: [
-              :password, :password_confirmation
-            ]
-          ],
-          address_ownerships_attributes: [
-            :id, :shipping, :billing,
-            address_attributes: [
-              :id, :civility, :first_name, :last_name, :address,
-              :address_details, :country, :zip, :city, :phone
-            ]
-          ]
+          *merge_arrays(
+            [
+              :use_another_address_for_billing, :terms,
+              :payment_method_id, :shipping_method_id,
+              customer_attributes: [
+                :id, :email, user_attributes: [
+                  :password, :password_confirmation
+                ]
+              ],
+              address_ownerships_attributes: [
+                :id, :shipping, :billing,
+                address_attributes: [
+                  :id, :civility, :first_name, :last_name, :address,
+                  :address_details, :country, :zip, :city, :phone
+                ]
+              ]
+            ],
+            attributes
+          )
         )
+      end
+
+      # Allows overriding the nested array of permitted parameters to add other
+      # params at a given path. Rails default behavior doesn't allow merging
+      # nested arrays, neither top-level arrays.
+      #
+      # Note : We use the `deep_merge` gem for the nested arrays merging.
+      #
+      def merge_arrays(defaults, overrides)
+        defaults_hash = defaults.extract_options!
+        overrides_hash = overrides.extract_options!
+        (defaults + overrides) << defaults_hash.deeper_merge!(overrides_hash)
       end
 
       def ensure_customer
