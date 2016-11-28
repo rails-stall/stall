@@ -1,17 +1,22 @@
 module Stall
   module Checkout
     class PaymentCheckoutStep < Stall::Checkout::Step
-      # By default, the payment processing occurs in the background and, for
-      # some of the payment gateways, can be run asynchronously. Thus, we don't
-      # need to make any verification here, and just let the user go to the next
-      # step if we're passed the :succeeded param.
+      # Determine wether the customer's payment has been validated or not.
       #
-      # This could be overriden if the payment processing needs to occur
-      # synchronously at this point, you can override this method to process
-      # it.
+      # By default, the payment processing occurs in the background and, for
+      # some of the payment gateways, can be run asynchronously. In this case,
+      # the gateway should redirect here with the `:succeeded` param in the URL.
+      #
+      # If the payment processing occurs synchronously, the gateway overrides
+      # the #synchronous_payment_notification? method, using the cart payment
+      # state to determine this parameter.
       #
       def process
-        return true if params[:succeeded]
+        if gateway.synchronous_payment_notification?
+          cart.paid?
+        elsif params[:succeeded]
+          true
+        end
       end
 
       # When we access this step after a payment to validate the step, the cart
@@ -19,6 +24,12 @@ module Stall
       #
       def allow_inactive_carts?
         !!params[:succeeded]
+      end
+
+      private
+
+      def gateway
+        @gateway ||= Stall::Payments::Gateway.for(cart.payment.payment_method).new(cart)
       end
     end
   end

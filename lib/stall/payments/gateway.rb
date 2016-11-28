@@ -55,6 +55,14 @@ module Stall
         @payment_urls ||= Stall::Payments::UrlsConfig.new(cart)
       end
 
+      # Override this method and retrun true if the gateway payment
+      # notification should be taken into account to determine wether the
+      # payment has been successful or not  when returning from the gateway.
+      #
+      def synchronous_payment_notification?
+        false
+      end
+
       private
 
       def next_transaction_id
