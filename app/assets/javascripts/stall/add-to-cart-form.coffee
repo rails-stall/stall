@@ -38,13 +38,13 @@ class Stall.AddToCartForm extends Vertebra.View
 
   onSuccess: (e, resp) ->
     @$modal = $(resp).appendTo('body').modal()
-    @updateTotalQuantityCounter()
+    @updateWidget()
 
-  updateTotalQuantityCounter: ->
-    quantity = @$modal.data('cart-total-quantity')
-
-    if ($counter = $('[data-cart-quantity-counter]')).length
-      $counter.text(quantity)
+  updateWidget: ->
+    if ($widget = $('[data-cart-widget]'))
+      $widget.replaceWith(@$modal.data('cart-widget-markup'))
+    else if ($counter = $('[data-cart-quantity-counter]')).length
+      $counter.text(@$modal.data('cart-total-quantity'))
 
   # Displays errors in a tooltip on the form submit button, listing different
   # errors and disabling the submit button

@@ -1,7 +1,9 @@
+-# Button with dropdown showing the number of items in the cart, and the detail
+-# when clicked.
 .dropdown{ data: { :'cart-widget' => true } }
   %button.btn.btn-primary{ data: { toggle: 'dropdown' } }
     %i.fa.fa-shopping-cart
-    %span.label.label-default= cart.total_quantity
+    %span.label.label-default{ data: { :'cart-quantity-counter' => true } }= cart.total_quantity
     %span.caret
 
   .dropdown-menu

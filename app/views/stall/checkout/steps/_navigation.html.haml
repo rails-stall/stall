@@ -1,3 +1,6 @@
+-# Steps navigation presented as breadcrumbs. By default, all steps are shown
+-# but the navigation isn't shown in the `payment_return` step, to avoid
+-# customers going back at this point.
 %ol.breadcrumb
   - wizard.steps.each_with_index do |step_identifier, index|
     %li{ class: ('active' if step.is?(step_identifier) ) }

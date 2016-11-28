@@ -6,6 +6,7 @@ module Stall
       if service.call
         @quantity = params[:line_item][:quantity].to_i
         @line_item = service.line_item
+        @widget_partial = render_to_string(partial: 'stall/carts/widget', locals: { cart: cart })
         render partial: 'added'
       else
         @line_item = service.line_item
