@@ -28,6 +28,7 @@ module Stall
 
       def process
         prepare_user_attributes
+        prepare_addresses_attributes
         cart.assign_attributes(cart_params)
         process_addresses
 
@@ -133,6 +134,19 @@ module Stall
         then
           cart.customer.user = nil
         end
+      end
+
+      # If the billing address should be set to the same as the filled shipping
+      # address, we remove the billing address ownerships parameters
+      #
+      def prepare_addresses_attributes
+        return if use_another_address_for_billing?
+
+        index, _ = cart_params[:address_ownerships_attributes].find do |index, ownership_attributes|
+          !!ownership_attributes[:billing]
+        end
+
+        cart_params.delete(index) if index
       end
 
       # Merges shipping and billing addresses into one address when the visitor
