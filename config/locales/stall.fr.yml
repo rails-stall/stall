@@ -95,6 +95,11 @@ fr:
 
   activerecord:
     enums:
+      cart:
+        state:
+          informations: "Informations client"
+          payment: "Paiement"
+          payment_return: "Paiement traité"
       shipment:
         state:
           pending: "En attente"
@@ -102,7 +107,7 @@ fr:
       payment:
         state:
           pending: "En attente"
-          shipped: "Payé"
+          paid: "Payé"
 
     models:
       line_item: "Produit"
@@ -123,6 +128,7 @@ fr:
         price: "Prix total TTC"
         vat_rate: "Taux de TVA"
         weight: "Poids"
+        state: "Étape du panier"
       customer:
         email: "Adresse e-mail"
         shipping_address: "Adresse de livraison"
@@ -152,6 +158,7 @@ fr:
         shipping_address: "Adresse de livraison"
         billing_address: "Adresse de facturation"
         terms: "Conditions générales de vente"
+        paid: "Payé"
       shipment:
         price: "Prix"
         eot_price: "Prix HT"

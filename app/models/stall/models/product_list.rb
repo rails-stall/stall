@@ -36,6 +36,13 @@ module Stall
         scope :older_than, ->(date) {
           where('stall_product_lists.updated_at < ?', date)
         }
+
+        if defined?(Ransack)
+          ransacker :reference do |parent|
+            reference = Arel::Nodes::InfixOperation.new('->>', parent.table[:data], Arel::Nodes.build_quoted('reference'))
+            Arel::Nodes::SqlLiteral.new(reference.to_sql)
+          end
+        end
       end
 
       def state
