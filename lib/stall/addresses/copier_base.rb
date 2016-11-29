@@ -16,7 +16,9 @@ module Stall
 
       def duplicate_attributes(model)
         model.attributes.dup.tap do |attributes|
-          attributes.delete('id')
+          %w(id type addressable_id addressable_type created_at updated_at).each do |key|
+            attributes.delete(key)
+          end
         end
       end
     end

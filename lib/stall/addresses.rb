@@ -3,6 +3,7 @@ module Stall
     extend ActiveSupport::Autoload
 
     autoload :CopierBase
+    autoload :Copy
     autoload :CopySourceToTarget
     autoload :PrefillTargetFromSource
   end

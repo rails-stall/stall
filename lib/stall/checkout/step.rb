@@ -62,7 +62,7 @@ module Stall
       #
       def valid?
         cart.validate
-        run_step_validations!(clear:  false)
+        run_step_validations!(clear: false)
 
         cart.errors.empty?
       end

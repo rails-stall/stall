@@ -8,36 +8,22 @@ module Stall
       end
 
       def copy
-        copy_shipping_address
-        copy_billing_address
+        copy_address(:shipping)
+        copy_address(:billing)
       end
 
       private
 
-      def copy_shipping_address
-        # Update or create target's shipping address with source's shipping
-        # address attributes
-        if target.shipping_address
-          target.shipping_address.assign_attributes(duplicate_attributes(source.shipping_address))
-        else
-          target.build_shipping_address(duplicate_attributes(source.shipping_address))
-        end
-      end
+      # Update or create target address with source attributes
+      #
+      def copy_address(type)
+        address = target.send(:"#{ type }_address") || target.send(:"build_#{ type }_address")
 
-      def copy_billing_address
-        # If the source uses the same address for shipping and billing, we
-        # reproduce this behavior ont the target
-        if source.shipping_address == source.billing_address
-          shipping_ownership = target.address_ownership_for(:shipping)
-          target.mark_address_ownership_as_billing(shipping_ownership)
-        # If the source has a separate billing address, we update or create the
-        # target's billing address with the source's one attributes
+        if (source_address = source.send(:"#{ type }_address"))
+          attributes = duplicate_attributes(source_address)
+          address.assign_attributes(attributes)
         else
-          if target.billing_address
-            target.billing_address.assign_attributes(duplicate_attributes(source.billing_address))
-          else
-            target.build_billing_address(duplicate_attributes(source.billing_address))
-          end
+          address.try(:mark_for_destruction)
         end
       end
     end

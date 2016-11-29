@@ -5,14 +5,14 @@ module Stall
 
       class_attribute :nested_forms
 
-      attr_reader :object, :step, :clear_cart_errors_before_validation
+      attr_reader :object, :step, :clear_cart_errors
 
       delegate :errors, to: :object
 
       def initialize(object, step, clear: true)
         @object = object
         @step = step
-        @clear_cart_errors_before_validation = clear
+        @clear_cart_errors = clear
       end
 
       # Runs form and nested forms validations and returns wether they all
@@ -23,7 +23,7 @@ module Stall
       # form constructor, aggregating both validation sources' errors
       #
       def validate
-        errors.clear if clear_cart_errors_before_validation
+        errors.clear if clear_cart_errors
         run_validations!
         validate_nested_forms
         !errors.any?
@@ -72,8 +72,14 @@ module Stall
 
         # Run all validations on all nested forms and ensure they're all valid
         nested_forms.map do |name, form|
-          if object.respond_to?(name) && (resource = object.send(name))
-            Array.wrap(resource).map { |m| form.new(m, step).validate }.all?
+          if object.respond_to?(name) && (resource = object.send(name)) &&
+            !(resource.respond_to?(:marked_for_destruction?) && resource.marked_for_destruction?)
+          then
+            valid = Array.wrap(resource).map { |m| form.new(m, step, clear: @clear_cart_errors).validate }.all?
+            # Bubble up nested errors
+            errors.add(name, :invalid) unless valid
+
+            valid
           else
             # Nested validations shouldn't be run on undefined relations
             true

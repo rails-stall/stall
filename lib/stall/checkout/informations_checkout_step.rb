@@ -30,7 +30,6 @@ module Stall
         prepare_user_attributes
         prepare_addresses_attributes
         cart.assign_attributes(cart_params)
-        process_addresses
 
         return unless valid?
 
@@ -63,12 +62,14 @@ module Stall
                   :password, :password_confirmation
                 ]
               ],
-              address_ownerships_attributes: [
-                :id, :shipping, :billing,
-                address_attributes: [
-                  :id, :civility, :first_name, :last_name, :address,
-                  :address_details, :country, :zip, :city, :phone
-                ]
+              shipping_address_attributes: [
+                :id, :civility, :first_name, :last_name, :address,
+                :address_details, :country, :zip, :city, :phone
+              ],
+              billing_address_attributes: [
+                :id, :civility, :first_name, :last_name, :address,
+                :address_details, :country, :zip, :city, :phone,
+                :_destroy
               ]
             ],
             attributes
@@ -90,23 +91,6 @@ module Stall
 
       def ensure_customer
         cart.build_customer unless cart.customer
-      end
-
-      def ensure_address(type)
-        ownership = cart.address_ownership_for(type) || cart.address_ownerships.build(type => true)
-        ownership.address || ownership.build_address
-      end
-
-      def ensure_billing_address
-        return ensure_address(:billing) unless cart_params[:use_another_address_for_billing] == '0'
-
-        # If the form was submitted and we merged both shipping and billing
-        # addresses together, we must separate them back to present them to
-        # the user form, avoiding to render errors in a form that the user
-        # didn't even see before
-        ownership = cart.address_ownership_for(:billing)
-        ownership.billing = false if ownership.shipping
-        ensure_address(:billing)
       end
 
       def ensure_shipment
@@ -137,35 +121,13 @@ module Stall
       end
 
       # If the billing address should be set to the same as the filled shipping
-      # address, we remove the billing address ownerships parameters
+      # address, we remove the billing address parameters
       #
       def prepare_addresses_attributes
-        return if use_another_address_for_billing?
-
-        index, _ = cart_params[:address_ownerships_attributes].find do |index, ownership_attributes|
-          !!ownership_attributes[:billing]
+        unless use_another_address_for_billing?
+          cart_params.delete(:billing_address_attributes)
+          cart.billing_address.try(:mark_for_destruction)
         end
-
-        cart_params.delete(index) if index
-      end
-
-      # Merges shipping and billing addresses into one address when the visitor
-      # has chosen to use the shipping address for both.
-      #
-      def process_addresses
-        return if use_another_address_for_billing?
-
-        shipping_ownership = cart.address_ownership_for(:shipping)
-        billing_ownership = cart.address_ownership_for(:billing)
-
-        return if billing_ownership == shipping_ownership
-
-        # If the user choosed to receive his order by shipping and that he
-        # choosed not to fill a billing address, we remove the billing address
-        # hidden form that was submitted in the step, and make the shipping
-        # address be used as billing address too
-        cart.address_ownerships.destroy(billing_ownership) if billing_ownership
-        cart.mark_address_ownership_as_billing(shipping_ownership) if shipping_ownership
       end
 
       # Assigns the shipping fees to the cart based on the selected shipping

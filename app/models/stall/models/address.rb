@@ -6,7 +6,7 @@ module Stall
       included do
         self.table_name = 'stall_addresses'
 
-        has_one :address_ownership, dependent: :destroy
+        belongs_to :addressable, polymorphic: true
 
         enum civility: { :m => 1, :mme => 2 }
 
