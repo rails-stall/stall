@@ -5,9 +5,7 @@ module Stall
     end
 
     initializer 'stall.add_routing_mapper_extension' do
-      ActiveSupport.on_load(:action_controller) do
-        ActionDispatch::Routing::Mapper.send(:include, Stall::RoutingMapper)
-      end
+      ActionDispatch::Routing::Mapper.send(:include, Stall::RoutingMapper)
     end
 
     initializer 'stall.override_actionview_number_helpers' do
