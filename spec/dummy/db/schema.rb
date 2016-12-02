@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161201150419) do
+ActiveRecord::Schema.define(version: 20161202082205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,9 +124,11 @@ ActiveRecord::Schema.define(version: 20161201150419) do
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.string   "identifier",  default: "default", null: false
+    t.string   "reference"
   end
 
   add_index "stall_product_lists", ["customer_id"], name: "index_stall_product_lists_on_customer_id", using: :btree
+  add_index "stall_product_lists", ["reference"], name: "index_stall_product_lists_on_reference", unique: true, using: :btree
 
   create_table "stall_shipments", force: :cascade do |t|
     t.integer  "cart_id"

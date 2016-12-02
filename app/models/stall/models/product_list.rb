@@ -6,8 +6,6 @@ module Stall
       included do
         self.table_name = 'stall_product_lists'
 
-        store_accessor :data, :reference
-
         has_secure_token
 
         has_many :line_items, -> { ordered }, dependent: :destroy
@@ -36,13 +34,6 @@ module Stall
         scope :older_than, ->(date) {
           where('stall_product_lists.updated_at < ?', date)
         }
-
-        if defined?(Ransack)
-          ransacker :reference do |parent|
-            reference = Arel::Nodes::InfixOperation.new('->>', parent.table[:data], Arel::Nodes.build_quoted('reference'))
-            Arel::Nodes::SqlLiteral.new(reference.to_sql)
-          end
-        end
       end
 
       def state
@@ -133,10 +124,6 @@ module Stall
       end
 
       module ClassMethods
-        def find_by_reference(reference)
-          where("data->>'reference' = ?", reference).first
-        end
-
         # The .aborted and .finalized scopes cannot be declared as actual rails
         # scopes since subclasses that override the .wizard method wouldn't
         # be taken into account, scopes being executed in the context of the

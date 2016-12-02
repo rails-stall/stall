@@ -18,6 +18,31 @@ RSpec.shared_examples 'a product list' do |factory|
     expect(list.token).not_to be_nil
   end
 
+  describe '.aborted' do
+    it 'returns all unfinalized product lists older than one day' do
+      active_cart = create(:cart, state: DefaultCheckoutWizard.steps.first)
+      aborted_cart = create(:cart, state: DefaultCheckoutWizard.steps.first, updated_at: 2.days.ago)
+
+      expect(ProductList.aborted.to_a).to eq([aborted_cart])
+    end
+
+    it 'accepts a :before argument which changes the expiry delay' do
+      active_cart = create(:cart, state: DefaultCheckoutWizard.steps.first, updated_at: 2.days.ago)
+      aborted_cart = create(:cart, state: DefaultCheckoutWizard.steps.first, updated_at: 15.days.ago)
+
+      expect(ProductList.aborted(before: 14.days.ago).to_a).to eq([aborted_cart])
+    end
+  end
+
+  describe '.finalized' do
+    it 'returns all product lists which state is the the last checkout step' do
+      new_cart = create(:cart, state: DefaultCheckoutWizard.steps.first)
+      finalized_cart = create(:cart, state: DefaultCheckoutWizard.steps.last)
+
+      expect(ProductList.finalized.to_a).to eq([finalized_cart])
+    end
+  end
+
   describe '#total_price' do
     it 'returns the total line items price' do
       line_item1 = build(:line_item, price: 100)
