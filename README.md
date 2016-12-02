@@ -64,8 +64,8 @@ Here are the mandatory ones :
 ### 2. Configuring shop users
 
 The default cart behavior admits that you have a user model, named `User` and
-that you are using [Devise](https://github.com/plataformatec/devise/wiki)
-compatible helpers in your controllers.
+that you are using [Devise](https://github.com/plataformatec/devise)
+compatible helpers in your controllers (`current_user`).
 
 You can configure those settings by setting the following initializer config
 parameters :
@@ -84,9 +84,12 @@ has_one :customer, as: :user
 
 If you don't want to associate a user account to your customers, you'll need
 to set those variables to `nil` and remove the user creation form in the
-informations checkout step.
+informations checkout step (See
+[Configuring the checkout flow](#4-configuring-the-checkout-flow) and
+[Customizing views](#5-customizing-views) for more informations on how to
+do this).
 
-This is untested for now, but should be doable quite easily.
+Note that this is untested for now, but should be doable quite easily.
 
 ### 3. Making a model sellable
 
