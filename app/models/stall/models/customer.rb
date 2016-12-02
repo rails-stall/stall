@@ -8,23 +8,26 @@ module Stall
 
         include Stall::Addressable
 
-        belongs_to :user, polymorphic: true, inverse_of: :customer
-        accepts_nested_attributes_for :user
+        if Stall.config.default_user_model
+          belongs_to :user, polymorphic: true, inverse_of: :customer
+          accepts_nested_attributes_for :user
+
+          before_validation :ensure_user_email
+        end
 
         has_many :product_lists, dependent: :destroy
 
         validates :email, format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/ },
                           allow_blank: true
 
-        before_validation :ensure_user_email
-
         def user_or_default
           user || build_user
         end
 
         def build_user(attributes = {})
-          attributes.reverse_merge!(customer: self)
-          self.user = Stall.config.default_user_model.new(attributes)
+          (self.user = Stall.config.default_user_model.new(attributes)).tap do
+            user.customer = self if user.respond_to?(:customer)
+          end if Stall.config.default_user_model
         end
 
         private

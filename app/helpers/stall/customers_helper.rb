@@ -5,7 +5,9 @@ module Stall
     end
 
     def current_stall_user
-      send(Stall.config.default_user_helper_method)
+      if Stall.config.default_user_helper_method
+        send(Stall.config.default_user_helper_method)
+      end
     end
 
     # Copy e-mail error messages from user to customer, allowing them to be

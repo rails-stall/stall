@@ -40,11 +40,12 @@ This will generate :
 
 In the following sections, you'll find the following informations :
 
-1. [Configuring shop defaults](#2--Configuring-shop-defaults)
-2. [Making a model sellable](#1--Making-a-model-sellable)
-3. [Configuring the checkout flow](#3--Configuring-the-checkout-flow)
-4. [Customizing views](#4--Customizing-views)
-5. [Cleaning up aborted carts](#5--Cleaning-up-aborted-carts)
+1. [Configuring shop defaults](#1-configuring-shop-defaults)
+2. [Configuring shop users](#2-configuring-shop-users)
+3. [Making a model sellable](#3-making-a-model-sellable)
+4. [Configuring the checkout flow](#4-configuring-the-checkout-flow)
+5. [Customizing views](#5-customizing-views)
+6. [Cleaning up aborted carts](#6-cleaning-up-aborted-carts)
 
 
 ### 1. Configuring shop defaults
@@ -60,8 +61,34 @@ Here are the mandatory ones :
 - `sender_email`
 - `default_app_domain`
 
+### 2. Configuring shop users
 
-### 2. Making a model sellable
+The default cart behavior admits that you have a user model, named `User` and
+that you are using [Devise](https://github.com/plataformatec/devise/wiki)
+compatible helpers in your controllers.
+
+You can configure those settings by setting the following initializer config
+parameters :
+
+- `default_user_model_name`
+- `default_user_helper_method`
+
+Also, the user should include an inverse `:customer` relation targeting the
+Stall's customer model like the following :
+
+```ruby
+has_one :customer, as: :user
+```
+
+#### Remove user management
+
+If you don't want to associate a user account to your customers, you'll need
+to set those variables to `nil` and remove the user creation form in the
+informations checkout step.
+
+This is untested for now, but should be doable quite easily.
+
+### 3. Making a model sellable
 
 Stall allows you to make any model sellable by including the `Stall::Sellable`
 mixin into your model :
@@ -88,7 +115,7 @@ For more informations see the Wiki page :
 [Allowing customers to add products to cart](https://github.com/rails-stall/stall/wiki/Allowing-customers-to-add-products-to-cart)
 
 
-### 3. Configuring the checkout flow
+### 4. Configuring the checkout flow
 
 The checkout process is completely flexible and can be overriden easily.
 
@@ -96,7 +123,7 @@ Please see the Wiki page :
 [The checkout process](https://github.com/rails-stall/stall/wiki/The-checkout-process)
 
 
-### 4. Customizing views
+### 5. Customizing views
 
 You can copy stall views to your app with the `stall:view` generator.
 The less you customize the views, the more you get it to work with future
@@ -111,7 +138,7 @@ Example :
 rails generate stall:view checkout/steps/_informations checkout/steps/_payment stall/carts/_cart
 ```
 
-### 5. Cleaning up aborted carts
+### 6. Cleaning up aborted carts
 
 A cart is created for each new visit on the app. You may want to clean
 aborted carts to avoid the table to grow too big.

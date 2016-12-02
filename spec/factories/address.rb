@@ -7,5 +7,8 @@ FactoryGirl.define do
     city 'Paris'
     zip '75001'
     country 'FR'
+
+    factory :billing_address, class: BillingAddress
+    factory :shipping_address, class: ShippingAddress
   end
 end

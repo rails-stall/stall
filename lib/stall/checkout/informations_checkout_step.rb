@@ -31,7 +31,7 @@ module Stall
         prepare_addresses_attributes
         cart.assign_attributes(cart_params)
 
-        return unless valid?
+        return false unless valid?
 
         cart.save.tap do |valid|
           assign_addresses_to_customer!
@@ -70,6 +70,12 @@ module Stall
                 :id, :civility, :first_name, :last_name, :address,
                 :address_details, :country, :zip, :city, :phone,
                 :_destroy
+              ],
+              shipment_attributes: [
+                :id, :shipping_method_id
+              ],
+              payment_attributes: [
+                :id, :payment_method_id
               ]
             ],
             attributes

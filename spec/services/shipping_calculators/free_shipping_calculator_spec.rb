@@ -59,7 +59,7 @@ RSpec.describe Stall::Shipping::FreeShippingCalculator do
 
   def build_calculator(attributes = {})
     Stall::Shipping::FreeShippingCalculator.new(
-      build(:cart, shipping_address: build(:address, attributes)),
+      build(:cart, shipping_address: build(:shipping_address, attributes)),
       build(:shipping_method)
     )
   end

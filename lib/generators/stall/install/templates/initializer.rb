@@ -25,6 +25,20 @@ Stall.configure do |config|
   #
   # config.sender_email = ENV['STALL_SENDER_EMAIL']
 
+  # Set the customer associated user model used by the shop to bind user
+  # accounts to.
+  #
+  # This model should have an e-mail, password and password_confirmation
+  # fields.
+  #
+  # config.default_user_model_name = 'User'
+
+  # A method available in all controllers to fetch the current signed in user
+  # in your app. It should return a user model if the visitor is signed in, and
+  # nil if it's unsigned.
+  #
+  # config.default_user_helper_method = :current_user
+
   # Global default VAT rate, can be overrided by products
   #
   # config.vat_rate = BigDecimal.new('20.0')

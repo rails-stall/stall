@@ -99,7 +99,7 @@ module Stall
       end
 
       def currency
-        @currency ||= if (currency = read_attribute(:currency).presence)
+        if (currency = read_attribute(:currency).presence)
           Money::Currency.new(currency)
         else
           self.currency = Money.default_currency

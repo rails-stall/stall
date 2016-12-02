@@ -31,7 +31,8 @@ RSpec.describe Stall::CustomerMailer do
 
   def build_cart
     customer = build(:customer, email: 'test@example.org')
-    address = build(:address)
+    billing_address = build(:billing_address)
+    shipping_address = build(:shipping_address)
     line_items = [build(:line_item)]
     shipment = build(:shipment)
     payment = build(:payment)
@@ -39,8 +40,8 @@ RSpec.describe Stall::CustomerMailer do
     cart = create(:cart,
       customer: customer,
       line_items: line_items,
-      billing_address: address,
-      shipping_address: address,
+      billing_address: billing_address,
+      shipping_address: shipping_address,
       shipment: shipment,
       payment: payment
     )

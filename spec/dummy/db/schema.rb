@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160705174246) do
+ActiveRecord::Schema.define(version: 20161201150419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,19 +33,6 @@ ActiveRecord::Schema.define(version: 20160705174246) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "stall_address_ownerships", force: :cascade do |t|
-    t.integer  "address_id"
-    t.integer  "addressable_id"
-    t.string   "addressable_type"
-    t.boolean  "billing",          default: false
-    t.boolean  "shipping",         default: false
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-  end
-
-  add_index "stall_address_ownerships", ["address_id"], name: "index_stall_address_ownerships_on_address_id", using: :btree
-  add_index "stall_address_ownerships", ["addressable_id", "addressable_type"], name: "index_address_ownerships_on_addressable_type_and_id", using: :btree
-
   create_table "stall_addresses", force: :cascade do |t|
     t.integer  "civility"
     t.string   "first_name"
@@ -56,9 +43,12 @@ ActiveRecord::Schema.define(version: 20160705174246) do
     t.string   "city"
     t.string   "country"
     t.string   "phone"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.string   "state"
+    t.string   "type"
+    t.integer  "addressable_id"
+    t.string   "addressable_type"
   end
 
   create_table "stall_adjustments", force: :cascade do |t|
@@ -162,8 +152,25 @@ ActiveRecord::Schema.define(version: 20160705174246) do
     t.boolean  "active",     default: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
   add_foreign_key "books", "categories"
-  add_foreign_key "stall_address_ownerships", "stall_addresses", column: "address_id"
   add_foreign_key "stall_adjustments", "stall_product_lists", column: "cart_id"
   add_foreign_key "stall_line_items", "stall_product_lists", column: "product_list_id"
   add_foreign_key "stall_payments", "stall_payment_methods", column: "payment_method_id"

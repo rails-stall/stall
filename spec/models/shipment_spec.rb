@@ -14,7 +14,7 @@ RSpec.describe Shipment do
     it 'returns the cart currency if set' do
       cart = build(:cart, currency: 'GBP', shipment: build(:shipment))
 
-      expect(cart.shipment.currency).to eq('GBP')
+      expect(cart.shipment.currency).to eq(Money::Currency.new('GBP'))
     end
 
     it 'returns the default currency if no cart is set' do

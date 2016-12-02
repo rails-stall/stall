@@ -38,7 +38,7 @@ RSpec.describe Stall::ShippingFeeCalculatorService do
 
   def create_cart
     build(:cart).tap do |cart|
-      cart.shipping_address = build(:address, country: 'FR')
+      cart.shipping_address = build(:shipping_address, country: 'FR')
       cart.shipment = build(:shipment)
       cart.shipment.shipping_method = build(:shipping_method, identifier: 'fake-shipping-calculator')
       cart.save!
