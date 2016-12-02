@@ -1,7 +1,7 @@
 # Stall
 
 [![Build Status](https://api.travis-ci.org/rails-stall/stall.svg?branch=master)](http://travis-ci.org/rails-stall/stall)
-[![Code Climate](https://codeclimate.com/github/rails-stall/stall.svg)](https://codeclimate.com/github/rails-stall/stall)
+[![Test Coverage](https://codeclimate.com/github/rails-stall/stall/badges/coverage.svg)](https://codeclimate.com/github/rails-stall/stall/coverage)
 
 Stall is a flexible e-commerce framework for Rails with some specific concerns
 in mind :
