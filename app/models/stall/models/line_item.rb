@@ -27,6 +27,7 @@ module Stall
 
         validate  :stock_availability
 
+        before_validation :restore_valid_quantity
         before_validation :refresh_total_prices
 
         scope :ordered, -> { order(created_at: :asc) }
@@ -51,6 +52,12 @@ module Stall
       def refresh_total_prices
         self.eot_price = unit_eot_price * quantity if unit_eot_price && quantity
         self.price     = unit_price     * quantity if unit_price     && quantity
+      end
+
+      # Ensures that a quantity set to 0 to an existing line item doesn't return
+      # an error.
+      def restore_valid_quantity
+        restore_quantity! if persisted? && quantity < 1 && quantity_changed?
       end
     end
   end
