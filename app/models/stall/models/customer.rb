@@ -17,8 +17,8 @@ module Stall
 
         has_many :product_lists, dependent: :destroy
 
-        validates :email, format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/ },
-                          allow_blank: true
+        validates :email, presence: true, 
+                          format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/ }
 
         def user_or_default
           user || build_user
