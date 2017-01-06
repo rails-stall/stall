@@ -4,10 +4,13 @@ module Stall
       validations do
         validate :customer_accepts_terms
         validates :customer, :shipping_address, presence: true
-
         validates :billing_address, presence: true,
           if: :use_another_address_for_billing?
 
+        nested :customer do
+          validates :email, presence: true
+        end
+        
         nested :shipping_address do
           validates :civility, :first_name, :last_name, :address, :country,
                     :zip, :city, presence: true
