@@ -6,6 +6,9 @@ module Stall
       included do
         self.table_name = 'stall_product_lists'
 
+        include Stall::DefaultCurrencyManager
+        include Stall::ReferenceManager
+
         has_secure_token
 
         has_many :line_items, -> { ordered }, dependent: :destroy
@@ -14,13 +17,15 @@ module Stall
         belongs_to :customer
         accepts_nested_attributes_for :customer
 
+        has_many :generated_credit_notes, as: :source,
+                                          class_name: 'CreditNote',
+                                          dependent: :nullify
+
         validates :type, presence: true
 
-        after_initialize :ensure_currency
         after_initialize :ensure_state
 
         before_save :save_customer_if_changed
-        after_save :ensure_reference, on: :create
 
         scope :empty, -> {
           joins(
@@ -89,19 +94,7 @@ module Stall
         true
       end
 
-      def currency
-        if (currency = read_attribute(:currency).presence)
-          Money::Currency.new(currency)
-        else
-          self.currency = Money.default_currency
-        end
-      end
-
       private
-
-      def ensure_currency
-        self.currency ||= Money.default_currency
-      end
 
       def ensure_state
         self.state ||= (wizard.try(:steps).try(:first) || 'pending')
@@ -109,14 +102,6 @@ module Stall
 
       def items
         line_items.to_a
-      end
-
-      def ensure_reference
-        unless reference.present?
-          reference = [Time.now.strftime('%Y%m%d'), ('%05d' % id)].join('-')
-          self.reference = reference
-          save(validate: false)
-        end
       end
 
       def save_customer_if_changed

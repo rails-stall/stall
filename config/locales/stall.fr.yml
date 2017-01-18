@@ -84,6 +84,9 @@ fr:
         m: M.
         mme: Mme.
 
+    credit_notes:
+      adjustment_label: "Avoir n°%{ref}"
+
     mailers:
       customer:
         order_paid_email:

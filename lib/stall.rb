@@ -20,6 +20,8 @@ module Stall
   autoload :Addresses
   autoload :Priceable
   autoload :Payable
+  autoload :DefaultCurrencyManager
+  autoload :ReferenceManager
 
   autoload :Checkout
   autoload :Shipping

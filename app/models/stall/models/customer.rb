@@ -16,8 +16,9 @@ module Stall
         end
 
         has_many :product_lists, dependent: :destroy
+        has_many :credit_notes, dependent: :destroy
 
-        validates :email, presence: true, 
+        validates :email, presence: true,
                           format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/ }
 
         def user_or_default
@@ -28,6 +29,10 @@ module Stall
           (self.user = Stall.config.default_user_model.new(attributes)).tap do
             user.customer = self if user.respond_to?(:customer)
           end if Stall.config.default_user_model
+        end
+
+        def credit
+          credit_notes.map(&:remaining_amount).sum
         end
 
         private
