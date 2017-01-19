@@ -64,6 +64,18 @@ RSpec.describe Stall::CreditUsageService do
       expect(result).to eq(false)
       expect(cart.total_price.to_d).to eq(150)
     end
+
+    it 'removes all previous credit note adjustments' do
+      credit_note = create(:credit_note, amount: 50)
+      customer = credit_note.customer
+      cart = create_cart(customer, price: 100)
+      previous_adjustment = build(:credit_note_adjustment)
+      cart.adjustments << previous_adjustment
+
+      Stall::CreditUsageService.new(cart).call
+
+      expect(cart.adjustments).not_to include(previous_adjustment)
+    end
   end
 
   def create_customer(credit: nil)

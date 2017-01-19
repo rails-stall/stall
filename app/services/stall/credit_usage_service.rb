@@ -1,7 +1,5 @@
 module Stall
   class CreditUsageService < Stall::BaseService
-    class NotEnoughCreditError < StandardError; end
-
     attr_reader :cart, :params
 
     def initialize(cart, params = {})
@@ -10,6 +8,10 @@ module Stall
     end
 
     def call
+      return false unless enough_credit?
+
+      clean_previous_credit_note_adjustments!
+
       available_credit_notes.reduce(amount) do |missing_amount, credit_note|
         break true if missing_amount.to_d == 0
 
@@ -18,8 +20,6 @@ module Stall
 
         missing_amount - used_amount
       end
-    rescue NotEnoughCreditError
-      false
     end
 
     private
@@ -27,10 +27,7 @@ module Stall
     def amount
       @amount ||= if params[:amount]
         cents = BigDecimal.new(params[:amount]) * 100
-
-        Money.new(cents, cart.currency).tap do |amount|
-          raise NotEnoughCreditError if amount > credit
-        end
+        Money.new(cents, cart.currency)
       else
         [credit, cart.total_price].min
       end
@@ -38,6 +35,10 @@ module Stall
 
     def credit
       @credit ||= cart.customer.try(:credit) || Money.new(0, cart.currency)
+    end
+
+    def enough_credit?
+      amount <= credit
     end
 
     def available_credit_notes
@@ -51,6 +52,16 @@ module Stall
         price: -amount,
         credit_note: credit_note
       )
+    end
+
+    def clean_previous_credit_note_adjustments!
+      credit_note_adjustments = cart.adjustments.select do |adjustment|
+        CreditNoteAdjustment === adjustment
+      end
+
+      credit_note_adjustments.each do |adjustment|
+        cart.adjustments.destroy(adjustment)
+      end
     end
   end
 end
