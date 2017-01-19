@@ -4,14 +4,14 @@ module Stall
 
     attr_reader :cart, :params
 
-    def initialize(cart, params)
+    def initialize(cart, params = {})
       @cart = cart
       @params = params
     end
 
     def call
-      credit_notes.select(&:with_remaining_money?).reduce(amount) do |missing_amount, credit_note|
-        break if missing_amount.to_f == 0
+      available_credit_notes.reduce(amount) do |missing_amount, credit_note|
+        break true if missing_amount.to_d == 0
 
         used_amount = [credit_note.remaining_amount, missing_amount].min
         add_adjustment(used_amount, credit_note)
@@ -26,7 +26,9 @@ module Stall
 
     def amount
       @amount ||= if params[:amount]
-        Money.new(params[:amount], cart.currency).tap do |amount|
+        cents = BigDecimal.new(params[:amount]) * 100
+
+        Money.new(cents, cart.currency).tap do |amount|
           raise NotEnoughCreditError if amount > credit
         end
       else
@@ -35,14 +37,18 @@ module Stall
     end
 
     def credit
-      @credit ||= cart.customer.try(:cerdit) || Money.new(0, cart.currency)
+      @credit ||= cart.customer.try(:credit) || Money.new(0, cart.currency)
+    end
+
+    def available_credit_notes
+      @available_credit_notes ||= cart.customer.credit_notes.select(&:with_remaining_money?)
     end
 
     def add_adjustment(amount, credit_note)
       cart.adjustments.create!(
         type: 'CreditNoteAdjustment',
         name: I18n.t('stall.credit_notes.adjustment_label', ref: credit_note.reference),
-        price: amount,
+        price: -amount,
         credit_note: credit_note
       )
     end

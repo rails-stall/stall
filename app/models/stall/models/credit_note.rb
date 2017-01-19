@@ -41,6 +41,10 @@ module Stall
       def vat_rate
         read_attribute(:vat_rate) || write_attribute(:vat_rate, Stall.config.vat_rate)
       end
+
+      def with_remaining_money?
+        remaining_amount.to_d > 0
+      end
     end
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161202082205) do
+ActiveRecord::Schema.define(version: 20170119082060) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,32 @@ ActiveRecord::Schema.define(version: 20161202082205) do
   end
 
   add_index "stall_adjustments", ["cart_id"], name: "index_stall_adjustments_on_cart_id", using: :btree
+
+  create_table "stall_credit_note_usages", force: :cascade do |t|
+    t.integer  "credit_note_id"
+    t.integer  "adjustment_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "stall_credit_note_usages", ["adjustment_id"], name: "index_stall_credit_note_usages_on_adjustment_id", using: :btree
+  add_index "stall_credit_note_usages", ["credit_note_id"], name: "index_stall_credit_note_usages_on_credit_note_id", using: :btree
+
+  create_table "stall_credit_notes", force: :cascade do |t|
+    t.string   "reference"
+    t.integer  "customer_id"
+    t.string   "currency"
+    t.integer  "eot_amount_cents",                          default: 0, null: false
+    t.integer  "amount_cents",                              default: 0, null: false
+    t.decimal  "vat_rate",         precision: 11, scale: 2
+    t.integer  "source_id"
+    t.string   "source_type"
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+  end
+
+  add_index "stall_credit_notes", ["customer_id"], name: "index_stall_credit_notes_on_customer_id", using: :btree
+  add_index "stall_credit_notes", ["source_type", "source_id"], name: "index_stall_credit_notes_on_source_type_and_source_id", using: :btree
 
   create_table "stall_customers", force: :cascade do |t|
     t.string   "email"
@@ -174,6 +200,9 @@ ActiveRecord::Schema.define(version: 20161202082205) do
 
   add_foreign_key "books", "categories"
   add_foreign_key "stall_adjustments", "stall_product_lists", column: "cart_id"
+  add_foreign_key "stall_credit_note_usages", "stall_adjustments", column: "adjustment_id"
+  add_foreign_key "stall_credit_note_usages", "stall_credit_notes", column: "credit_note_id"
+  add_foreign_key "stall_credit_notes", "stall_customers", column: "customer_id"
   add_foreign_key "stall_line_items", "stall_product_lists", column: "product_list_id"
   add_foreign_key "stall_payments", "stall_payment_methods", column: "payment_method_id"
   add_foreign_key "stall_payments", "stall_product_lists", column: "cart_id"
