@@ -6,6 +6,7 @@ class Stall.CartForm extends Vertebra.View
 
   initialize: ->
     @clean()
+    new Stall.CartCreditForm(el: @$('[data-cart-credit-form]'), form: this)
 
   clean: ->
     @$('[data-cart-update-button]').hide(0)
@@ -14,10 +15,14 @@ class Stall.CartForm extends Vertebra.View
     @$el.submit()
 
   updateSuccess: (e, resp) ->
-    $form = $(resp).find('[data-cart-form]')
+    @updateCartFormWith(resp)
+
+  updateCartFormWith: (markup) ->
+    $form = $(markup).find('[data-cart-form]')
     @$el.html($form.html())
-    @clean()
+    @initialize()
 
 Stall.onDomReady ->
   if ($cartForm = $('[data-cart-form]')).length
-    new Stall.CartForm(el: $cartForm)
+    cartForm = new Stall.CartForm(el: $cartForm)
+    $cartForm.data('stall.cart-form', cartForm)

@@ -35,7 +35,7 @@ module Stall
       end
 
       def remaining_amount
-        amount - adjustments.map(&:price).sum
+        amount - adjustments.map(&:price).sum.abs
       end
 
       def vat_rate

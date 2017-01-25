@@ -35,6 +35,10 @@ module Stall
           credit_notes.map(&:remaining_amount).sum
         end
 
+        def credit?
+          credit.to_d > 0
+        end
+
         private
 
         def ensure_user_email

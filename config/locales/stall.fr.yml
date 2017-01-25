@@ -85,6 +85,22 @@ fr:
         mme: Mme.
 
     credit_notes:
+      usage_form:
+        title: "Utiliser un avoir"
+        you_have_credit: |
+          Vous disposez d'un crédit de <b>%{amount}</b> lié à votre / vos avoir(s) en
+          cours de validité.
+        you_can_use_it: |
+          Vous pouvez utiliser ce crédit en renseignant le montant que vous
+          souhaitez utiliser de ce crédit dans le champ suivant puis en cliquant
+          sur le bouton "Utiliser mon crédit".
+        use_my_credit: "Utiliser mon crédit"
+        already_used_remove_it: |
+          Vous avez déjà utilisé un avoir, si vous souhaitez modifier la somme
+          utilisée ou tout simplement le supprimer de votre panier, utilisez
+          le bouton ci-dessous pour le supprimer.
+        remove_credit_usage: "Retirer l'avoir du panier"
+
       adjustment_label: "Avoir n°%{ref}"
 
     mailers:

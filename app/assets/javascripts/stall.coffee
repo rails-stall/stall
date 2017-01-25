@@ -5,6 +5,7 @@
 #= require stall/cart-form
 #= require stall/addresses-fields
 #= require stall/remote-sign-in-form
+#= require stall/cart-credit-form
 
 @Stall =
   onDomReady: (callback) ->

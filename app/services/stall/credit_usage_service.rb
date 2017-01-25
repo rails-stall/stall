@@ -10,7 +10,7 @@ module Stall
     def call
       return false unless enough_credit?
 
-      clean_previous_credit_note_adjustments!
+      clean_credit_note_adjustments!
 
       available_credit_notes.reduce(amount) do |missing_amount, credit_note|
         break true if missing_amount.to_d == 0
@@ -22,24 +22,41 @@ module Stall
       end
     end
 
-    private
-
     def amount
-      @amount ||= if params[:amount]
-        cents = BigDecimal.new(params[:amount]) * 100
-        Money.new(cents, cart.currency)
-      else
-        [credit, cart.total_price].min
+      @amount ||= begin
+        amount = if params[:amount]
+          cents = BigDecimal.new(params[:amount]) * 100
+          Money.new(cents, cart.currency)
+        else
+          credit
+        end
+
+        [amount, cart.total_price].min
       end
     end
 
     def credit
-      @credit ||= cart.customer.try(:credit) || Money.new(0, cart.currency)
+      @credit ||= begin
+        credit = cart.customer.try(:credit) || Money.new(0, cart.currency)
+        credit + credit_note_adjustments.map(&:price).sum.abs
+      end
     end
 
     def enough_credit?
       amount <= credit
     end
+
+    def clean_credit_note_adjustments!
+      credit_note_adjustments.each do |adjustment|
+        cart.adjustments.destroy(adjustment)
+      end
+    end
+
+    def credit_used?
+      credit_note_adjustments.any?
+    end
+
+    private
 
     def available_credit_notes
       @available_credit_notes ||= cart.customer.credit_notes.select(&:with_remaining_money?)
@@ -54,13 +71,9 @@ module Stall
       )
     end
 
-    def clean_previous_credit_note_adjustments!
-      credit_note_adjustments = cart.adjustments.select do |adjustment|
+    def credit_note_adjustments
+      @credit_note_adjustments ||= cart.adjustments.select do |adjustment|
         CreditNoteAdjustment === adjustment
-      end
-
-      credit_note_adjustments.each do |adjustment|
-        cart.adjustments.destroy(adjustment)
       end
     end
   end
