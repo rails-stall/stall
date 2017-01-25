@@ -83,18 +83,6 @@ module Stall
         )
       end
 
-      # Allows overriding the nested array of permitted parameters to add other
-      # params at a given path. Rails default behavior doesn't allow merging
-      # nested arrays, neither top-level arrays.
-      #
-      # Note : We use the `deep_merge` gem for the nested arrays merging.
-      #
-      def merge_arrays(defaults, overrides)
-        defaults_hash = defaults.extract_options!
-        overrides_hash = overrides.extract_options!
-        (defaults + overrides) << defaults_hash.deeper_merge!(overrides_hash)
-      end
-
       def ensure_customer
         cart.build_customer unless cart.customer
       end

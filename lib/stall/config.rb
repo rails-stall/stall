@@ -99,5 +99,12 @@ module Stall
     def default_user_model
       default_user_model_name.try(:constantize)
     end
+
+    def default_currency_as_money
+      raw_default_currency && Money::Currency.new(raw_default_currency)
+    end
+
+    alias_method :raw_default_currency, :default_currency
+    alias_method :default_currency, :default_currency_as_money
   end
 end

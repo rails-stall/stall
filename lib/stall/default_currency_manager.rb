@@ -10,14 +10,14 @@ module Stall
       if (currency = read_attribute(:currency).presence)
         Money::Currency.new(currency)
       else
-        self.currency = Money.default_currency
+        self.currency = Stall.config.default_currency
       end
     end
 
     private
 
     def ensure_currency
-      self.currency ||= Money.default_currency
+      self.currency ||= Stall.config.default_currency
     end
   end
 end
