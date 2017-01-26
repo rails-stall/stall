@@ -10,7 +10,7 @@ module Stall
       unless reference.present?
         reference = [Time.now.strftime('%Y%m%d'), ('%05d' % id)].join('-')
         self.reference = reference
-        save(validate: false)
+        save(validate: false) unless new_record?
       end
     end
   end

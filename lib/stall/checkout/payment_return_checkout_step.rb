@@ -2,9 +2,12 @@ module Stall
   module Checkout
     class PaymentReturnCheckoutStep < Stall::Checkout::Step
       include Stall::CartHelper
+      include Stall::ArchivedPaidCartHelper
 
       def prepare
-        remove_cart_from_cookies(cart.identifier)
+        if archivable_cart?(cart)
+          archive_paid_cart_cookie(cart.identifier)
+        end
       end
 
       # When we access this step, the cart is "inactive", since it is paid, so

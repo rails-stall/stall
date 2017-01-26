@@ -78,6 +78,14 @@ fr:
     payments:
       gateway:
         pay: "Payer ma commande"
+      manual_payment_gateway:
+        help: |
+          Le montant de votre commande étant nul, vous n'avez rien à payer.
+          <br>
+          Afin de valider votre commande, merci de vérifier son contenu puis de
+          cliquer sur le bouton suivant :
+        validate: "Valider ma commande"
+
 
     addresses:
       civilities:

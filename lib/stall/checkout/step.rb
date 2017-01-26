@@ -77,7 +77,11 @@ module Stall
       private
 
       def cart_params(*attributes)
-        @cart_params ||= params.require(:cart).permit(attributes)
+        @cart_params ||= if params.key?(:cart)
+          params.require(:cart).permit(attributes)
+        else
+          {}
+        end
       end
 
       # Allows overriding the nested array of permitted parameters to add other

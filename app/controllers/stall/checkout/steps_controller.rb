@@ -42,22 +42,18 @@ module Stall
 
       def load_cart
         @cart = current_cart
+
+        unless @cart.checkoutable?
+          if archived_paid_cart?
+            @cart = archived_paid_cart
+          else
+            redirect_from_uncheckoutable_cart!
+          end
+        end
       end
 
       def find_cart(identifier, ensure_active_cart = true)
         super(identifier, false)
-      end
-
-      def ensure_cart_checkoutable
-        unless @cart.active? || @step.allow_inactive_carts?
-          remove_cart_from_cookies(@cart.identifier)
-          @cart = @cart.class.new
-        end
-
-        unless @cart.checkoutable?
-          flash[:error] = t('stall.checkout.shared.not_checkoutable')
-          redirect_to_referrer_or_root
-        end
       end
 
       def load_step
@@ -77,6 +73,20 @@ module Stall
             instance_exec(step, &Stall.config.steps_initialization)
           end
         end
+      end
+
+      def ensure_cart_checkoutable
+        unless @cart.active? || @step.allow_inactive_carts?
+          remove_cart_from_cookies(@cart.identifier)
+          @cart = @cart.class.new
+        end
+
+        redirect_from_uncheckoutable_cart! unless @cart.checkoutable?
+      end
+
+      def redirect_from_uncheckoutable_cart!
+        flash[:error] = t('stall.checkout.shared.not_checkoutable')
+        redirect_to_referrer_or_root
       end
 
       def redirect_to_referrer_or_root

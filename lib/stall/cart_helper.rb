@@ -46,7 +46,7 @@ module Stall
     end
 
     def prepare_cart(cart)
-      cart.tap do |cart|
+      cart.tap do
         cart.customer = current_customer if current_customer
         # Keep track of potential customer locale switching to allow e-mailing
         # him in his last used locale
@@ -78,8 +78,8 @@ module Stall
       cookies.delete(cart_key(identifier))
     end
 
-    def cart_key(identifier = current_cart_key)
-      ['stall', 'cart', identifier.to_s].join('.')
+    def cart_key(identifier = current_cart_key, namespace: nil)
+      ['stall', 'cart', namespace, identifier.to_s].compact.join('.')
     end
 
     def cart_class
@@ -87,13 +87,13 @@ module Stall
     end
 
     def store_cart_to_cookies
-      if current_cart.persisted?
+      if current_cart.persisted? && current_cart.active?
         store_cart_cookie_for(current_cart.identifier, current_cart)
       end
     end
 
-    def store_cart_cookie_for(identifier, cart)
-      cookies.encrypted.permanent[cart_key(identifier)] = cart.token
+    def store_cart_cookie_for(identifier, cart, namespace: nil)
+      cookies.encrypted.permanent[cart_key(identifier, namespace: namespace)] = cart.token
     end
   end
 end

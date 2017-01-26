@@ -2,7 +2,7 @@ module Stall
   class CartUpdateService < Stall::BaseService
     attr_reader :cart, :params
 
-    def initialize(cart, params)
+    def initialize(cart, params = {})
       @cart = cart
       @params = params
     end
@@ -10,15 +10,18 @@ module Stall
     def call
       cart.update(params).tap do |saved|
         return false unless saved
-
-        # Recalculate shipping fee if available for calculation to ensure
-        # that the fee us always up to date when displayed to the customer
-        shipping_fee_service.call if shipping_fee_service.available?
-
-        # Recalculate the credit usage amount if already used to avoid negative
-        # cart totals
-        credit_usage_service.call if credit_usage_service.credit_used?
+        refresh_associated_services!
       end
+    end
+
+    def refresh_associated_services!
+      # Recalculate shipping fee if available for calculation to ensure
+      # that the fee us always up to date when displayed to the customer
+      shipping_fee_service.call if shipping_fee_service.available?
+
+      # Recalculate the credit usage amount if already used to avoid negative
+      # cart totals
+      credit_usage_service.ensure_valid_or_remove! if credit_usage_service.credit_used?
     end
 
     private

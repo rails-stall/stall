@@ -4,12 +4,12 @@ module Stall
 
     def update
       credit_usage_service.call
-      render 'stall/carts/show'
+      redirect_to params[:_return_to]
     end
 
     def destroy
       credit_usage_service.clean_credit_note_adjustments!
-      render 'stall/carts/show'
+      redirect_to params[:_return_to]
     end
 
     private
@@ -19,7 +19,7 @@ module Stall
     end
 
     def credit_usage_service
-      @credit_usage_service ||=Stall.config.service_for(:credit_usage).new(
+      @credit_usage_service ||= Stall.config.service_for(:credit_usage).new(
         @cart, amount: params[:amount]
       )
     end

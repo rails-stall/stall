@@ -56,6 +56,19 @@ module Stall
       credit_note_adjustments.any?
     end
 
+    def credit_used
+      credit_note_adjustments.map(&:price).sum
+    end
+
+    def ensure_valid_or_remove!
+      if !enough_credit?
+        clean_credit_note_adjustments!
+      elsif cart.total_price.to_d < 0
+        @amount = credit_used
+        call
+      end
+    end
+
     private
 
     def available_credit_notes
