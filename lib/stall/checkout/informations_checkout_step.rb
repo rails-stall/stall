@@ -64,11 +64,11 @@ module Stall
               ],
               shipping_address_attributes: [
                 :id, :civility, :first_name, :last_name, :address,
-                :address_details, :country, :zip, :city, :phone
+                :address_details, :country, :zip, :city, :phone, :state
               ],
               billing_address_attributes: [
                 :id, :civility, :first_name, :last_name, :address,
-                :address_details, :country, :zip, :city, :phone,
+                :address_details, :country, :zip, :city, :phone, :state,
                 :_destroy
               ],
               shipment_attributes: [
