@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161202082205) do
+ActiveRecord::Schema.define(version: 20170124093811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 20161202082205) do
     t.datetime "updated_at",                null: false
     t.integer  "user_id"
     t.string   "user_type"
-    t.string   "locale",     default: "en"
+    t.string   "locale",     default: "fr"
   end
 
   add_index "stall_customers", ["user_type", "user_id"], name: "index_stall_customers_on_user_type_and_user_id", using: :btree
@@ -114,6 +114,35 @@ ActiveRecord::Schema.define(version: 20161202082205) do
   add_index "stall_payments", ["cart_id"], name: "index_stall_payments_on_cart_id", using: :btree
   add_index "stall_payments", ["payment_method_id"], name: "index_stall_payments_on_payment_method_id", using: :btree
 
+  create_table "stall_product_categories", force: :cascade do |t|
+    t.string   "name"
+    t.text     "slug"
+    t.integer  "position",   default: 0
+    t.integer  "parent_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "stall_product_category_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id",   null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations",   null: false
+  end
+
+  add_index "stall_product_category_hierarchies", ["ancestor_id", "descendant_id", "generations"], name: "stall_product_category_anc_desc_idx", unique: true, using: :btree
+  add_index "stall_product_category_hierarchies", ["descendant_id"], name: "stall_product_category_desc_idx", using: :btree
+
+  create_table "stall_product_details", force: :cascade do |t|
+    t.integer  "product_id"
+    t.string   "name"
+    t.text     "content"
+    t.integer  "position",   default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "stall_product_details", ["product_id"], name: "index_stall_product_details_on_product_id", using: :btree
+
   create_table "stall_product_lists", force: :cascade do |t|
     t.string   "state",                           null: false
     t.string   "type",                            null: false
@@ -129,6 +158,23 @@ ActiveRecord::Schema.define(version: 20161202082205) do
 
   add_index "stall_product_lists", ["customer_id"], name: "index_stall_product_lists_on_customer_id", using: :btree
   add_index "stall_product_lists", ["reference"], name: "index_stall_product_lists_on_reference", unique: true, using: :btree
+
+  create_table "stall_products", force: :cascade do |t|
+    t.string   "name"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.text     "description"
+    t.text     "slug"
+    t.integer  "position"
+    t.boolean  "visible"
+    t.integer  "product_category_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "stall_products", ["product_category_id"], name: "index_stall_products_on_product_category_id", using: :btree
 
   create_table "stall_shipments", force: :cascade do |t|
     t.integer  "cart_id"
@@ -154,6 +200,16 @@ ActiveRecord::Schema.define(version: 20161202082205) do
     t.boolean  "active",     default: true
   end
 
+  create_table "stall_variants", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "price_cents",    default: 0,     null: false
+    t.string   "price_currency", default: "USD", null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "stall_variants", ["product_id"], name: "index_stall_variants_on_product_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -177,7 +233,10 @@ ActiveRecord::Schema.define(version: 20161202082205) do
   add_foreign_key "stall_line_items", "stall_product_lists", column: "product_list_id"
   add_foreign_key "stall_payments", "stall_payment_methods", column: "payment_method_id"
   add_foreign_key "stall_payments", "stall_product_lists", column: "cart_id"
+  add_foreign_key "stall_product_details", "stall_products", column: "product_id"
   add_foreign_key "stall_product_lists", "stall_customers", column: "customer_id"
+  add_foreign_key "stall_products", "stall_product_categories", column: "product_category_id"
   add_foreign_key "stall_shipments", "stall_product_lists", column: "cart_id"
   add_foreign_key "stall_shipments", "stall_shipping_methods", column: "shipping_method_id"
+  add_foreign_key "stall_variants", "stall_products", column: "product_id"
 end

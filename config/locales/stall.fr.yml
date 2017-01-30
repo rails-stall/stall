@@ -116,6 +116,8 @@ fr:
       cart: "Panier"
       shipment: "Livraison"
       payment: "Paiement"
+      product: Produit
+      product_category: Catégorie
 
     attributes:
       line_item:
