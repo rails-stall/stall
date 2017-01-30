@@ -21,7 +21,7 @@ module Stall
 
       # Recalculate the credit usage amount if already used to avoid negative
       # cart totals
-      credit_usage_service.ensure_valid_or_remove! if credit_usage_service.credit_used?
+      credit_usage_service.ensure_valid_or_remove! if credit_usage_service.available? && credit_usage_service.credit_used?
     end
 
     private

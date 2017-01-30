@@ -52,6 +52,13 @@ module Stall
       end
     end
 
+    # FIXME: Ducktyping ShippingFeeCalculatorService and use this method in 
+    # CartUpdateService#refresh_associated_services! to test if credit notes exists
+    # 
+    def available?
+      cart.respond_to?(:adjustments)
+    end
+
     def credit_used?
       credit_note_adjustments.any?
     end
