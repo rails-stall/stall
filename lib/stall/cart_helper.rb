@@ -50,7 +50,13 @@ module Stall
         cart.customer = current_customer if current_customer
         # Keep track of potential customer locale switching to allow e-mailing
         # him in his last used locale
-        cart.customer.locale = I18n.locale if cart.customer
+        #
+        # Only applicable if the locale is an available locale to avoid strange
+        # issues with some URL locale management systems that could set the
+        # `assets` prefix as a locale, for instance.
+        if cart.customer && I18n.locale.in?(I18n.available_locales)
+          cart.customer.locale = I18n.locale
+        end
 
         # Only update locale change for existing carts. New carts don't need
         # to be saved, avoiding each robot or simple visitors to create a
