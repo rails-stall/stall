@@ -17,7 +17,7 @@ module Stall
         end
 
         def civility_name
-          I18n.t("stall.addresses.civilities.#{ civility }")
+          I18n.t("stall.addresses.civilities.#{ civility }") if civility.present?
         end
 
         def country_name
