@@ -1,6 +1,6 @@
 %p.help-block= t('stall.payments.manual_payment_gateway.help').html_safe
 
-= simple_form_for request.cart, url: Stall::Payments::UrlsConfig.new(request.cart).payment_notification_url, method: :post do |form|
+= simple_form_for request.cart, as: :cart, url: Stall::Payments::UrlsConfig.new(request.cart).payment_notification_url, method: :post do |form|
   = form.hidden_field :token, value: request.token
   = form.hidden_field :timestamp, value: request.timestamp
   = form.hidden_field :reference, value: request.reference

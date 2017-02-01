@@ -8,6 +8,7 @@ module Stall
 
         include Stall::DefaultCurrencyManager
         include Stall::ReferenceManager
+        include Stall::TotalPricesManager
 
         has_secure_token
 
@@ -55,27 +56,11 @@ module Stall
       end
 
       def subtotal
-        price = line_items.map(&:price).sum
-        price = Money.new(price, currency) unless Money === price
-        price
+        ensure_money(line_items.map(&:price).sum)
       end
 
       def eot_subtotal
-        line_items.map(&:eot_price).sum
-      end
-
-      def total_price
-        price = items.map(&:price).sum
-        price = Money.new(price, currency) unless Money === price
-        price
-      end
-
-      def total_eot_price
-        items.map(&:eot_price).sum
-      end
-
-      def total_vat
-        items.map(&:vat).sum
+        ensure_money(line_items.map(&:eot_price).sum)
       end
 
       def total_quantity

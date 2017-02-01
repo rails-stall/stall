@@ -1,7 +1,7 @@
 module Stall
   module CreditNotesHelper
     def available_customer_credit_for?(cart)
-      cart.customer.try(:credit?) || credit_used_for?(cart)
+      cart.customer.try(:credit?, cart.currency) || credit_used_for?(cart)
     end
 
     def maximum_credit_usage_for(cart)

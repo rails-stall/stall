@@ -23,6 +23,7 @@ fr:
         total_eot_price: "Prix total HT"
         total_vat: "Total TVA"
         total_price: "Prix total"
+        remainder: "Le montant suivant sera transformé en avoir"
         update: "Mettre à jour le panier"
         validate: "Passer la commande"
         paid_at: "Payée le %{at}"
@@ -110,6 +111,7 @@ fr:
         remove_credit_usage: "Retirer l'avoir du panier"
 
       adjustment_label: "Avoir n°%{ref}"
+      source_cart_adjustment_label: "Solde transformé en avoir n°%{ref}"
 
     mailers:
       customer:

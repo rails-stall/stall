@@ -108,6 +108,13 @@ Stall.configure do |config|
   #
   # config.default_product_weight = 0
 
+  # When a cart total balance is negative, automatically convert the remaining
+  # amount into a credit note for the cart customer
+  #
+  # Defaults to false, losing the remainder for the customer when paid
+  #
+  # config.convert_cart_remainder_to_credit_note = false
+
   # Allows configuring which countries are available for free shipping offers
   #
   # Accepts an array of country codes or a proc with an Address argument

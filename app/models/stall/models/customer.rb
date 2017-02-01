@@ -31,12 +31,12 @@ module Stall
           end if Stall.config.default_user_model
         end
 
-        def credit
-          credit_notes.map(&:remaining_amount).sum
+        def credit(currency = Stall.config.default_currency)
+          credit_notes.for_currency(currency).map(&:remaining_amount).sum
         end
 
-        def credit?
-          credit.to_d > 0
+        def credit?(currency = Stall.config.default_currency)
+          credit(currency).to_d > 0
         end
 
         private

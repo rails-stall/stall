@@ -11,7 +11,7 @@ module Stall
 
     def call
       if gateway_response.valid?
-        send_payment_notification_emails! if gateway_response.notify
+        validate_cart! if gateway_response.process
       else
         raise UnknownNotificationError,
               "The payment notification request does not seem to come from " +
@@ -25,8 +25,9 @@ module Stall
 
     private
 
-    def cart
-      gateway_response.cart
+    def validate_cart!
+      service = Stall.config.service_for(:cart_payment_validation)
+      service.new(gateway_response.cart).call
     end
 
     def gateway_class
@@ -35,11 +36,6 @@ module Stall
 
     def gateway_response
       @gateway_response ||= gateway_class.response(request)
-    end
-
-    def send_payment_notification_emails!
-      Stall::CustomerMailer.order_paid_email(gateway_response.cart).deliver
-      Stall::AdminMailer.order_paid_email(gateway_response.cart).deliver
     end
   end
 end
