@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    stall (0.2.0)
+    stall (0.3.0)
       cocoon (~> 1.0)
       coffee-rails (~> 4.0)
       country_select (~> 2.0)
