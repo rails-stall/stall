@@ -11,6 +11,7 @@ module Stall
         scope mount_location, module: :stall do
           resources :carts do
             resources :line_items
+            resource :credit, controller: 'cart_credits', only: [:update, :destroy]
           end
 
           get 'checkout/:cart_key' => 'checkouts#show', as: :checkout

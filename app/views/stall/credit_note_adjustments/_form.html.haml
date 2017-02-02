@@ -1,0 +1,28 @@
+- if stall_user_signed_in? && available_customer_credit_for?(cart)
+  = simple_form_for cart, url: cart_credit_path(cart), method: (credit_used_for?(@cart) ? :delete : :patch), html: { class: 'cart-credit-form', data: { :'cart-credit-form' => true } } do |form|
+    = hidden_field_tag :_return_to, request.fullpath
+
+    %legend= t('stall.credit_notes.usage_form.title')
+
+    - if credit_used_for?(@cart)
+      %p.help-block= t('stall.credit_notes.usage_form.already_used_remove_it')
+
+      .row
+        .col-md-4.col-md-offset-4
+          %button.btn.btn-primary.btn-block{ type: 'submit', data: { :'cart-credit-remove-button' => true } }
+            = t('stall.credit_notes.usage_form.remove_credit_usage')
+
+    - else
+      %p.help-block= t('stall.credit_notes.usage_form.you_have_credit', amount: number_to_currency(current_customer_credit_for(@cart))).html_safe
+
+      %p.help-block= t('stall.credit_notes.usage_form.you_can_use_it').html_safe
+
+      .row
+        .col-md-8
+          .input-group
+            = number_field_tag :amount, maximum_credit_usage_for(@cart), class: 'form-control', data: { :'cart-credit-input' => true }
+            %span.input-group-addon= @cart.currency.symbol
+
+        .col-md-4
+          %button.btn.btn-primary.btn-block{ type: 'submit', data: { :'cart-credit-button' => true } }
+            = t('stall.credit_notes.usage_form.use_my_credit')

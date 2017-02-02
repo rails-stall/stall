@@ -6,6 +6,7 @@
 #= require stall/addresses-fields
 #= require stall/remote-sign-in-form
 
+
 @Stall =
   onDomReady: (callback) ->
     event = if window.Turbolinks && window.Turbolinks.supported

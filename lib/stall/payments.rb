@@ -3,6 +3,8 @@ module Stall
     extend ActiveSupport::Autoload
 
     autoload :Gateway
+    autoload :GatewayRequest
+    autoload :GatewayResponse
     autoload :Config
     autoload :UrlsConfig
     autoload :FakeGatewayPaymentNotification

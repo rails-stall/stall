@@ -21,6 +21,10 @@ module Stall
   autoload :Addresses
   autoload :Priceable
   autoload :Payable
+  autoload :Shippable
+  autoload :Adjustable
+  autoload :DefaultCurrencyManager
+  autoload :ReferenceManager
 
   autoload :Checkout
   autoload :Shipping
@@ -28,6 +32,7 @@ module Stall
 
   autoload :Routes
   autoload :CartHelper
+  autoload :ArchivedPaidCartHelper
   autoload :Config
   autoload :Utils
 

@@ -6,6 +6,7 @@ module Stall
 
     def show
       @cart.reset_state!
+      Stall.config.service_for(:cart_update).new(@cart).refresh_associated_services!
       redirect_to step_path
     end
 

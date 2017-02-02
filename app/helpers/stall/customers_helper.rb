@@ -5,7 +5,7 @@ module Stall
     end
 
     def current_stall_user
-      if Stall.config.default_user_helper_method
+      if (method = Stall.config.default_user_helper_method) && respond_to?(method, true)
         send(Stall.config.default_user_helper_method)
       end
     end

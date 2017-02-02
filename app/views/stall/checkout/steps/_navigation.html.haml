@@ -4,8 +4,8 @@
 %ol.breadcrumb
   - wizard.steps.each_with_index do |step_identifier, index|
     %li{ class: ('active' if step.is?(step_identifier) ) }
-      - if wizard.step_complete?(step_identifier)
-        = link_to change_checkout_step_path(current_cart.identifier, step_identifier) do
+      - if wizard.step_complete?(step_identifier) && wizard.cart.active?
+        = link_to change_checkout_step_path(wizard.cart.identifier, step_identifier) do
           %span.badge= index + 1
           = t("stall.checkout.#{ step_identifier }.title")
       - else

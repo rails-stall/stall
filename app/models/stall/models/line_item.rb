@@ -57,7 +57,9 @@ module Stall
       # Ensures that a quantity set to 0 to an existing line item doesn't return
       # an error.
       def restore_valid_quantity
-        restore_quantity! if persisted? && quantity < 1 && quantity_changed?
+        if persisted? && quantity && (quantity < 1) && quantity_changed?
+          restore_quantity!
+        end
       end
     end
   end

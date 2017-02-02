@@ -4,6 +4,10 @@ module Stall
       Money.default_currency = Stall.config.default_currency
     end
 
+    initializer 'stall.set_money_gem_infinite_precision' do
+      Money.infinite_precision = true
+    end
+
     initializer 'stall.add_routing_mapper_extension' do
       ActionDispatch::Routing::Mapper.send(:include, Stall::RoutingMapper)
     end
@@ -17,6 +21,7 @@ module Stall
     initializer 'stall.include_cart_helper' do
       ActiveSupport.on_load(:action_controller) do
         include Stall::CartHelper
+        include Stall::ArchivedPaidCartHelper
       end
     end
 
@@ -26,6 +31,10 @@ module Stall
           method.name = name.to_s.humanize
         end
       end
+    end
+
+    initializer 'stall.require_manual_payment_gateway' do
+      require 'stall/payments/manual_payment_gateway'
     end
 
     initializer 'stall.ensure_payment_method_for_all_gateways' do

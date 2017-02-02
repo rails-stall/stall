@@ -1,45 +1,48 @@
-%table.table.table-hover
-  %thead
-    %tr
-      %th= LineItem.human_attribute_name(:name)
-      %th= LineItem.human_attribute_name(:price)
-  %tbody
-    - cart.line_items.each do |line_item|
-      %tr{ data: { :'line-item-id' => line_item.id } }
-        %td
-          = line_item.name
-          x
-          = line_item.quantity
-        %td= number_to_currency(line_item.price)
-
-  %tfoot
-    - if cart.subtotal != cart.total_price
+.cart-table-wrapper{ data: { :'cart-recap' => true } }
+  %table.table.table-hover
+    %thead
       %tr
-        %td= t('stall.carts.recap.subtotal')
-        %td= number_to_currency(cart.subtotal)
+        %th= LineItem.human_attribute_name(:name)
+        %th= LineItem.human_attribute_name(:price)
+    %tbody
+      - cart.line_items.each do |line_item|
+        %tr{ data: { :'line-item-id' => line_item.id } }
+          %td
+            = line_item.name
+            x
+            = line_item.quantity
+          %td= number_to_currency(line_item.price)
 
-    - if cart.shipment.try(:persisted?)
+    %tfoot
+      - if cart.subtotal != cart.total_price
+        %tr
+          %td= t('stall.carts.recap.subtotal')
+          %td= number_to_currency(cart.subtotal)
+
+      - if cart.shipment.try(:persisted?)
+        %tr
+          %td
+            = t('stall.carts.recap.total_shipment_price')
+            \:
+            = cart.shipment.shipping_method.name
+
+          %td= number_to_currency(cart.shipment.price)
+
+      - cart.adjustments.each do |adjustment|
+        %tr
+          %td= adjustment.name
+          %td= number_to_currency(adjustment.price)
+
       %tr
-        %td
-          = t('stall.carts.recap.total_shipment_price')
-          \:
-          = cart.shipment.shipping_method.name
+        %td= t('stall.carts.recap.total_eot_price')
+        %td= number_to_currency(cart.total_eot_price)
 
-        %td= number_to_currency(cart.shipment.price)
-
-    - cart.adjustments.each do |adjustment|
       %tr
-        %td= adjustment.name
-        %td= number_to_currency(adjustment.price)
+        %td= t('stall.carts.recap.total_vat')
+        %td= number_to_currency(cart.total_vat)
 
-    %tr
-      %td= t('stall.carts.recap.total_eot_price')
-      %td= number_to_currency(cart.total_eot_price)
+      %tr
+        %td= t('stall.carts.recap.total_price')
+        %td= number_to_currency(cart.total_price)
 
-    %tr
-      %td= t('stall.carts.recap.total_vat')
-      %td= number_to_currency(cart.total_vat)
-
-    %tr
-      %td= t('stall.carts.recap.total_price')
-      %td= number_to_currency(cart.total_price)
+  = render partial: 'stall/credit_note_adjustments/form', locals: { cart: @cart }
