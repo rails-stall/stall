@@ -4,6 +4,10 @@ module Stall
 
     included do
       after_initialize :ensure_currency
+
+      scope :for_currency, ->(currency) {
+        where(table_name => { currency: currency.to_s })
+      }
     end
 
     def currency

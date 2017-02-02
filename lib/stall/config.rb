@@ -57,6 +57,8 @@ module Stall
     # Configure the terms of service page path
     param :terms_path, 'about:blank'
 
+    param :convert_cart_remainder_to_credit_note, false
+
     def shipping
       @shipping ||= Stall::Shipping::Config.new
     end

@@ -45,4 +45,9 @@
         %td= t('stall.carts.recap.total_price')
         %td= number_to_currency(cart.total_price)
 
+      - if cart.remainder?
+        %tr
+          %td= t('stall.carts.recap.remainder')
+          %td= number_to_currency(cart.remainder)
+
   = render partial: 'stall/credit_note_adjustments/form', locals: { cart: @cart }

@@ -15,12 +15,12 @@ module Stall
         false
       end
 
-      def notify
-        cart.payment.pay! if success?
-      end
-
       def valid?
         false
+      end
+
+      def process
+        valid? && success?
       end
 
       def cart

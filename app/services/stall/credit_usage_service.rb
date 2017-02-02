@@ -37,8 +37,8 @@ module Stall
 
     def credit
       @credit ||= begin
-        credit = cart.customer.try(:credit) || Money.new(0, cart.currency)
-        credit + credit_note_adjustments.map(&:price).sum.abs
+        credit = cart.customer.try(:credit, cart.currency) || Money.new(0, cart.currency)
+        Money.new(credit + credit_note_adjustments.map(&:price).sum.abs, cart.currency)
       end
     end
 
@@ -52,9 +52,9 @@ module Stall
       end
     end
 
-    # FIXME: Ducktyping ShippingFeeCalculatorService and use this method in 
+    # FIXME: Ducktyping ShippingFeeCalculatorService and use this method in
     # CartUpdateService#refresh_associated_services! to test if credit notes exists
-    # 
+    #
     def available?
       cart.respond_to?(:adjustments)
     end
@@ -79,7 +79,9 @@ module Stall
     private
 
     def available_credit_notes
-      @available_credit_notes ||= cart.customer.credit_notes.select(&:with_remaining_money?)
+      @available_credit_notes ||= cart.customer.credit_notes
+        .for_currency(cart.currency)
+        .select(&:with_remaining_money?)
     end
 
     def add_adjustment(amount, credit_note)
