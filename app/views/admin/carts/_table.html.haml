@@ -1,0 +1,17 @@
+= resources_table(model: model, component: component) do |table|
+  = table.header do
+    = table.header_for(:reference)
+    = table.header_for(:paid, sort: :payment_paid_at)
+    = table.header_for(:customer, sort: :customer_email)
+    = table.header_for(:total_price)
+    = table.header_for(:created_at)
+    = table.header_for(:state)
+
+  = table.rows(resources) do |resource|
+    = table.data_for(resource, :reference)
+    %td= resource.payment&.paid_at ? l(resource.payment.paid_at, format: :admin) : fa_icon('times')
+    = table.data_for(resource.customer.try(:email))
+    = table.data_for(number_to_currency(resource.total_price))
+    = table.data_for(l(resource.created_at, format: :admin))
+    = table.data_for(t("activerecord.enums.cart.state.#{ resource.state }"))
+

@@ -1,0 +1,14 @@
+.variant-select-input{ data: { :'variant-select-input' => true, :'variant-select-data' => variants_data.to_json, :'price-target' => price_selector } }
+  = form.hidden_field foreign_key, data: { :'variant-select-foreign-key' => true }
+
+  - properties.each do |property_config|
+    - if property_config.available_options.length == 1
+      .variant-select-property.hidden{ data: { :'variant-select-property' => property_config.property_name, :'preselected' => true } }
+        = hidden_field :property_config, property_config.property_name, value: property_config.available_options.first.last, data: { :'preselected-value' => true }
+    - else
+      .variant-select-property{ data: { :'variant-select-property' => property_config.property_name } }
+        = label :property_config, property_config.property_name, property_config.property_model.model_name.human, class: 'variant-select-label'
+        = collection_radio_buttons :property_config, property_config.property_name, property_config.available_options, :last, :first, {}, autocomplete: 'off' do |radio|
+          = radio.label class: 'variant-select-radio', data: { :'variant-select-radio' => true } do
+            = radio.radio_button
+            = radio.text

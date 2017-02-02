@@ -1,0 +1,43 @@
+= para_form_for(resource) do |form|
+  = form.tabs do |tabs|
+    = tabs.tab :informations do
+      = form.input :reference
+      = form.input :total_price do
+        .input-group
+          = form.input_field :total_price, class: 'form-control', disabled: 'disabled'
+          %span.input-group-addon
+            = form.object.total_price.symbol
+
+      = form.actions
+
+    = tabs.tab :billing do
+      = form.input :customer, :as => :nested_one
+
+      = form.input :billing_address do
+        .nested-one-field
+          = form.simple_fields_for :billing_address, (form.object.billing_address || form.object.build_billing_address), nested_attribute_name: :billing_address do |nested_form|
+            = render partial: find_partial_for(Address, :fields), locals: { form: nested_form, parent: form.object }
+
+      = form.actions
+
+    = tabs.tab :shipping do
+      = form.input :shipment, :as => :nested_one
+
+      = form.input :shipping_address do
+        .nested-one-field
+          = form.simple_fields_for :shipping_address, (form.object.shipping_address || form.object.build_shipping_address), nested_attribute_name: :shipping_address do |nested_form|
+            = render partial: find_partial_for(Address, :fields), locals: { form: nested_form, parent: form.object }
+
+      = form.actions
+
+    = tabs.tab :payment do
+      = form.input :payment, :as => :nested_one
+
+      = form.actions
+
+    = tabs.tab :line_items do
+      = form.input :line_items, :as => :nested_many
+
+      = form.actions
+
+

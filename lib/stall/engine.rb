@@ -45,6 +45,10 @@ module Stall
       end
     end
 
+    initializer 'stall.add_stall_plugin_to_para_config' do
+      Para.config.plugins += [:stall]
+    end
+
     # Development : Configure rails generators to only generate the target
     # files and not try to generate useless complementary files
     #

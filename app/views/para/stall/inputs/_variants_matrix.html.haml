@@ -1,0 +1,24 @@
+.panel.panel-default{ data: { :'variants-matrix-input' => true, :'require-all-properties' => require_all_properties } }
+  %table.table
+    %tbody
+      %tr
+        - properties.each do |variants_property_config|
+          %td{ width: "#{ (100.0 / properties.length) }%" }
+            = label :variants_property_config, variants_property_config.property_name, variants_property_config.property_model.model_name.human
+            = select :variants_property_config, variants_property_config.property_name, options_for_select(variants_property_config.options), {}, multiple: true, autocomplete: 'off', data: { :'variants-matrix-property-select' => variants_property_config.property_name }
+
+  %table.table.table-hover
+    %thead
+      %tr
+        %th= t('para.stall.variants_matrix.enabled')
+
+        - properties.each do |variants_property_config|
+          %th= variants_property_config.property_model.model_name.human
+
+        %th= t('para.stall.variants_matrix.price')
+
+    %tbody{ data: { :'variants-matrix-variants-container' => "#{ dom_identifier }" } }
+      = form.fields_for attribute_name, variants do |variant_fields|
+        = render partial: find_partial_for(model, :variant_row), locals: { form: variant_fields }.merge(variant_row_locals)
+
+  = link_to_add_association t('para.form.nested.add'), form, attribute_name, partial: find_partial_for(model, :variant_row), form_name: 'form', class: 'hidden', data: { :'variants-matrix-new-row-button' => true }, render_options: { nested_attribute_name: attribute_name, locals: variant_row_locals }

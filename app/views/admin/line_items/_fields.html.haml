@@ -1,0 +1,15 @@
+= form.input :name
+
+= form.input :unit_price do
+  .input-group
+    = form.input_field :unit_price, class: 'form-control'
+    %span.input-group-addon
+      = form.object.unit_price.symbol
+
+= form.input :quantity
+
+= form.input :price do
+  .input-group
+    = form.input_field :price, class: 'form-control', disabled: 'disabled'
+    %span.input-group-addon
+      = form.object.price.symbol

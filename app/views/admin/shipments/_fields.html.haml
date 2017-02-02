@@ -1,0 +1,7 @@
+= form.input :state, as: :selectize, collection: Shipment.states.keys.map { |state| { text: I18n.t("activerecord.enums.shipment.state.#{ state }"), value: state } }
+
+= form.input :shipping_method, :as => :selectize
+= form.input :tracking_code
+
+= form.input :price
+= form.input :sent_at, wrapper: :horizontal_form

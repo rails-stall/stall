@@ -1,0 +1,24 @@
+%tr.variants-matrix-variant-row{ data: { :'variants-matrix-variant-row' => true, :'variant-id' => form.object.id } }
+  %td
+    = form.hidden_field :id
+    = form.hidden_field :_destroy, value: 'false', data: { :'variant-remove' => true }
+
+    %span.checkbox
+      %label
+        = check_box_tag :enabled, true, {}, data: { :'variants-matrix-variant-enabled' => true }
+        %i.checkbox-icon
+
+  - properties.each do |property_config|
+    - property = property_config.property_value_for(form.object)
+
+    %td{ data: { :'variants-matrix-variant-property' => property_config.property_name } }
+      %span{ data: { :'property-name' => true } }
+        = property_config.property_name_for(property)
+
+      = form.hidden_field property_config.foreign_key, data: { :'property-id' => true }
+
+  %td
+    .input-group
+      = form.input_field :price, class: 'form-control'
+      %span.input-group-addon
+        = form.object.currency.symbol

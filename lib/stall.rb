@@ -12,6 +12,8 @@ require 'stall/rails/routing_mapper'
 require 'stall/rails/currency_helper'
 require 'stall/engine'
 
+require 'para/stall'
+
 module Stall
   extend ActiveSupport::Autoload
 
