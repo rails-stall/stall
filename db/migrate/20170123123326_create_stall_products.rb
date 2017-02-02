@@ -6,7 +6,7 @@ class CreateStallProducts < ActiveRecord::Migration
       t.text :description
       t.text :slug
       t.integer :position
-      t.boolean :visible
+      t.boolean :visible, default: true
       t.references :product_category, index: true
 
       t.timestamps null: false

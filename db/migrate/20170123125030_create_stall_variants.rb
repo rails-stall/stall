@@ -3,6 +3,7 @@ class CreateStallVariants < ActiveRecord::Migration
     create_table :stall_variants do |t|
       t.references :product, index: true
       t.monetize :price
+      t.boolean :published, default: true
 
       t.timestamps null: false
     end
