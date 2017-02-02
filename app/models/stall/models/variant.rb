@@ -14,6 +14,8 @@ module Stall
 
         delegate :name, :image, :image?, :vat_rate, to: :product, allow_nil: true
 
+        scope :published, -> { where(published: true) }
+
         def currency
           @currency ||= Money::Currency.new(Stall.config.default_currency)
         end
