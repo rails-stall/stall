@@ -58,6 +58,8 @@ module Stall
           cart.customer.locale = I18n.locale
         end
 
+        Stall.config.service_for(:product_list_staleness_handling).new(cart).call
+
         # Only update locale change for existing carts. New carts don't need
         # to be saved, avoiding each robot or simple visitors to create a
         # cart on large shops.

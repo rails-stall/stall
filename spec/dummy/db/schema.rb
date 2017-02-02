@@ -11,10 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170119082060) do
+ActiveRecord::Schema.define(version: 20170201131326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
+  enable_extension "unaccent"
+
+  create_table "admin_users", force: :cascade do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
+  add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "books", force: :cascade do |t|
     t.string   "title"
@@ -32,6 +52,60 @@ ActiveRecord::Schema.define(version: 20170119082060) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "para_component_resources", force: :cascade do |t|
+    t.integer  "component_id"
+    t.integer  "resource_id"
+    t.string   "resource_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "para_component_resources", ["component_id"], name: "index_para_component_resources_on_component_id", using: :btree
+  add_index "para_component_resources", ["resource_type", "resource_id"], name: "index_para_component_resources_on_resource_type_and_resource_id", using: :btree
+
+  create_table "para_component_sections", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "identifier"
+    t.integer  "position"
+  end
+
+  create_table "para_components", force: :cascade do |t|
+    t.string   "type"
+    t.string   "name"
+    t.hstore   "configuration",        default: {}, null: false
+    t.integer  "position",             default: 0
+    t.integer  "component_section_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "slug"
+    t.string   "identifier"
+  end
+
+  add_index "para_components", ["slug"], name: "index_para_components_on_slug", using: :btree
+
+  create_table "para_library_files", force: :cascade do |t|
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.datetime "attachment_updated_at"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "para_page_sections", force: :cascade do |t|
+    t.string   "type"
+    t.jsonb    "data"
+    t.integer  "position",   default: 0
+    t.integer  "page_id"
+    t.string   "page_type"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "para_page_sections", ["page_type", "page_id"], name: "index_para_page_sections_on_page_type_and_page_id", using: :btree
 
   create_table "stall_addresses", force: :cascade do |t|
     t.integer  "civility"
@@ -96,7 +170,7 @@ ActiveRecord::Schema.define(version: 20170119082060) do
     t.datetime "updated_at",                null: false
     t.integer  "user_id"
     t.string   "user_type"
-    t.string   "locale",     default: "en"
+    t.string   "locale",     default: "fr"
   end
 
   add_index "stall_customers", ["user_type", "user_id"], name: "index_stall_customers_on_user_type_and_user_id", using: :btree
@@ -140,6 +214,35 @@ ActiveRecord::Schema.define(version: 20170119082060) do
   add_index "stall_payments", ["cart_id"], name: "index_stall_payments_on_cart_id", using: :btree
   add_index "stall_payments", ["payment_method_id"], name: "index_stall_payments_on_payment_method_id", using: :btree
 
+  create_table "stall_product_categories", force: :cascade do |t|
+    t.string   "name"
+    t.text     "slug"
+    t.integer  "position",   default: 0
+    t.integer  "parent_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "stall_product_category_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id",   null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations",   null: false
+  end
+
+  add_index "stall_product_category_hierarchies", ["ancestor_id", "descendant_id", "generations"], name: "stall_product_category_anc_desc_idx", unique: true, using: :btree
+  add_index "stall_product_category_hierarchies", ["descendant_id"], name: "stall_product_category_desc_idx", using: :btree
+
+  create_table "stall_product_details", force: :cascade do |t|
+    t.integer  "product_id"
+    t.string   "name"
+    t.text     "content"
+    t.integer  "position",   default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "stall_product_details", ["product_id"], name: "index_stall_product_details_on_product_id", using: :btree
+
   create_table "stall_product_lists", force: :cascade do |t|
     t.string   "state",                           null: false
     t.string   "type",                            null: false
@@ -155,6 +258,23 @@ ActiveRecord::Schema.define(version: 20170119082060) do
 
   add_index "stall_product_lists", ["customer_id"], name: "index_stall_product_lists_on_customer_id", using: :btree
   add_index "stall_product_lists", ["reference"], name: "index_stall_product_lists_on_reference", unique: true, using: :btree
+
+  create_table "stall_products", force: :cascade do |t|
+    t.string   "name"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.text     "description"
+    t.text     "slug"
+    t.integer  "position"
+    t.boolean  "visible"
+    t.integer  "product_category_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "stall_products", ["product_category_id"], name: "index_stall_products_on_product_category_id", using: :btree
 
   create_table "stall_shipments", force: :cascade do |t|
     t.integer  "cart_id"
@@ -180,6 +300,16 @@ ActiveRecord::Schema.define(version: 20170119082060) do
     t.boolean  "active",     default: true
   end
 
+  create_table "stall_variants", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "price_cents",    default: 0,     null: false
+    t.string   "price_currency", default: "USD", null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "stall_variants", ["product_id"], name: "index_stall_variants_on_product_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -199,6 +329,7 @@ ActiveRecord::Schema.define(version: 20170119082060) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "books", "categories"
+  add_foreign_key "para_component_resources", "para_components", column: "component_id"
   add_foreign_key "stall_adjustments", "stall_product_lists", column: "cart_id"
   add_foreign_key "stall_credit_note_usages", "stall_adjustments", column: "adjustment_id"
   add_foreign_key "stall_credit_note_usages", "stall_credit_notes", column: "credit_note_id"
@@ -206,7 +337,10 @@ ActiveRecord::Schema.define(version: 20170119082060) do
   add_foreign_key "stall_line_items", "stall_product_lists", column: "product_list_id"
   add_foreign_key "stall_payments", "stall_payment_methods", column: "payment_method_id"
   add_foreign_key "stall_payments", "stall_product_lists", column: "cart_id"
+  add_foreign_key "stall_product_details", "stall_products", column: "product_id"
   add_foreign_key "stall_product_lists", "stall_customers", column: "customer_id"
+  add_foreign_key "stall_products", "stall_product_categories", column: "product_category_id"
   add_foreign_key "stall_shipments", "stall_product_lists", column: "cart_id"
   add_foreign_key "stall_shipments", "stall_shipping_methods", column: "shipping_method_id"
+  add_foreign_key "stall_variants", "stall_products", column: "product_id"
 end
