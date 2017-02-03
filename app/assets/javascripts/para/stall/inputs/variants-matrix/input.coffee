@@ -1,48 +1,56 @@
 class VariantsMatrix.Input extends Vertebra.View
-  events:
-    'change [data-variants-matrix-property-select]': 'onPropertySelectChanged'
-
   initialize: ->
     @$variantsContainer = @$('[data-variants-matrix-variants-container]')
-    @$propertySelects = @$('[data-variants-matrix-property-select]').selectize
-      plugins: ['remove_button']
+    @$variantsTableHeader = @$('[data-variants-matrix-variants-table-header]')
 
-    @requireAllProperties = @$el.is('[data-require-all-properties]')
+    @propertiesSelect = new VariantsMatrix.PropertiesSelect(el: @$('[data-variants-matrix-properties-select]'))
+    @listenTo(@propertiesSelect, 'change', @onPropertySelectChanged)
+
     @nestedFieldsManager = new VariantsMatrix.NestedFields(@$('[data-variants-matrix-new-row-button]'))
 
     @buildVariants()
 
   buildVariants: ->
-    @variants = for el in @$('[data-variants-matrix-variant-row]').get()
-      combination = @buildCombinationForRow(el)
-      variant = new VariantsMatrix.Variant(el: el, combination: combination, input: this)
+    existingCombinations = @buildPossibleCombinations()
+
+    @variants = for row in @$('[data-variants-matrix-variant-row]').get()
+      combination = @findCombinationForRow(row, existingCombinations)
+      variant = new VariantsMatrix.Variant(el: row, combination: combination, input: this)
       @listenTo(variant, 'destroy', @onVariantDestroyed)
 
       variant
 
-    @buildMissingVariants()
-
-  buildMissingVariants: ->
-    combinations = @buildPossibleCombinations()
-
-    for combination in combinations
-      unless @findVariantFor(combination)
-        variant = @createVariantFor(combination)
-        variant.setEnabledState(false)
-
-  buildCombinationForRow: (row) ->
-    combination = {}
-
-    $(row).find('[data-variants-matrix-variant-property]').each (i, propertyCell) ->
+  findCombinationForRow: (row, existingCombinations) ->
+    propertyValues = for propertyCell in $(row).find('[data-variants-matrix-variant-property]').get()
       $property = $(propertyCell)
-      type = $property.data('variants-matrix-variant-property')
-      value = $property.find('[data-property-id]').val()
-      combination[type] = value
+      propertyId = $property.data('variants-matrix-variant-property')
+      valueId = $property.find('[data-property-value-id]').val()
+      { propertyId: propertyId, id: valueId }
 
-    combination
+    return combination for combination in existingCombinations when @combinationMatches(propertyValues, combination)
+
+  combinationMatches: (propertyValues, combination) ->
+    for combinationProperty in combination
+      propertyValue = value for value in propertyValues when value.propertyId is combinationProperty.propertyId
+      combinationValueMatches = combinationProperty and combinationProperty.id is propertyValue.id
+
+      return false unless combinationValueMatches
+
+    # Return true if all property values where found in combination
+    true
+
 
   onPropertySelectChanged: (e) ->
+    @refreshAvailableProperties()
     @refreshAvailableVariants()
+
+  refreshAvailableProperties: ->
+    propertyHeaderCells = for property in @propertiesSelect.getSelectedProperties() when property.active
+      $('<th/>', 'data-variants-matrix-variant-property-cell': '').text(property.name)
+
+    @$variantsTableHeader.find('[data-variants-matrix-variant-property-cell]').remove()
+    $enabledCell = @$variantsTableHeader.find('[data-variants-matrix-variant-enabled-cell]')
+    $enabledCell.after(propertyHeaderCells)
 
   refreshAvailableVariants: ->
     combinations = @buildPossibleCombinations()
@@ -73,7 +81,6 @@ class VariantsMatrix.Input extends Vertebra.View
 
   createVariantFor: (combination) ->
     variant = new VariantsMatrix.Variant(combination: combination, input: this)
-
     variant.renderTo(@$variantsContainer)
     @listenTo(variant, 'destroy', @onVariantDestroyed)
     @variants.push(variant)
@@ -83,32 +90,23 @@ class VariantsMatrix.Input extends Vertebra.View
   # This methods loops through all select property options to create an array
   # of possible variant combinations to pre
   buildPossibleCombinations: ->
-    selection = []
-
-    # Create an intermediate hash containing
-    @$propertySelects.each (i, el) ->
-      $field = $(el)
-      fieldName = $field.data('variants-matrix-property-select')
-      value = $field.val() or []
-      selection.push({ name: fieldName, values: value })
+    selection = @propertiesSelect.getSelectedProperties()
 
     combinations = []
 
     for property, index in selection
       new_combinations = []
 
-      unless property.values.length
-        # If a property has no option selected, we return an empty
-        # combinations array if all properties are required, or we
-        # go to the next iteration, leaving the combinations array untouched
-        if @requireAllProperties then return [] else continue
+      # If a property has no option selected, we go to the next iteration,
+      # leaving the combinations array untouched
+      continue unless property.values.length
 
       # For the first property array, we just fill the combinations array with
       # our property values
       if combinations.length is 0
         for value in property.values
-          combination = {}
-          combination[property.name] = value
+          combination = []
+          combination.push(value)
           new_combinations.push(combination)
 
       # For other property arrays, we create a new array by combining each
@@ -117,7 +115,7 @@ class VariantsMatrix.Input extends Vertebra.View
         for item in combinations
           for value in property.values
             combination = VariantsMatrix.clone(item)
-            combination[property.name] = value
+            combination.push(value)
             new_combinations.push(combination)
 
       # When the new combinations array is created, we replace the previous
@@ -133,12 +131,3 @@ class VariantsMatrix.Input extends Vertebra.View
     # Remove variant from @variants array
     @variants.splice(index, 1) for variant, index in @variants when variant?.matches(destroyedVariant.combination)
 
-  # Allow fetching and caching property names without having to sideload them
-  # in our view, in case they're really numerous
-  #
-  nameForProperty: (type, id) ->
-    @propertyNamesCache ?= {}
-    @propertyNamesCache[type] ?= {}
-    @propertyNamesCache[type][id] ?= @$propertySelects
-      .filter("[data-variants-matrix-property-select='#{ type }']")
-      .find("[value='#{ id }']").text()

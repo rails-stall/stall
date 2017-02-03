@@ -15,15 +15,13 @@ module Stall
         has_many :variants, dependent: :destroy, inverse_of: :product
         accepts_nested_attributes_for :variants, allow_destroy: true
 
-        has_many :product_details, dependent: :destroy
+        has_many :product_details, dependent: :destroy, inverse_of: :product
         accepts_nested_attributes_for :product_details, allow_destroy: true
 
         has_attached_file :image, styles: {
           thumb: '100x100#',
           show: '555x'
         }
-
-        delegate :price, to: :variant, allow_nil: true
 
         validates :name, :image, presence: true
         validates_attachment :image, content_type: { content_type: /\Aimage\/.*\z/ }
@@ -36,7 +34,11 @@ module Stall
 
         def vat_rate
           Stall.config.vat_rate
-        end        
+        end
+
+        def price
+          variants.map(&:price).min
+        end
       end
     end
   end

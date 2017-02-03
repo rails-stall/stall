@@ -60,8 +60,8 @@ module Para
           @variants_data ||= variants.map do |variant|
             { id: variant.id, price: template.number_to_currency(variant.price) }.tap do |data|
               properties.each do |property_config|
-                data[property_config.property_name] =
-                  property_config.property_value_for(variant).id
+                data[property_config.property.id] =
+                  property_config.property_for(variant).id
               end
             end
           end

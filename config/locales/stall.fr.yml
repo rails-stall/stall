@@ -2,8 +2,12 @@ fr:
   para:
     stall:
       variants_matrix:
-        enabled: "Actif ?"
+        enabled: "Publier ?"
         price: "Prix"
+        add_property: "Ajouter une propriété"
+        choose_properties_to_build_variants: |
+          Choisissez les propriétés ainsi que les valeurs dont vous disposez
+          pour créer automatiquement les déclinaisons de votre produit.
 
   forms:
     tabs:
@@ -160,8 +164,10 @@ fr:
       cart: "Panier"
       shipment: "Livraison"
       payment: "Paiement"
-      product: Produit
-      product_category: Catégorie
+      product: "Produit"
+      product_category: "Catégorie"
+      variant: "Déclinaison"
+      product_detail: "Bloc de description"
 
     attributes:
       line_item:
@@ -218,6 +224,23 @@ fr:
         paid_at: "Payé le"
         transaction_id: "Numéro de transaction"
         state: "État"
+      property:
+        name: "Nom de la propriété"
+        property_values: "Valeurs"
+      property_value:
+        value: "Valeur"
+      product:
+        published: "Publié ?"
+        product_category: "Catégorie de produit"
+        name: "Nom du produit"
+        slug: "Fragment d'URL"
+        description: "Description du produit"
+        properties: "Propriétés"
+        variants: "Déclinaisons"
+        product_details: "Blocs de description produit"
+      product_detail:
+        name: "Titre"
+        content: "Contenu"
 
   simple_form:
     placeholders:

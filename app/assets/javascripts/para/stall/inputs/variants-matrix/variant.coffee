@@ -15,10 +15,11 @@ class VariantsMatrix.Variant extends Vertebra.View
     @fillProperties()
 
   fillProperties: ->
-    for property in @properties()
-      $property = @$("[data-variants-matrix-variant-property='#{ property.type }']")
-      $property.find('[data-property-name]').html(property.name)
-      $property.find('[data-property-id]').val(property.id)
+    for propertyValue in @propertyValues()
+      $propertyValue = @$("[data-variants-matrix-variant-property='#{ propertyValue.propertyId }']")
+      $propertyValue.find('[data-property-name]').html(propertyValue.name)
+      $propertyValue.find('[data-property-value-id]').val(propertyValue.id)
+      $propertyValue.removeClass('hidden')
 
   remove: ->
     if @persisted
@@ -35,13 +36,15 @@ class VariantsMatrix.Variant extends Vertebra.View
   matches: (combination) ->
     VariantsMatrix.objectsAreEqual(@combination, combination)
 
-  properties: ->
-    @_properties ?= (@buildPropertyFor(key, value) for key, value of @combination when @combination.hasOwnProperty(key))
+  propertyValues: ->
+    @_propertyValues ?= for key, value of @combination when @combination.hasOwnProperty(key)
+      @buildPropertyValueFor(key, value)
 
-  buildPropertyFor: (key, value) ->
-    id: value
-    name: @input.nameForProperty(key, value)
+  buildPropertyValueFor: (key, value) ->
+    id: value.id
+    name: value.name
     type: key
+    propertyId: value.propertyId
 
   setEnabledState: (state) ->
     @$('[data-variants-matrix-variant-enabled]')
@@ -51,7 +54,6 @@ class VariantsMatrix.Variant extends Vertebra.View
   onEnabledStateChanged: (e) ->
     checked = @$('[data-variants-matrix-variant-enabled]').prop('checked')
     @$el.toggleClass('disabled')
-    @setDestroyed(!checked)
 
   setDestroyed: (state) ->
     @$el.find('[data-variant-remove]').val(if state then 'true' else 'false')

@@ -1,0 +1,12 @@
+= resources_table(model: model, component: component) do |table|
+  = table.header do
+    = table.header_for(:name)
+    = table.header_for(:published)
+    = table.header_for(:price, sort: :variants_price)
+    = table.header_for(:product_category, sort: :product_category_name)
+
+  = table.rows(resources) do |resource|
+    = table.data_for(resource, :name)
+    = table.data_for(resource, :published)
+    = table.data_for(resource, :price)
+    = table.data_for(resource, :product_category)

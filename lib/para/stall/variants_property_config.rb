@@ -1,56 +1,57 @@
 module Para
   module Stall
     class VariantsPropertyConfig
-      attr_reader :resource, :property_name, :relation, :property_model
+      attr_reader :resource, :property, :variants
 
-      def initialize(resource, property_name, options = {})
+      def initialize(resource, property, variants)
         @resource = resource
-        @property_name = property_name
-        @relation = options[:relation]
-        @variants = options[:variants]
-
-        @property_model = if (model_name = options[:model_name])
-          model_name.constantize
-        else
-          reflection.klass
-        end
+        @property = property
+        @variants = variants
       end
 
       def options
-        property_model.all.map do |property|
-          name = property_name_for(property)
-
+        property.property_values.map do |property_value|
           [
-            name,
-            property.id,
-            selected: property_used?(property),
-            data: { name: name }
+            property_value.value,
+            property_value.id,
+            selected: property_value_used?(property_value),
+            data: { name: property_value.value }
           ]
+        end
+      end
+
+      def active?
+        variants.any? do |variant|
+          variant.variant_property_values.any? do |variant_property_value|
+            variant_property_value.property_value.try(:property) == property
+          end
+        end
+      end
+
+      def current_value
+        @current_value ||= property.property_values.find do |property_value|
+          property_value_used?(property_value)
         end
       end
 
       def available_options
         @available_options ||= variants_by_property.keys.map do |property|
-          [property_name_for(property), property.id]
+          [property.name_for(property), property.id]
         end
-      end
-
-      def foreign_key
-        @foreign_key ||= reflection.foreign_key
-      end
-
-      def property_name_for(property)
-        return unless property
-
-        Para.config.resource_name_methods.each do |method_name|
-          if (name = property.try(:name)) then return name end
-        end
-
-        nil
       end
 
       def property_value_for(variant)
-        variant.send(property_name)
+        variant_property_value_for(variant).try(:property_value)
+      end
+
+      def variant_property_value_for(variant)
+        variant_property_value = variant.variant_property_values.find do |variant_property_value|
+          variant_property_value.property_value.try(:property) == property
+        end
+      end
+
+      def variant_property_value_or_build_for(variant)
+        variant_property_value_for(variant) || variant.variant_property_values.build
       end
 
       private
@@ -60,22 +61,13 @@ module Para
       end
 
       def reflection
-        @reflection ||= variant_model.reflect_on_association(property_name)
+        @reflection ||= variant_model.reflect_on_association(property.name)
       end
 
-      def property_used?(property)
-        (variants = variants_by_property[property]) && variants.any?
-      end
-
-      def variants
-        @variants ||= resource.send(relation)
-      end
-
-      def variants_by_property
-        @variants_by_property ||= variants.each_with_object({}) do |variant, hash|
-          if (property = variant.send(property_name))
-            hash[property] ||= []
-            hash[property] << variant
+      def property_value_used?(property_value)
+        variants.any? do |variant|
+          variant.variant_property_values.any? do |variant_property_value|
+            variant_property_value.property_value == property_value
           end
         end
       end

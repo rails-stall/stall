@@ -1,21 +1,21 @@
-%tr.variants-matrix-variant-row{ data: { :'variants-matrix-variant-row' => true, :'variant-id' => form.object.id } }
-  %td
+%tr.variants-matrix-variant-row{ class: ('disabled' unless form.object.published?), data: { :'variants-matrix-variant-row' => true, :'variant-id' => form.object.id } }
+  %td{ data: { :'variants-matrix-variant-enabled-cell' => true } }
     = form.hidden_field :id
     = form.hidden_field :_destroy, value: 'false', data: { :'variant-remove' => true }
 
     %span.checkbox
       %label
-        = check_box_tag :enabled, true, {}, data: { :'variants-matrix-variant-enabled' => true }
+        = form.check_box :published, checked: (form.object.published? || form.object.new_record?), data: { :'variants-matrix-variant-enabled' => true }
         %i.checkbox-icon
 
-  - properties.each do |property_config|
-    - property = property_config.property_value_for(form.object)
+  - all_properties.each do |property_config|
+    -# Hide all fields for new records
+    %td{ class: ('hidden' unless form.object.persisted? && property_config.active?), data: { :'variants-matrix-variant-property' => property_config.property.id } }
+      = form.fields_for :variant_property_values, [property_config.variant_property_value_or_build_for(form.object)] do |fields|
+        %span{ data: { :'property-name' => true } }
+          = property_config.property_value_for(form.object).try(:name)
 
-    %td{ data: { :'variants-matrix-variant-property' => property_config.property_name } }
-      %span{ data: { :'property-name' => true } }
-        = property_config.property_name_for(property)
-
-      = form.hidden_field property_config.foreign_key, data: { :'property-id' => true }
+        = fields.hidden_field :property_value_id, data: { :'property-value-id' => true }
 
   %td
     .input-group

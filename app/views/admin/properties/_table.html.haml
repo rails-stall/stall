@@ -1,0 +1,8 @@
+= resources_table(model: model, component: component) do |table|
+  = table.header do
+    = table.header_for(:name)
+    = table.header_for(:property_values, sort: :property_values_name)
+
+  = table.rows(resources) do |resource|
+    = table.data_for(resource, :name)
+    = table.data_for(resource, :property_values)

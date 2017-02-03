@@ -1,24 +1,41 @@
-.panel.panel-default{ data: { :'variants-matrix-input' => true, :'require-all-properties' => require_all_properties } }
-  %table.table
-    %tbody
-      %tr
-        - properties.each do |variants_property_config|
-          %td{ width: "#{ (100.0 / properties.length) }%" }
-            = label :variants_property_config, variants_property_config.property_name, variants_property_config.property_model.model_name.human
-            = select :variants_property_config, variants_property_config.property_name, options_for_select(variants_property_config.options), {}, multiple: true, autocomplete: 'off', data: { :'variants-matrix-property-select' => variants_property_config.property_name }
+.variants-matrix-input-container{ data: { :'variants-matrix-input' => true } }
+  = form.input :properties do
+    .variants-matrix-properties-select{ data: { :'variants-matrix-properties-select' => true } }
+      %p.help-block= t('para.stall.variants_matrix.choose_properties_to_build_variants')
 
-  %table.table.table-hover
-    %thead
-      %tr
-        %th= t('para.stall.variants_matrix.enabled')
+      .dropdown
+        %button.btn.btn-primary{ type: 'button', data: { toggle: 'dropdown' } }
+          = fa_icon 'plus'
+          = t('para.stall.variants_matrix.add_property')
+          %span.caret
+        .dropdown-menu.variants-matrix-property-selector
+          - all_properties.each do |variants_property_config|
+            %label.variants-matrix-property-selector-label{ data: { :'variants-matrix-property-selector-label' => true } }
+              = check_box :properties, :activated, { checked: variants_property_config.active? , autocomplete: 'off', data: { :'variants-matrix-property-selector-input' => true } }, variants_property_config.property.id
+              = variants_property_config.property.name
 
-        - properties.each do |variants_property_config|
-          %th= variants_property_config.property_model.model_name.human
+      %ul.list-group
+        - all_properties.each do |variants_property_config|
+          %li.list-group-item{ class: ('hidden' unless variants_property_config.active?), data: { :'variants-matrix-property-id' => variants_property_config.property.id } }
+            .row
+              .col-md-3
+                = label :variants_property_config, variants_property_config.property.id, variants_property_config.property.name
+              .col-md-9
+                = select :variants_property_config, variants_property_config.property.id, options_for_select(variants_property_config.options), {}, multiple: true, autocomplete: 'off', data: { :'variants-matrix-property-select' => variants_property_config.property.name }
 
-        %th= t('para.stall.variants_matrix.price')
+  = form.input :variants do
+    %table.table.table-hover
+      %thead{ data: { :'variants-matrix-variants-table-header' => true } }
+        %tr
+          %th{ data: { :'variants-matrix-variant-enabled-cell' => true } }= t('para.stall.variants_matrix.enabled')
 
-    %tbody{ data: { :'variants-matrix-variants-container' => "#{ dom_identifier }" } }
-      = form.fields_for attribute_name, variants do |variant_fields|
-        = render partial: find_partial_for(model, :variant_row), locals: { form: variant_fields }.merge(variant_row_locals)
+          - properties.each do |variants_property_config|
+            %th{ data: { :'variants-matrix-variant-property-cell' => true } }= variants_property_config.property.name
 
-  = link_to_add_association t('para.form.nested.add'), form, attribute_name, partial: find_partial_for(model, :variant_row), form_name: 'form', class: 'hidden', data: { :'variants-matrix-new-row-button' => true }, render_options: { nested_attribute_name: attribute_name, locals: variant_row_locals }
+          %th= t('para.stall.variants_matrix.price')
+
+      %tbody{ data: { :'variants-matrix-variants-container' => "#{ dom_identifier }" } }
+        = form.fields_for attribute_name, variants do |variant_fields|
+          = render partial: find_partial_for(model, :variant_row), locals: { form: variant_fields }.merge(variant_row_locals)
+
+    = link_to_add_association t('para.form.nested.add'), form, attribute_name, partial: find_partial_for(model, :variant_row), form_name: 'form', class: 'hidden', data: { :'variants-matrix-new-row-button' => true }, render_options: { nested_attribute_name: attribute_name, locals: variant_row_locals }

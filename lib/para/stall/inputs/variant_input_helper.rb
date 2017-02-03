@@ -14,8 +14,9 @@ module Para
 
         def variant_sort_method(variant)
           properties.map do |property_config|
-            property = variant.send(property_config.property_name)
-            property_config.property_name_for(property).try(:parameterize)
+            if (variant_value = property_config.variant_property_value_for(variant))
+              variant_value.property_value.position
+            end
           end.join(':')
         end
 
