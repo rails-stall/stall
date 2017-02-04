@@ -4,12 +4,8 @@ module Para
       class VariantSelectInput < SimpleForm::Inputs::Base
         include VariantInputHelper
 
-        attr_reader :relation
-
         def input(wrapper_options = nil)
           ensure_target_relation_present!
-
-          @relation = options[:relation]
 
           template.render partial: partial_path, locals: {
             form: @builder,
@@ -32,20 +28,31 @@ module Para
           @product ||= options[:product]
         end
 
+        def relation
+          @relation ||= options.fetch(:relation, :variants)
+        end
+
+        # Iterate on every variant to fetch available properties and values and
+        # build a VariantsPropertyConfig for each available one
+        #
         def properties
-          @properties ||= options[:properties].map do |property_name, model_name|
-            VariantsPropertyConfig.new(
-              product,
-              property_name,
-              relation: relation,
-              model_name: model_name,
-              variants: variants
-            )
-          end
+          @properties ||= variants.each_with_object({}) do |variant, hash|
+            variant.variant_property_values.each do |variant_property_value|
+              property = variant_property_value.property_value.property
+
+              unless hash[property]
+                hash[property] = VariantsPropertyConfig.new(
+                  product, property, variants
+                )
+              end
+            end
+          end.values
         end
 
         def variants
-          @variants ||= options.fetch(:variants, product.send(relation))
+          @variants ||= options.fetch(:variants) do
+            product.variants.select(&:published?)
+          end
         end
 
         def partial_path
@@ -61,7 +68,7 @@ module Para
             { id: variant.id, price: template.number_to_currency(variant.price) }.tap do |data|
               properties.each do |property_config|
                 data[property_config.property.id] =
-                  property_config.property_for(variant).id
+                  property_config.property_value_for(variant).id
               end
             end
           end

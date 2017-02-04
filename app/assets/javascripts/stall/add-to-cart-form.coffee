@@ -30,8 +30,19 @@ class Stall.AddToCartForm extends Vertebra.View
 
   checkErrors: ->
     @errors = []
-    @errors.push('choose') unless @$('[name$="[sellable_id]"]').val()
-    @errors.push('quantity') unless @$('[name$="[quantity]"]').val()
+    console.log 'CHECK ERRORS'
+    console.log 'sellable_id', @$('[name$="[sellable_id]"]').val(), @sellableChosen()
+    console.log 'quantity', @$('[name$="[quantity]"]').val(), @quantityFilled()
+
+    @errors.push('choose') unless @sellableChosen()
+    @errors.push('quantity') unless @quantityFilled()
+
+  sellableChosen: ->
+    !!@$('[name$="[sellable_id]"]').val()
+
+  quantityFilled: ->
+    quantity = parseInt(@$('[name$="[quantity]"]').val(), 10)
+    quantity > 0
 
   onComplete: ->
     @setLoading(false)
@@ -49,20 +60,23 @@ class Stall.AddToCartForm extends Vertebra.View
   # Displays errors in a tooltip on the form submit button, listing different
   # errors and disabling the submit button
   refreshErrorsDisplay: (options = {}) ->
-    buttonIsTooltip = @$button.data('bs.tooltip')
+    @clearErrorMessages()
+    @displayErrorMessages(options) if @errors.length
 
-    if @errors.length
-      messages = (@errorMessages[error] for error in @errors)
-      message = messages.join('<br>')
-      @$button.attr(title: message)
-      @$button.tooltip() unless buttonIsTooltip
-      # Force tooltip display if the user just submitted the form
-      @$button.tooltip('show') if options.submit
-      @$button.prop('disabled', true)
-    else
-      @$button.attr(title: '')
-      @$button.tooltip('destroy') if buttonIsTooltip
-      @$button.prop('disabled', false)
+  displayErrorMessages: (options) ->
+    messages = (@errorMessages[error] for error in @errors)
+    message = messages.join('<br>')
+    @$button.attr(title: message)
+    @$button.tooltip(html: true)
+    # Force tooltip display if the user just submitted the form
+    @$button.tooltip('show') if options.submit
+    @$button.prop('disabled', true)
+
+  clearErrorMessages: ->
+    @$button.attr(title: '')
+    @$button.tooltip('disable') if @$button.data('bs.tooltip')
+    @$button.prop('disabled', false)
+
 
   setLoading: (loading) ->
     state = if loading then 'loading' else 'reset'

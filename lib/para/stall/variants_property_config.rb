@@ -35,8 +35,10 @@ module Para
       end
 
       def available_options
-        @available_options ||= variants_by_property.keys.map do |property|
-          [property.name_for(property), property.id]
+        @available_options ||= property.property_values.each_with_object([]) do |property_value, ary|
+          if property_value_used?(property_value)
+            ary << [property_value.value, property_value.id]
+          end
         end
       end
 

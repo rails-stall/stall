@@ -9,6 +9,9 @@ fr:
           Choisissez les propriétés ainsi que les valeurs dont vous disposez
           pour créer automatiquement les déclinaisons de votre produit.
 
+      variant_select:
+        property_placeholder: "Choisissez une option ..."
+
   forms:
     tabs:
       cart:
