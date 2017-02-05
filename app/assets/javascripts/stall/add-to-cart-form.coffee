@@ -1,10 +1,18 @@
 class Stall.AddToCartForm extends Vertebra.View
   @create = ($el) ->
-    unless (instance = $el.data('stall.add-to-cart-form'))
-      instance = new Stall.AddToCartForm(el: $el)
-      $el.data('stall.add-to-cart-form', instance)
+    unless (form = $el.data('stall.add-to-cart-form'))
+      form = new Stall.AddToCartForm(el: $el)
+      $el.data('stall.add-to-cart-form', form)
 
-    instance.sendRequest()
+    form
+
+  @validate = ($el) ->
+    form = Stall.AddToCartForm.create($el)
+    form.validate()
+
+  @sendRequest = ($el) ->
+    form = Stall.AddToCartForm.create($el)
+    form.sendRequest()
 
   events:
     'ajax:success': 'onSuccess'
@@ -17,7 +25,9 @@ class Stall.AddToCartForm extends Vertebra.View
     @errorMessages = @$el.data('error-messages')
 
   sendRequest: ->
-    return false unless @validate(submit: true) and !@errors.length
+    unless (v = @validate(submit: true)) and (e = !@errors.length)
+      console.log 'sendRequest', v, e
+      return false
     @setLoading(true)
     true
 
@@ -27,13 +37,10 @@ class Stall.AddToCartForm extends Vertebra.View
   validate: (options = {})->
     @checkErrors()
     @refreshErrorsDisplay(options)
+    !@errors.length
 
   checkErrors: ->
     @errors = []
-    console.log 'CHECK ERRORS'
-    console.log 'sellable_id', @$('[name$="[sellable_id]"]').val(), @sellableChosen()
-    console.log 'quantity', @$('[name$="[quantity]"]').val(), @quantityFilled()
-
     @errors.push('choose') unless @sellableChosen()
     @errors.push('quantity') unless @quantityFilled()
 
@@ -66,8 +73,9 @@ class Stall.AddToCartForm extends Vertebra.View
   displayErrorMessages: (options) ->
     messages = (@errorMessages[error] for error in @errors)
     message = messages.join('<br>')
-    @$button.attr(title: message)
+    @$button.attr('data-original-title': message)
     @$button.tooltip(html: true)
+    @$button.tooltip('enable')
     # Force tooltip display if the user just submitted the form
     @$button.tooltip('show') if options.submit
     @$button.prop('disabled', true)
@@ -84,5 +92,8 @@ class Stall.AddToCartForm extends Vertebra.View
 
 
 Stall.onDomReady ->
+  $('[data-add-to-cart-form]').each (i, el) ->
+    Stall.AddToCartForm.validate($(el))
+
   $('body').on 'ajax:beforeSend', '[data-add-to-cart-form]', (e) ->
-    Stall.AddToCartForm.create($(e.currentTarget))
+    Stall.AddToCartForm.sendRequest($(e.currentTarget))
