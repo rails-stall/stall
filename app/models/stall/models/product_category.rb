@@ -11,19 +11,17 @@ module Stall
 
         extend FriendlyId
         friendly_id :name, use: [:slugged, :finders]
-        
+
         has_many :products, dependent: :nullify
 
         validates :name, presence: true
 
         scope :ordered, -> { order(position: 'asc') }
+      end
 
-        def self.max_depth
+      module ClassMethods
+        def max_depth
           2
-        end
-
-        def should_generate_new_friendly_id?
-          slug.blank?
         end
       end
     end

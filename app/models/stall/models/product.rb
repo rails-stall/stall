@@ -27,18 +27,14 @@ module Stall
         validates_attachment :image, content_type: { content_type: /\Aimage\/.*\z/ }
 
         scope :visible, -> { where(visible: true) }
+      end
 
-        def should_generate_new_friendly_id?
-          slug.blank?
-        end
+      def vat_rate
+        Stall.config.vat_rate
+      end
 
-        def vat_rate
-          Stall.config.vat_rate
-        end
-
-        def price
-          variants.map(&:price).min
-        end
+      def price
+        variants.map(&:price).min
       end
     end
   end
