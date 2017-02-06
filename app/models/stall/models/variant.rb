@@ -21,12 +21,26 @@ module Stall
 
         monetize :price_cents, with_model_currency: :currency, allow_nil: false
 
-        delegate :name, :image, :image?, :vat_rate, to: :product, allow_nil: true
+        before_validation :refresh_name
+
+        delegate :image, :image?, :vat_rate, to: :product, allow_nil: true
 
         scope :published, -> { where(published: true) }
 
         def currency
           @currency ||= Money::Currency.new(Stall.config.default_currency)
+        end
+
+        private
+
+        def refresh_name
+          product_name = product.try(:name)
+
+          properties = variant_property_values.map do |variant_property_value|
+            variant_property_value.property_value.name
+          end
+
+          self.name = [product_name, properties.join(' - ')].join(' / ')
         end
       end
     end
