@@ -18,13 +18,9 @@ module Stall
       end
     end
 
-    initializer 'stall.include_cart_helper' do
-      ActiveSupport.on_load(:action_controller) do
-        if defined?(::ApplicationController)
-          ::ApplicationController.send(:include, Stall::CartHelper)
-          ::ApplicationController.send(:include, Stall::ArchivedPaidCartHelper)
-        end
-      end
+    config.to_prepare do
+      ::ApplicationController.send(:include, Stall::CartHelper)
+      ::ApplicationController.send(:include, Stall::ArchivedPaidCartHelper)
     end
 
     initializer 'stall.ensure_shipping_method_for_all_calculators' do
