@@ -20,8 +20,10 @@ module Stall
 
     initializer 'stall.include_cart_helper' do
       ActiveSupport.on_load(:action_controller) do
-        include Stall::CartHelper
-        include Stall::ArchivedPaidCartHelper
+        if defined?(::ApplicationController)
+          ::ApplicationController.send(:include, Stall::CartHelper)
+          ::ApplicationController.send(:include, Stall::ArchivedPaidCartHelper)
+        end
       end
     end
 
