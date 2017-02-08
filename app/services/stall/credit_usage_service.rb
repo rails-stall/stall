@@ -1,5 +1,7 @@
 module Stall
   class CreditUsageService < Stall::BaseService
+    class CartAlreadyPaidError < StandardError; end
+
     attr_reader :cart, :params
 
     def initialize(cart, params = {})
@@ -8,6 +10,7 @@ module Stall
     end
 
     def call
+      raise CartAlreadyPaidError, "Cannot udpate credit note from paid cart"
       return false unless enough_credit?
 
       clean_credit_note_adjustments!
@@ -47,6 +50,7 @@ module Stall
     end
 
     def clean_credit_note_adjustments!
+      raise CartAlreadyPaidError, "Cannot remove credit note from paid cart"
       credit_note_adjustments.each do |adjustment|
         cart.adjustments.destroy(adjustment)
       end

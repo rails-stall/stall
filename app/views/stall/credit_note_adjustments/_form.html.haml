@@ -1,4 +1,4 @@
-- if stall_user_signed_in? && available_customer_credit_for?(cart)
+- if stall_user_signed_in? && available_customer_credit_for?(cart) && !cart.paid?
   = simple_form_for cart, url: cart_credit_path(cart), method: (credit_used_for?(@cart) ? :delete : :patch), html: { class: 'cart-credit-form', data: { :'cart-credit-form' => true } } do |form|
     = hidden_field_tag :_return_to, request.fullpath
 
