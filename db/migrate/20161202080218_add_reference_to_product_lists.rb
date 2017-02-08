@@ -5,9 +5,10 @@ class AddReferenceToProductLists < ActiveRecord::Migration
 
     # Migrate all references stored in the JSON data columns to the new
     # reference column
-    Cart.update_all("reference = data->>'reference'")
+    ProductList.update_all("reference = data->>'reference'")
     # Remove all reference keys in the JSON data columns
-    Cart.update_all("data = (data - 'reference')")
+    # This is not supported before PG 4.5 so we avoid using it
+    # ProductList.update_all("data = (data - 'reference')")
   end
 
   def down

@@ -25,15 +25,15 @@ class AddTypeToStallAddressOwnerships < ActiveRecord::Migration
 
         if ownership.billing
           billing_address = BillingAddress.new(addressable: ownership.addressable)
-          Stall::Addresses::Copy.new(address, billing_address)
+          Stall::Addresses::Copy.new(address, billing_address).copy
           billing_address.save!
         end
       elsif ownership.billing
         address.type = 'BillingAddress'
-        ownership.save!
-      else
-        ownership.destroy
+        address.save!
       end
+
+      ownership.destroy
     end
 
     remove_column :stall_address_ownerships, :billing
