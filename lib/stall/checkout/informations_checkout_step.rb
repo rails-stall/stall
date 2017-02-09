@@ -52,7 +52,7 @@ module Stall
       # the full permissions nested array
       #
       def cart_params(*attributes)
-        @cart_params ||= params.require(:cart).permit(
+        @cart_params ||= super(
           *merge_arrays(
             [
               :use_another_address_for_billing, :terms,
