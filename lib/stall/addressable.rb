@@ -20,5 +20,25 @@ module Stall
 
       attr_accessor :use_another_address_for_billing
     end
+
+    # Allow billing address to fall back to shipping address when not filled
+    def billing_address
+      association(:billing_address).load_target ||
+        association(:shipping_address).load_target
+    end
+
+    def billing_address?
+      billing_address.persisted? && billing_address.billing?
+    end
+
+    # Allow shipping address to fall back to billing address when not filled
+    def shipping_address
+      association(:shipping_address).load_target ||
+        association(:billing_address).load_target
+    end
+
+    def shipping_address?
+      shipping_address.persisted? && shipping_address.billing?
+    end
   end
 end

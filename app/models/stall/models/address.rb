@@ -30,6 +30,14 @@ module Stall
           iso_state['name'] if iso_state
         end
 
+        def billing?
+          false
+        end
+
+        def shipping?
+          false
+        end
+
         private
 
         def iso_country

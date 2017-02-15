@@ -3,7 +3,7 @@
     = form.fields_for :shipping_address do |address_form|
       = render partial: 'stall/addresses/nested_fields', locals: { form: address_form }
 
-  = form.input :use_another_address_for_billing, as: :boolean, input_html: { data: { :'use-another-address-for-billing' => true } }
+  = form.input :use_another_address_for_billing, as: :boolean, input_html: { checked: (params[:use_another_address_for_billing] || form.object.billing_address?), data: { :'use-another-address-for-billing' => true } }
 
   %fieldset{ class: ('hidden' unless params[:use_another_address_for_billing] == '1'), data: { :'address-form' => :billing } }
     = form.fields_for :billing_address do |address_form|
