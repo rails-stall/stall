@@ -31,9 +31,9 @@ class AddTypeToStallAddressOwnerships < ActiveRecord::Migration
         end
       elsif ownership.billing
         address.type = 'BillingAddress'
-        ownership.save!
+        address.save!
       else
-        ownership.destroy
+        address.destroy
       end
     end
 
