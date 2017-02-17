@@ -1,0 +1,52 @@
+%table
+  %tbody
+    %tr
+      %td
+        %table
+          %tbody
+            %tr
+              %td
+                = t('stall.carts.recap.order_ref', ref: cart.reference)
+            %tr
+              %td
+                = t('stall.carts.recap.ordered_at', at: l(cart.created_at))
+
+    %tr
+      %td{ height: 20 }
+
+    %tr
+      %td
+        %table{ width: '100%' }
+          %tbody
+            %tr
+              %td
+                %h2= Cart.human_attribute_name(:billing_address)
+              %td
+                %h2= Cart.human_attribute_name(:shipping_address)
+
+            %tr
+              %td= render partial: 'stall/shared/mailers/address', locals: { address: cart.billing_address }
+              %td= render partial: 'stall/shared/mailers/address', locals: { address: cart.shipping_address }
+
+    %tr
+      %td{ height: 20 }
+
+    %tr
+      %td
+        %table
+          %thead
+            %tr
+              %th= LineItem.human_attribute_name(:name)
+              %th= LineItem.human_attribute_name(:quantity)
+
+          %tbody
+            - line_items.each do |line_item|
+              %tr
+                %td= line_item.name
+                %td= line_item.quantity
+
+            %tr
+              %td
+                %b= t('stall.carts.recap.total_quantity')
+              %td
+                %b= line_items.map(&:quantity).sum

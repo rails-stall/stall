@@ -5,3 +5,10 @@
 
 = form.input :price
 = form.input :sent_at, wrapper: :horizontal_form
+
+- if form.object.cart.persisted?
+  = form.input :shipping_note do
+    = link_to @component.relation_path(form.object.cart, :shipping_note, action: :new), class: 'btn btn-default', remote: true, data: { :'remote-modal-form' => true, :'refresh-on-close' => true } do
+      = fa_icon 'envelope'
+      = t('para.stall.shipping_note.create')
+

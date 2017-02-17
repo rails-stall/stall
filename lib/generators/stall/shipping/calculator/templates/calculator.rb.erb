@@ -26,4 +26,23 @@ class <%= class_name %> < Stall::Shipping::Calculator
   # def vat_rate
   #   Stall.config.vat_rate
   # end
+
+  # Allow shipping notification e-mails to embed a tracking URL for the shipping
+  # method, and when the `Shipment#tracking_code` is filled for the cart.
+  #
+  # Note : If you make a shipping method trackable, don't forget to define the
+  #        #tracking_url method below
+  #
+  # def trackable?
+  #   true
+  # end
+
+  # Return a URL that will be given to the customer when notified of the
+  # shipping of its order
+  #
+  # def tracking_url
+  #   if (tracking_code = cart.shipment.try(:tracking_code)).present?
+  #     "http://www.my-shipping-service.com/tracking/url?code=#{ tracking_code }"
+  #   end
+  # end
 end

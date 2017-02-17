@@ -1,0 +1,18 @@
+%table
+  %tr
+    %td
+      = t('stall.mailers.customer.order_shipped_email.intro', ref: @cart.reference, time: l(Date.today)).html_safe
+
+      - if @tracking_url
+        %br
+        %br
+        = t('stall.mailers.customer.order_shipped_email.shipping_method_name', name: @cart.shipment.shipping_method.name).html_safe
+        %br
+        = t('stall.mailers.customer.order_shipped_email.tracking_code', code: @cart.shipment.tracking_code).html_safe
+        %br
+        = t('stall.mailers.customer.order_shipped_email.tracking_url', link: link_to(@tracking_url, @tracking_url)).html_safe
+
+      %br
+      %br
+
+      = render partial: 'stall/shared/mailers/shipping_note', locals: { cart: @cart, line_items: @cart.line_items }

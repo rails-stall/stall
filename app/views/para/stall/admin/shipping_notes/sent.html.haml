@@ -1,0 +1,11 @@
+= modal id: "shipment-modal-#{ @cart.id }", fade: false do |modal|
+  = modal.header do
+    = t('para.stall.shipping_note.sent')
+
+  = modal.body do
+    %p= t('para.stall.shipping_note.sent_description').html_safe
+
+  = modal.footer do
+    %button.btn.btn-default{ type: 'button', data: { dismiss: 'modal' } }
+      = t('stall.shared.close')
+

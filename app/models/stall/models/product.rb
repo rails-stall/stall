@@ -11,6 +11,7 @@ module Stall
         friendly_id :name, use: [:slugged, :finders]
 
         belongs_to :product_category
+        belongs_to :manufacturer
 
         has_many :variants, dependent: :destroy, inverse_of: :product
         accepts_nested_attributes_for :variants, allow_destroy: true

@@ -13,14 +13,6 @@ module Para
           # cleaned up by the rake task
           @resources = @resources.filled
         end
-
-        private
-
-        def shipment_params
-          params.require(:shipment).permit(
-            :carrier, :tracking_code, :point_of_sale_id
-          )
-        end
       end
     end
   end

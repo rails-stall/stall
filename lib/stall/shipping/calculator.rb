@@ -20,6 +20,18 @@ module Stall
           'the actual shipping price for the given cart'
       end
 
+      # Override this method in the shipping calculators to declare wether a
+      # shipping method provides a tracking URL or not.
+      def trackable?
+        false
+      end
+
+      def tracking_url
+        raise NoMethodError,
+          'Trackable shipping calculators should override the #tracking_url ' \
+          'method and return a tracking URL for the associated shipment.'
+      end
+
       def eot_price
         price / (1 + (vat_rate / 100.0))
       end

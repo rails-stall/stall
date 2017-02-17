@@ -12,6 +12,20 @@ fr:
       variant_select:
         property_placeholder: "Choisissez une option ..."
 
+      shipping_note:
+        create: "Notifier le client de l'expédition de sa commande"
+        notification_already_sent_at: "Un e-mail de notification de livraison a déjà été envoyé au client le %{date}"
+        help: |
+          Un e-mail va être envoyé au client pour le notifier de l'expédition de sa commande.
+          <br>
+          Merci de vérifier les informations de livraison ci-dessous et de cliquer sur "Envoyer"
+        tracking_code_help: |
+          Afin d'envoyer le lien pour le suivi de la livraison au client, merci
+          de renseigner le code de suivi. Si vous laissez ce champ vide, le mail
+          sera bien envoyé mais ne contiendra pas de lien de suivi.
+        sent: "Notification envoyée !"
+        sent_description: "Le client a bien été notifié de l'expédition de sa commande. "
+
   forms:
     tabs:
       cart:
@@ -23,7 +37,9 @@ fr:
 
   stall:
     shared:
+      cancel: "Annuler"
       close: "Fermer"
+      send: "Envoyer"
       sending: "Envoi en cours ..."
 
     carts:
@@ -45,6 +61,7 @@ fr:
         total_eot_price: "Prix total HT"
         total_vat: "Total TVA"
         total_price: "Prix total"
+        total_quantity: "Quantité totale"
         remainder: "Le montant suivant sera transformé en avoir"
         update: "Mettre à jour le panier"
         validate: "Passer la commande"
@@ -140,6 +157,18 @@ fr:
         order_paid_email:
           subject: "Le paiement de votre commande n°%{ref} a bien été effectué !"
           intro: "Votre commande sera traitée dans les meilleurs délais."
+
+        order_shipped_email:
+          subject: "Votre commande n°%{ref} a été expédiée"
+          intro: |
+            Votre commande n°%{ref} a bien été expédiée le
+            <strong>%{time}</strong>
+          shipping_method_name: "Votre colis vous a été envoyé via %{name}"
+          tracking_code: "Votre code de suivi est le suivant : %{code}"
+          tracking_url: |
+            Vous pouvez suivre la livraison de votre commande avec le lien
+            suivant :<br>%{link}
+
       admin:
         order_paid_email:
           subject: "Une nouvelle commande a été passée sur le site - %{ref}"
@@ -171,6 +200,7 @@ fr:
       product_category: "Catégorie"
       variant: "Déclinaison"
       product_detail: "Bloc de description"
+      manufacturer: "Fabricant"
 
     attributes:
       line_item:
@@ -222,6 +252,7 @@ fr:
         shipping_method: "Mode de livraison"
         tracking_code: "Code de suivi"
         state: "État"
+        shipping_note: "Notification"
       payment:
         payment_method: "Mode de paiement"
         paid_at: "Payé le"
@@ -244,6 +275,10 @@ fr:
       product_detail:
         name: "Titre"
         content: "Contenu"
+      manufacturer:
+        name: "Nom du fabricant"
+        logo: "Logo"
+        products: "Produits"
 
   simple_form:
     placeholders:
