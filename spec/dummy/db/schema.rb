@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170124093811) do
+ActiveRecord::Schema.define(version: 20170219184439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,14 +52,15 @@ ActiveRecord::Schema.define(version: 20170124093811) do
   end
 
   create_table "stall_adjustments", force: :cascade do |t|
-    t.string   "name",                        null: false
-    t.integer  "eot_price_cents", default: 0, null: false
-    t.integer  "price_cents",     default: 0, null: false
-    t.decimal  "vat_rate",                    null: false
+    t.string   "name",                                                   null: false
+    t.decimal  "eot_price_cents", precision: 13, scale: 3, default: 0.0, null: false
+    t.decimal  "price_cents",     precision: 13, scale: 3, default: 0.0, null: false
+    t.decimal  "vat_rate",                                               null: false
     t.string   "type"
     t.integer  "cart_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
+    t.jsonb    "data"
   end
 
   add_index "stall_adjustments", ["cart_id"], name: "index_stall_adjustments_on_cart_id", using: :btree
@@ -78,13 +79,13 @@ ActiveRecord::Schema.define(version: 20170124093811) do
     t.string   "reference"
     t.integer  "customer_id"
     t.string   "currency"
-    t.integer  "eot_amount_cents",                          default: 0, null: false
-    t.integer  "amount_cents",                              default: 0, null: false
+    t.decimal  "eot_amount_cents", precision: 13, scale: 3, default: 0.0, null: false
+    t.decimal  "amount_cents",     precision: 13, scale: 3, default: 0.0, null: false
     t.decimal  "vat_rate",         precision: 11, scale: 2
     t.integer  "source_id"
     t.string   "source_type"
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
   end
 
   add_index "stall_credit_notes", ["customer_id"], name: "index_stall_credit_notes_on_customer_id", using: :btree
@@ -96,7 +97,7 @@ ActiveRecord::Schema.define(version: 20170124093811) do
     t.datetime "updated_at",                null: false
     t.integer  "user_id"
     t.string   "user_type"
-    t.string   "locale",     default: "en"
+    t.string   "locale",     default: "fr"
   end
 
   add_index "stall_customers", ["user_type", "user_id"], name: "index_stall_customers_on_user_type_and_user_id", using: :btree
@@ -105,20 +106,30 @@ ActiveRecord::Schema.define(version: 20170124093811) do
     t.integer  "sellable_id"
     t.string   "sellable_type"
     t.integer  "product_list_id"
-    t.string   "name",                             null: false
-    t.integer  "quantity",                         null: false
-    t.integer  "unit_eot_price_cents", default: 0, null: false
-    t.integer  "unit_price_cents",     default: 0, null: false
-    t.integer  "eot_price_cents",      default: 0, null: false
-    t.integer  "price_cents",          default: 0, null: false
-    t.decimal  "vat_rate",                         null: false
+    t.string   "name",                                                        null: false
+    t.integer  "quantity",                                                    null: false
+    t.decimal  "unit_eot_price_cents", precision: 13, scale: 3, default: 0.0, null: false
+    t.decimal  "unit_price_cents",     precision: 13, scale: 3, default: 0.0, null: false
+    t.decimal  "eot_price_cents",      precision: 13, scale: 3, default: 0.0, null: false
+    t.decimal  "price_cents",          precision: 13, scale: 3, default: 0.0, null: false
+    t.decimal  "vat_rate",                                                    null: false
     t.jsonb    "data"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
   end
 
   add_index "stall_line_items", ["product_list_id"], name: "index_stall_line_items_on_product_list_id", using: :btree
   add_index "stall_line_items", ["sellable_type", "sellable_id"], name: "index_stall_line_items_on_sellable_type_and_sellable_id", using: :btree
+
+  create_table "stall_manufacturers", force: :cascade do |t|
+    t.string   "name"
+    t.string   "logo_file_name"
+    t.string   "logo_content_type"
+    t.integer  "logo_file_size"
+    t.datetime "logo_updated_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "stall_payment_methods", force: :cascade do |t|
     t.string   "name"
@@ -198,21 +209,40 @@ ActiveRecord::Schema.define(version: 20170124093811) do
     t.integer  "product_category_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.integer  "manufacturer_id"
   end
 
+  add_index "stall_products", ["manufacturer_id"], name: "index_stall_products_on_manufacturer_id", using: :btree
   add_index "stall_products", ["product_category_id"], name: "index_stall_products_on_product_category_id", using: :btree
+
+  create_table "stall_properties", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "stall_property_values", force: :cascade do |t|
+    t.integer  "property_id"
+    t.string   "value"
+    t.integer  "position",    default: 0
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "stall_property_values", ["property_id"], name: "index_stall_property_values_on_property_id", using: :btree
 
   create_table "stall_shipments", force: :cascade do |t|
     t.integer  "cart_id"
     t.integer  "shipping_method_id"
-    t.integer  "price_cents",        default: 0, null: false
-    t.integer  "eot_price_cents",    default: 0, null: false
+    t.decimal  "price_cents",                precision: 13, scale: 3, default: 0.0, null: false
+    t.decimal  "eot_price_cents",            precision: 13, scale: 3, default: 0.0, null: false
     t.decimal  "vat_rate"
     t.datetime "sent_at"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
     t.jsonb    "data"
-    t.integer  "state",              default: 0
+    t.integer  "state",                                               default: 0
+    t.datetime "notification_email_sent_at"
   end
 
   add_index "stall_shipments", ["cart_id"], name: "index_stall_shipments_on_cart_id", using: :btree
@@ -226,12 +256,23 @@ ActiveRecord::Schema.define(version: 20170124093811) do
     t.boolean  "active",     default: true
   end
 
+  create_table "stall_variant_property_values", force: :cascade do |t|
+    t.integer  "property_value_id"
+    t.integer  "variant_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "stall_variant_property_values", ["property_value_id"], name: "index_stall_variant_property_values_on_property_value_id", using: :btree
+  add_index "stall_variant_property_values", ["variant_id"], name: "index_stall_variant_property_values_on_variant_id", using: :btree
+
   create_table "stall_variants", force: :cascade do |t|
     t.integer  "product_id"
     t.integer  "price_cents",    default: 0,     null: false
     t.string   "price_currency", default: "USD", null: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+    t.string   "name"
   end
 
   add_index "stall_variants", ["product_id"], name: "index_stall_variants_on_product_id", using: :btree
@@ -264,8 +305,12 @@ ActiveRecord::Schema.define(version: 20170124093811) do
   add_foreign_key "stall_payments", "stall_product_lists", column: "cart_id"
   add_foreign_key "stall_product_details", "stall_products", column: "product_id"
   add_foreign_key "stall_product_lists", "stall_customers", column: "customer_id"
+  add_foreign_key "stall_products", "stall_manufacturers", column: "manufacturer_id"
   add_foreign_key "stall_products", "stall_product_categories", column: "product_category_id"
+  add_foreign_key "stall_property_values", "stall_properties", column: "property_id"
   add_foreign_key "stall_shipments", "stall_product_lists", column: "cart_id"
   add_foreign_key "stall_shipments", "stall_shipping_methods", column: "shipping_method_id"
+  add_foreign_key "stall_variant_property_values", "stall_property_values", column: "property_value_id"
+  add_foreign_key "stall_variant_property_values", "stall_variants", column: "variant_id"
   add_foreign_key "stall_variants", "stall_products", column: "product_id"
 end

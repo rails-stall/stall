@@ -24,6 +24,8 @@ module Stall
     end
 
     initializer 'stall.ensure_shipping_method_for_all_calculators' do
+      next unless ShippingMethod.table_exists?
+
       Stall::Shipping.calculators.each_key do |name|
         ShippingMethod.where(identifier: name).first_or_create do |method|
           method.name = name.to_s.humanize
@@ -36,6 +38,8 @@ module Stall
     end
 
     initializer 'stall.ensure_payment_method_for_all_gateways' do
+      next unless PaymentMethod.table_exists?
+
       Stall::Payments.gateways.each_key do |name|
         PaymentMethod.where(identifier: name).first_or_create do |method|
           method.name = name.to_s.humanize
