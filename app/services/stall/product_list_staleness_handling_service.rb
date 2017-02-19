@@ -15,7 +15,7 @@ module Stall
     def handle_line_items
       cart.line_items.each do |line_item|
         if stale?(line_item)
-          cart.line_items.delete(line_item) 
+          cart.line_items.delete(line_item)
         else
           handle_valid_line_item(line_item)
         end
@@ -26,8 +26,11 @@ module Stall
       # Override this method
     end
 
-    def stale? line_item
-      line_item.sellable.nil? || !line_item.sellable.published?
+    def stale?(line_item)
+      # The line item does not match a sellable (product deleted)
+      return true unless (sellable = line_item.sellable)
+      # The sellable is not published anymore
+      line_item.sellable.try(:published?) == false
     end
   end
 end

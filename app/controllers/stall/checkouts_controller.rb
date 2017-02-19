@@ -6,7 +6,7 @@ module Stall
 
     def show
       @cart.reset_state!
-      Stall.config.service_for(:cart_update).new(@cart).refresh_associated_services!
+      refresh_cart!
       redirect_to step_path
     end
 
@@ -14,6 +14,11 @@ module Stall
 
     def load_cart
       @cart = current_cart
+    end
+
+    def refresh_cart!
+      service = Stall.config.service_for(:cart_update).new(@cart)
+      service.refresh_associated_services!
     end
   end
 end

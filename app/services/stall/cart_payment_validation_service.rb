@@ -10,6 +10,10 @@ module Stall
       cart.payment.pay!
       send_payment_notification_emails!
       create_credit_notes!
+
+      # Always return true since errors should have raised if anything got
+      # wrong.
+      true
     end
 
     private

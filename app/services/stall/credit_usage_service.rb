@@ -10,7 +10,8 @@ module Stall
     end
 
     def call
-      raise CartAlreadyPaidError, "Cannot udpate credit note from paid cart"
+      ensure_cart_paid!('Cannot udpate credit note from paid cart')
+
       return false unless enough_credit?
 
       clean_credit_note_adjustments!
@@ -50,7 +51,8 @@ module Stall
     end
 
     def clean_credit_note_adjustments!
-      raise CartAlreadyPaidError, "Cannot remove credit note from paid cart"
+      ensure_cart_paid!('Cannot remove credit note from paid cart')
+
       credit_note_adjustments.each do |adjustment|
         cart.adjustments.destroy(adjustment)
       end
@@ -101,6 +103,10 @@ module Stall
       @credit_note_adjustments ||= cart.adjustments.select do |adjustment|
         CreditNoteAdjustment === adjustment
       end
+    end
+
+    def ensure_cart_paid!(error_message)
+      raise(CartAlreadyPaidError, error_message) if cart.paid?
     end
   end
 end

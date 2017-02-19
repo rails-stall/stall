@@ -11,30 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170201131326) do
+ActiveRecord::Schema.define(version: 20170124093811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
-  enable_extension "unaccent"
-
-  create_table "admin_users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.inet     "current_sign_in_ip"
-    t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-  end
-
-  add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
-  add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "books", force: :cascade do |t|
     t.string   "title"
@@ -52,60 +32,6 @@ ActiveRecord::Schema.define(version: 20170201131326) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  create_table "para_component_resources", force: :cascade do |t|
-    t.integer  "component_id"
-    t.integer  "resource_id"
-    t.string   "resource_type"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  add_index "para_component_resources", ["component_id"], name: "index_para_component_resources_on_component_id", using: :btree
-  add_index "para_component_resources", ["resource_type", "resource_id"], name: "index_para_component_resources_on_resource_type_and_resource_id", using: :btree
-
-  create_table "para_component_sections", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "identifier"
-    t.integer  "position"
-  end
-
-  create_table "para_components", force: :cascade do |t|
-    t.string   "type"
-    t.string   "name"
-    t.hstore   "configuration",        default: {}, null: false
-    t.integer  "position",             default: 0
-    t.integer  "component_section_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "slug"
-    t.string   "identifier"
-  end
-
-  add_index "para_components", ["slug"], name: "index_para_components_on_slug", using: :btree
-
-  create_table "para_library_files", force: :cascade do |t|
-    t.string   "attachment_file_name"
-    t.string   "attachment_content_type"
-    t.integer  "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-  end
-
-  create_table "para_page_sections", force: :cascade do |t|
-    t.string   "type"
-    t.jsonb    "data"
-    t.integer  "position",   default: 0
-    t.integer  "page_id"
-    t.string   "page_type"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  add_index "para_page_sections", ["page_type", "page_id"], name: "index_para_page_sections_on_page_type_and_page_id", using: :btree
 
   create_table "stall_addresses", force: :cascade do |t|
     t.integer  "civility"
@@ -170,7 +96,7 @@ ActiveRecord::Schema.define(version: 20170201131326) do
     t.datetime "updated_at",                null: false
     t.integer  "user_id"
     t.string   "user_type"
-    t.string   "locale",     default: "fr"
+    t.string   "locale",     default: "en"
   end
 
   add_index "stall_customers", ["user_type", "user_id"], name: "index_stall_customers_on_user_type_and_user_id", using: :btree
@@ -329,7 +255,6 @@ ActiveRecord::Schema.define(version: 20170201131326) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "books", "categories"
-  add_foreign_key "para_component_resources", "para_components", column: "component_id"
   add_foreign_key "stall_adjustments", "stall_product_lists", column: "cart_id"
   add_foreign_key "stall_credit_note_usages", "stall_adjustments", column: "adjustment_id"
   add_foreign_key "stall_credit_note_usages", "stall_credit_notes", column: "credit_note_id"

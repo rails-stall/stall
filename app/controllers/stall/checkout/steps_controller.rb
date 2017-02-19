@@ -43,6 +43,9 @@ module Stall
       def load_cart
         @cart = current_cart
 
+        # If the cart is not checkoutable, look for a potential cart could have
+        # just been paid and that would be archived it a specific cookie, or
+        # exit from the checkout
         unless @cart.checkoutable?
           if archived_paid_cart?
             @cart = archived_paid_cart

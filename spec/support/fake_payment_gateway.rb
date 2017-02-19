@@ -9,7 +9,7 @@ class FakePaymentGateway < Stall::Payments::Gateway
     Response.new(request)
   end
 
-  class Request
+  class Request < Stall::Payments::GatewayRequest
     attr_reader :cart
 
     def initialize(cart)
@@ -21,7 +21,7 @@ class FakePaymentGateway < Stall::Payments::Gateway
     end
   end
 
-  class Response
+  class Response < Stall::Payments::GatewayResponse
     attr_reader :request, :cart
 
     def initialize(request)
@@ -29,12 +29,12 @@ class FakePaymentGateway < Stall::Payments::Gateway
       @cart = Cart.find(request.params[:cart_id])
     end
 
-    def notify
-      cart.payment.pay! if request.params[:success]
-    end
-
     def valid?
       request.params[:valid]
+    end
+
+    def success?
+      request.params[:success]
     end
   end
 end

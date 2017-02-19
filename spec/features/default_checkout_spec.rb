@@ -6,7 +6,7 @@ RSpec.feature 'The default cart check out' do
     create(:payment_method, name: 'Fake payment gateway', identifier: 'fake-payment-gateway')
     cart = create_filled_cart
 
-    visit checkout_step_path(cart_key: cart.identifier)
+    visit checkout_path(cart_key: cart.identifier)
 
     fill_in Customer.human_attribute_name(:email), with: 'test@example.com'
 
@@ -38,7 +38,7 @@ RSpec.feature 'The default cart check out' do
     expect(cart.customer.email).to eq('test@example.com')
 
     expect(cart.shipping_address.address).to eq('1 rue de la rue')
-    expect(cart.billing_address).to be_nil
+    expect(cart.billing_address).to eq(cart.shipping_address)
 
     expect(cart.shipment.shipping_method.name).to eq('Fake shipping carrier')
     expect(cart.shipment.price.to_i).not_to eq(0)
