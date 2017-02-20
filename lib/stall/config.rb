@@ -80,13 +80,15 @@ module Stall
     end
 
     # Fetch user config and add top-namespace lookup to avoid collision
-    # with Stall module services
+    # with Stall module services.
     #
     # Default allows looking up Stall namespace automatically, when no
     # config has been given
     def service_for(identifier)
       class_name = if (service_name = services[identifier])
         "::#{ services[identifier].gsub(/^::/, '') }"
+      elsif File.exists?(Rails.root.join('app', 'services', "#{ identifier }_service.rb"))
+        "::#{ identifier.to_s.camelize }Service"
       else
         "Stall::#{ identifier.to_s.camelize }Service"
       end
