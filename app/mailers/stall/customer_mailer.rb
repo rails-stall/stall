@@ -14,10 +14,11 @@ module Stall
       I18n.with_locale(cart.customer.locale) do
         @cart = cart
 
-        calculator_class = Stall::Shipping::Calculator.for(cart.shipment.shipping_method)
-        @calculator = calculator_class.new(cart, cart.shipment.shipping_method)
+        @calculator = if (calculator_class = Stall::Shipping::Calculator.for(cart.shipment.shipping_method))
+          calculator_class.new(cart, cart.shipment.shipping_method)
+        end
 
-        @tracking_url = if @calculator.trackable?
+        @tracking_url = if @calculator.try(:trackable?)
           cart.shipment.tracking_code.presence && @calculator.tracking_url
         end
 

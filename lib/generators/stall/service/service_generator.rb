@@ -11,10 +11,6 @@ module Stall
     end
 
     def post_template_message
-      puts "\n" +
-           "Service class generated. Please add the service to the " +
-           "`config.services` hash in your config/initializers/stall.rb file\n\n"
-
       return if @services_folder_existed
 
       puts " * Warning : app/services folder was just created, \n" +

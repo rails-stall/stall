@@ -1,0 +1,7 @@
+= para_form_for(resource) do |form|
+  = form.fieldset do
+    = form.input :name
+    = form.input :logo, as: :file, wrapper: :horizontal_file_input
+    = form.input :products, as: :selectize
+
+  = form.actions

@@ -6,6 +6,8 @@ module Stall
       included do
         self.table_name = 'stall_manufacturers'
 
+        acts_as_orderable
+
         has_many :products, dependent: :nullify
 
         has_attached_file :logo

@@ -56,8 +56,10 @@ module Stall
       def self.for(shipping_method)
         identifier = case shipping_method
         when String, Symbol then shipping_method.to_s
-        else shipping_method.identifier
+        else shipping_method && shipping_method.identifier
         end
+
+        return unless identifier
 
         name = Stall::Shipping.calculators[identifier]
         String === name ? name.constantize : name

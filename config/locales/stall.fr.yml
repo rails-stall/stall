@@ -272,6 +272,7 @@ fr:
         properties: "Propriétés"
         variants: "Déclinaisons"
         product_details: "Blocs de description produit"
+        manufacturer: "Fabricant"
       product_detail:
         name: "Titre"
         content: "Contenu"

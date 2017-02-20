@@ -17,8 +17,6 @@ module Stall
                  with_model_currency: :currency, allow_nil: true
 
         enum state: { pending: 0, shipped: 1 }
-
-        validates :cart, :shipping_method, presence: true
       end
 
       def currency

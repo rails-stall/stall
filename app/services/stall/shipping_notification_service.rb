@@ -9,8 +9,8 @@ module Stall
 
     def call
       if shipment.update(shipment_params)
-        send_customer_email
         update_shipment
+        send_customer_email
 
         true
       else

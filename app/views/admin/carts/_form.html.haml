@@ -1,6 +1,6 @@
 = para_form_for(resource) do |form|
   = form.tabs do |tabs|
-    = tabs.tab :informations do
+    = tabs.tab :informations, icon: 'info-circle' do
       = form.input :reference
       = form.input :total_price do
         .input-group
@@ -10,8 +10,8 @@
 
       = form.actions
 
-    = tabs.tab :billing do
-      = form.input :customer, :as => :nested_one
+    = tabs.tab :billing, icon: 'user' do
+      = form.input :customer, as: :nested_one
 
       = form.input :billing_address do
         .nested-one-field
@@ -20,8 +20,8 @@
 
       = form.actions
 
-    = tabs.tab :shipping do
-      = form.input :shipment, :as => :nested_one
+    = tabs.tab :shipping, icon: 'truck' do
+      = form.input :shipment, as: :nested_one
 
       = form.input :shipping_address do
         .nested-one-field
@@ -30,13 +30,13 @@
 
       = form.actions
 
-    = tabs.tab :payment do
-      = form.input :payment, :as => :nested_one
+    = tabs.tab :payment, icon: 'credit-card' do
+      = form.input :payment, as: :nested_one
 
       = form.actions
 
-    = tabs.tab :line_items do
-      = form.input :line_items, :as => :nested_many
+    = tabs.tab :line_items, icon: 'list' do
+      = form.input :line_items, as: :nested_many
 
       = form.actions
 
