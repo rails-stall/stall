@@ -7,6 +7,8 @@ module Stall
         self.table_name = 'stall_manufacturers'
 
         acts_as_orderable
+        extend FriendlyId
+        friendly_id :name, use: [:slugged, :finders]
 
         has_many :products, dependent: :nullify
 
