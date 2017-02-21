@@ -22,7 +22,7 @@ module Stall
       carts = cart_model.empty.older_than(Stall.config.empty_carts_expires_after.ago)
 
       log "Cleaning #{ carts.count } empty carts ..."
-      carts.delete_all
+      carts.destroy_all
       log "Done."
     end
 
