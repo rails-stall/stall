@@ -16,7 +16,7 @@ module Stall
 
         validates :name, presence: true
 
-        scope :ordered, -> { order(position: 'asc') }
+        scope :ordered, -> { order(position: 'ASC') }
       end
 
       module ClassMethods

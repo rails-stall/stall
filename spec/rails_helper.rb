@@ -5,6 +5,7 @@ require 'spec_helper'
 require File.expand_path("../dummy/config/environment", __FILE__)
 require 'rspec/rails'
 require 'shoulda-matchers'
+require 'paperclip/matchers'
 require 'factory_girl_rails'
 require 'database_cleaner'
 require 'capybara/rails'
@@ -34,6 +35,7 @@ Dir[File.expand_path('../**/shared_examples/**/*.rb', __FILE__)].each { |f| requ
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.include Paperclip::Shoulda::Matchers
   config.include FactoryGirl::Syntax::Methods
   config.include ActionView::Helpers::TranslationHelper
 

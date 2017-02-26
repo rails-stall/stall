@@ -24,6 +24,42 @@ PATH
       simple_form (~> 3.0)
       vertebra (~> 0.1)
 
+PATH
+  remote: ~/gems/para
+  specs:
+    para (0.6.8)
+      active_decorator
+      activejob-status
+      bootstrap-sass (~> 3.2)
+      cancancan (~> 1.9)
+      closure_tree (~> 6.2)
+      cocoon
+      compass-rails
+      deep_cloneable (~> 2.2.1)
+      devise (>= 3.0, < 5.0)
+      font-awesome-rails (>= 4.0.0)
+      font-awesome-sass
+      friendly_id
+      haml-rails
+      jquery-rails
+      kaminari
+      paperclip (~> 4.2)
+      pg
+      rails (>= 4.0, <= 6.0)
+      rails-i18n
+      ransack
+      request_store
+      roo
+      roo-xls
+      rspec-core
+      sass-rails
+      simple_form (~> 3.1)
+      simple_form_extension (>= 1.4.5)
+      spreadsheet
+      truncate_html
+      turbolinks
+      vertebra
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -149,6 +185,8 @@ GEM
       railties (>= 3.2, < 5.1)
     font-awesome-sass (4.7.0)
       sass (>= 3.2)
+    friendly_id (5.1.0)
+      activerecord (>= 4.0.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     haml (4.0.7)
@@ -215,37 +253,6 @@ GEM
       cocaine (~> 0.5.5)
       mime-types
       mimemagic (= 0.3.0)
-    para (0.6.8)
-      active_decorator
-      activejob-status
-      bootstrap-sass (~> 3.2)
-      cancancan (~> 1.9)
-      closure_tree (~> 6.2)
-      cocoon
-      compass-rails
-      deep_cloneable (~> 2.2.1)
-      devise (>= 3.0, < 5.0)
-      font-awesome-rails (>= 4.0.0)
-      font-awesome-sass
-      haml-rails
-      jquery-rails
-      kaminari
-      paperclip (~> 4.2)
-      pg
-      rails (>= 4.0, <= 6.0)
-      rails-i18n
-      ransack
-      request_store
-      roo
-      roo-xls
-      rspec-core
-      sass-rails
-      simple_form (~> 3.1)
-      simple_form_extension (>= 1.4.5)
-      spreadsheet
-      truncate_html
-      turbolinks
-      vertebra
     parser (2.3.0.1)
       ast (~> 2.2)
     pg (0.19.0)
@@ -395,6 +402,7 @@ DEPENDENCIES
   devise
   factory_girl_rails (~> 4.0)
   launchy
+  para!
   rails-i18n
   redactor-rails!
   rspec-rails

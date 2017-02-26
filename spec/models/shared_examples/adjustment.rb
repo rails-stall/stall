@@ -1,6 +1,4 @@
-require 'rails_helper'
-
-RSpec.describe Adjustment do
+RSpec.shared_examples 'an adjustment' do |factory|
   it { should monetize(:price).allow_nil }
 
   it { should validate_presence_of(:name) }

@@ -23,9 +23,9 @@ module Stall
           thumb: '100x100#',
           show: '555x'
         }
-
-        validates :name, :image, presence: true
         validates_attachment :image, content_type: { content_type: /\Aimage\/.*\z/ }
+
+        validates :name, presence: true
 
         scope :visible, -> { where(visible: true) }
       end
