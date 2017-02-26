@@ -17,3 +17,9 @@ engines:
 
 exclude_paths:
   - spec/**/*
+
+ratings:
+   paths:
+   - "app/**/*"
+   - "lib/**/*"
+   - "**.rb"
