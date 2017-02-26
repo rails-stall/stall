@@ -10,6 +10,10 @@ module Stall
       if cart.remainder? && !adjustment_exists?
         credit_note = create_credit_note!
         create_adjustment_for!(credit_note)
+
+        true
+      else
+        false
       end
     end
 

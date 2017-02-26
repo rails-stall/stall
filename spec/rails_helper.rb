@@ -43,6 +43,9 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :view
   config.include Devise::Test::IntegrationHelpers, type: :feature
 
+  # #money helper to easily build money values
+  config.include MoneyValue
+
   # Allows switching configs and restore them after
   config.include ConfigSwitcher
 
