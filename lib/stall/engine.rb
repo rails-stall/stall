@@ -24,27 +24,13 @@ module Stall
     end
 
     initializer 'stall.ensure_shipping_method_for_all_calculators' do
-      next unless ShippingMethod.table_exists?
-
-      Stall::Shipping.calculators.each_key do |name|
-        ShippingMethod.where(identifier: name).first_or_create do |method|
-          method.name = name.to_s.humanize
-        end
-      end
-    end
-
-    initializer 'stall.require_manual_payment_gateway' do
-      require 'stall/payments/manual_payment_gateway'
+      register_class_models_for(ShippingMethod, Stall::Shipping.calculators)
     end
 
     initializer 'stall.ensure_payment_method_for_all_gateways' do
-      next unless PaymentMethod.table_exists?
+      require 'stall/payments/manual_payment_gateway'
 
-      Stall::Payments.gateways.each_key do |name|
-        PaymentMethod.where(identifier: name).first_or_create do |method|
-          method.name = name.to_s.humanize
-        end
-      end
+      register_class_models_for(PaymentMethod, Stall::Payments.gateways)
     end
 
     initializer 'stall.add_stall_plugin_to_para_config' do
@@ -60,6 +46,16 @@ module Stall
       generators.stylesheets     false
       generators.javascripts     false
       generators.test_framework  false
+    end
+
+    def register_class_models_for(model, classes)
+      return unless model.table_exists?
+
+      classes.each_key do |name|
+        model.where(identifier: name).first_or_create do |method|
+          method.name = name.to_s.humanize
+        end
+      end
     end
   end
 end
