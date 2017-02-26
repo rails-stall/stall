@@ -24,9 +24,7 @@ module Stall
     end
 
     def create_credit_notes!
-      if cart.remainder?
-        Stall.config.service_for(:cart_credit_note_creation).new(cart).call
-      end
+      Stall.config.service_for(:cart_credit_note_creation).new(cart).call
     end
   end
 end

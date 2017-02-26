@@ -19,4 +19,4 @@ gem 'devise'
 # Needed to make para loading work in tests
 gem 'redactor-rails', github: 'glyph-fr/redactor-rails'
 
-gem 'para', path: '~/gems/para'
+# gem 'para', path: '~/gems/para'
