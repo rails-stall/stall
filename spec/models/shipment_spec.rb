@@ -7,9 +7,6 @@ RSpec.describe Shipment do
   it { should monetize(:eot_price_cents) }
   it { should monetize(:price_cents) }
 
-  it { should validate_presence_of(:cart) }
-  it { should validate_presence_of(:shipping_method) }
-
   describe '#currency' do
     it 'returns the cart currency if set' do
       cart = build(:cart, currency: 'GBP', shipment: build(:shipment))
