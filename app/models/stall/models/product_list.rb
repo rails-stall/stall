@@ -64,7 +64,7 @@ module Stall
       end
 
       def total_quantity
-        line_items.map(&:quantity).sum
+        line_items.map(&:quantity).compact.sum
       end
 
       def wizard
