@@ -14,10 +14,11 @@ PATH
       coffee-rails (~> 4.0)
       country_select (~> 2.0)
       deep_merge (~> 1.1)
+      friendly_id (~> 5.1)
       haml-rails (~> 0.1)
       has_secure_token (~> 1.0)
       money-rails (~> 1.6)
-      para
+      para (~> 0.6)
       pg (~> 0.16)
       rails (>= 4.2, <= 6.0)
       request_store (~> 1.3)

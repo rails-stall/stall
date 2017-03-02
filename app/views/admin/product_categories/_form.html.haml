@@ -1,0 +1,7 @@
+= para_form_for(resource) do |form|
+  = form.fieldset do
+    = form.input :name
+    = form.input :slug
+    = form.input :parent, as: :selectize
+
+  = form.actions

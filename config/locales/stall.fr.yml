@@ -273,6 +273,13 @@ fr:
         variants: "Déclinaisons"
         product_details: "Blocs de description produit"
         manufacturer: "Fabricant"
+      product_category:
+        name: "Nom"
+        slug: "Fragment d'URL"
+        position: "Position"
+        parent: "Catégorie parente"
+        children: "Catégories enfant"
+        products: "Produits"
       product_detail:
         name: "Titre"
         content: "Contenu"
