@@ -28,7 +28,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'country_select', '~> 2.0'
   s.add_dependency 'cocoon', '~> 1.0'
   s.add_dependency 'deep_merge', '~> 1.1'
-  s.add_dependency 'para'
+  s.add_dependency 'friendly_id', '~> 5.1'
+  s.add_dependency 'para', '~> 0.6'
 
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'shoulda-matchers', '~> 3.0'
