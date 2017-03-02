@@ -25,9 +25,7 @@ class Stall.AddToCartForm extends Vertebra.View
     @errorMessages = @$el.data('error-messages')
 
   sendRequest: ->
-    unless (v = @validate(submit: true)) and (e = !@errors.length)
-      console.log 'sendRequest', v, e
-      return false
+    return false unless (v = @validate(submit: true)) and (e = !@errors.length)
     @setLoading(true)
     true
 
@@ -84,7 +82,6 @@ class Stall.AddToCartForm extends Vertebra.View
     @$button.attr(title: '')
     @$button.tooltip('disable') if @$button.data('bs.tooltip')
     @$button.prop('disabled', false)
-
 
   setLoading: (loading) ->
     state = if loading then 'loading' else 'reset'
