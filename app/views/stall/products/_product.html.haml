@@ -1,0 +1,4 @@
+= link_to product_path, class: 'product col-md-4' do
+  %span.product-name= product.name
+  = image_tag product.image.url(:thumb), class: 'img-responsive'
+  = number_to_currency(product.price)

@@ -1,0 +1,21 @@
+= para_form_for(resource) do |form|
+  = form.tabs do |tabs|
+    = tabs.tab :informations, icon: 'info-circle' do
+      = form.input :visible
+      = form.input :name
+      = form.input :slug, as: :string
+
+      = form.input :product_category, as: :selectize, collection: Para.components.product_categories.resources.leaves
+      = form.input :manufacturer, as: :selectize
+
+    = tabs.tab :images, icon: 'picture-o' do
+      = form.input :image, as: :image
+
+    = tabs.tab :descriptions, icon: 'font' do
+      = form.input :description, as: :redactor
+      = form.input :product_details, as: :nested_many
+
+    = tabs.tab :variants, icon: 'list' do
+      = form.input :variants, as: :variants_matrix
+
+    = form.actions

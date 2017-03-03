@@ -1,0 +1,8 @@
+%h1= @product_category.name
+
+.row
+  .col-md-4
+    = render partial: 'stall/products/filters', locals: { product_category: @product_category }
+
+  .col-md-8
+    = render partial: 'stall/products/list', locals: { products: @products }

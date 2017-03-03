@@ -35,6 +35,12 @@ fr:
         payment: "Paiement"
         line_items: "Produits"
 
+      product:
+        informations: "Informations"
+        images: "Images"
+        descriptions: "Descriptions"
+        variants: "Déclinaisons"
+
   stall:
     shared:
       cancel: "Annuler"

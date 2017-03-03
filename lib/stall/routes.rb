@@ -9,6 +9,14 @@ module Stall
     def draw(mount_location)
       router.instance_eval do
         scope mount_location, module: :stall do
+          constraints ProductCategoryExistsConstraint.new do
+            resources :product_categories, path: '/'
+          end
+
+          constraints ProductExistsConstraint.new do
+            resources :products, path: '/'
+          end
+
           resources :carts do
             resources :line_items
             resource :credit, controller: 'cart_credits', only: [:update, :destroy]
@@ -38,6 +46,18 @@ module Stall
             end
           end
         end
+      end
+    end
+
+    class ProductExistsConstraint
+      def matches?(request)
+        Product.exists?(slug: request.params[:id])
+      end
+    end
+
+    class ProductCategoryExistsConstraint
+      def matches?(request)
+        ProductCategory.exists?(slug: request.params[:id])
       end
     end
   end
