@@ -41,6 +41,10 @@ module Stall
       :variants_property_values_id_in
     end
 
+    def label
+      property.name
+    end
+
     def collection
       property.property_values
     end
