@@ -1,0 +1,13 @@
+.row.product-details
+  .col-md-12
+    %ul.nav.nav-tabs{ data: { tabs: 'tabs' } }
+      - product_details.each_with_index do |tab, index|
+        %li{ class: "#{'active' if index == 0}"  }
+          = link_to tab.name, "##{tab.id}", data: { toggle: 'tab' }
+
+    .tab-content
+      - product_details.each_with_index do |tab, index|
+        .tab-pane{ id: "#{tab.id}", class: "#{'active' if index == 0}" }
+          = tab.content&.html_safe
+
+

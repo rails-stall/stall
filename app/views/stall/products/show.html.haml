@@ -14,7 +14,7 @@
       = @product.description.try(:html_safe)
 
     - if @product.product_details.length > 0
-      = render 'products/product_details', product_details: @product.product_details
+      = render 'stall/products/product_details', product_details: @product.product_details
 
     - if @product.suggested_products.length > 0
       .related.products
