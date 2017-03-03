@@ -29,6 +29,7 @@ module Stall
   autoload :DefaultCurrencyManager
   autoload :ReferenceManager
   autoload :TotalPricesManager
+  autoload :ProductFiltersBuilder
 
   autoload :Checkout
   autoload :Shipping

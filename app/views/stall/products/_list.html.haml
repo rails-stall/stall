@@ -1,3 +1,5 @@
 .products-list
   .row
-    = render collection: products, partial: 'stall/products/product'
+    - products.each do |product|
+      .col-md-3
+        = render partial: 'stall/products/product', locals: { product: product }
