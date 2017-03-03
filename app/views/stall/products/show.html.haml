@@ -1,0 +1,26 @@
+.product-page
+  .col-md-4
+    .product-images
+      = image_tag @product.image.url(:show), class: 'img-responsive'
+
+  .col-md-8
+    %h1.product-title= @product.name
+
+    = displayed_price_for_variants(@product.variants)
+
+    = add_to_cart_form_for(@product)
+
+    .description
+      = @product.description.try(:html_safe)
+
+    - if @product.product_details.length > 0
+      = render 'products/product_details', product_details: @product.product_details
+
+    - if @product.suggested_products.length > 0
+      .related.products
+        %h2
+          = t('stall.products.suggested_products.title')
+
+        .products.row
+          - @product.suggested_products.each do |suggested_product|
+            = render partial: 'stall/products/product', locals: { product: suggested_product }

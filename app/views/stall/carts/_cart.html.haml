@@ -19,7 +19,7 @@
           %td= t('stall.carts.recap.subtotal')
           %td= number_to_currency(cart.subtotal)
 
-      - if cart.shipment.try(:persisted?)
+      - if cart.shipment.try(:persisted?) && cart.shipment.shipping_method
         %tr
           %td
             = t('stall.carts.recap.total_shipment_price')

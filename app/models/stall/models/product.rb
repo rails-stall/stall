@@ -16,8 +16,18 @@ module Stall
         has_many :variants, dependent: :destroy, inverse_of: :product
         accepts_nested_attributes_for :variants, allow_destroy: true
 
-        has_many :product_details, dependent: :destroy, inverse_of: :product
+        has_many :product_details, -> { ordered }, dependent: :destroy,
+                                                   inverse_of: :product
         accepts_nested_attributes_for :product_details, allow_destroy: true
+
+        has_many :product_suggestions, dependent: :destroy
+        has_many :suggested_products, through: :product_suggestions,
+                                      source: :suggestion
+
+        has_many :suggester_product_suggestions, dependent: :destroy,
+                                                 foreign_key: :suggestion_id
+        has_many :suggester_products, through: :suggester_product_suggestions,
+                                      source: :product
 
         has_attached_file :image, styles: {
           thumb: '100x100#',

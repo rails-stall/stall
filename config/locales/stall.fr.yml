@@ -41,6 +41,15 @@ fr:
         descriptions: "Descriptions"
         variants: "Déclinaisons"
 
+  components:
+    section:
+      products: "Catalogue"
+    component:
+      products: "Produits"
+      product_categories: "Catégories de produits"
+      properties: "Propriétés de produit"
+      manufacturers: "Fabricants"
+
   stall:
     shared:
       cancel: "Annuler"
@@ -48,6 +57,11 @@ fr:
       send: "Envoyer"
       sending: "Envoi en cours ..."
 
+    products:
+      suggester_products:
+        title: "Vous pourriez aussi aimer ..."
+      prices:
+        from: "À partir de %{price}"
     carts:
       actions:
         view_cart: "Voir mon panier"
@@ -279,6 +293,7 @@ fr:
         variants: "Déclinaisons"
         product_details: "Blocs de description produit"
         manufacturer: "Fabricant"
+        suggested_products: "Produits suggérés"
       product_category:
         name: "Nom"
         slug: "Fragment d'URL"

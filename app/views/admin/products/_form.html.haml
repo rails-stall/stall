@@ -8,6 +8,8 @@
       = form.input :product_category, as: :selectize, collection: Para.components.product_categories.resources.leaves
       = form.input :manufacturer, as: :selectize
 
+      = form.input :suggested_products, as: :selectize
+
     = tabs.tab :images, icon: 'picture-o' do
       = form.input :image, as: :image
 
