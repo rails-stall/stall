@@ -25,7 +25,8 @@ module Stall
                                       source: :suggestion
 
         has_many :suggester_product_suggestions, dependent: :destroy,
-                                                 foreign_key: :suggestion_id
+                                                 foreign_key: :suggestion_id,
+                                                 class_name: 'ProductSuggestion'
         has_many :suggester_products, through: :suggester_product_suggestions,
                                       source: :product
 
