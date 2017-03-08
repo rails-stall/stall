@@ -221,8 +221,14 @@ fr:
       variant: "Déclinaison"
       product_detail: "Bloc de description"
       manufacturer: "Fabricant"
+      curated_product_list: Curated list
+      curated_list_product: Produit de curated list
 
     attributes:
+      curated_product_list:
+        curated_list_products: Produits
+      curated_list_product:
+        product: Produit
       line_item:
         sellable: "Produit source"
         name: "Nom du produit"
