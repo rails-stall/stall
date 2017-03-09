@@ -21,6 +21,8 @@ module Stall
             resources :products, path: '/'
           end
 
+          resources :manufacturers
+
           resources :carts do
             resources :line_items
             resource :credit, controller: 'cart_credits', only: [:update, :destroy]
