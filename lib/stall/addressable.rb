@@ -28,7 +28,7 @@ module Stall
     end
 
     def billing_address?
-      billing_address.persisted? && billing_address.billing?
+      billing_address.try(:persisted?) && billing_address.billing?
     end
 
     # Allow shipping address to fall back to billing address when not filled
@@ -38,7 +38,7 @@ module Stall
     end
 
     def shipping_address?
-      shipping_address.persisted? && shipping_address.billing?
+      shipping_address.try(:persisted?) && shipping_address.billing?
     end
   end
 end
