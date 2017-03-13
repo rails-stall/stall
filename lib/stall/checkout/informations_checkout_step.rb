@@ -120,7 +120,7 @@ module Stall
       def prepare_addresses_attributes
         unless use_another_address_for_billing?
           cart_params.delete(:billing_address_attributes)
-          cart.billing_address.try(:mark_for_destruction)
+          cart.billing_address.try(:mark_for_destruction) if cart.billing_address?
         end
       end
 
