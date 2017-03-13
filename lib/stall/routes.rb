@@ -9,6 +9,10 @@ module Stall
     def draw(mount_location)
       router.instance_eval do
         scope mount_location, module: :stall do
+          constraints CuratedProductListExistsConstraint.new do
+            resources :curated_product_lists, path: '/'
+          end
+
           constraints ProductCategoryExistsConstraint.new do
             resources :product_categories, path: '/'
           end
@@ -16,6 +20,8 @@ module Stall
           constraints ProductExistsConstraint.new do
             resources :products, path: '/'
           end
+
+          resources :manufacturers
 
           resources :carts do
             resources :line_items
@@ -46,6 +52,12 @@ module Stall
             end
           end
         end
+      end
+    end
+
+    class CuratedProductListExistsConstraint
+      def matches?(request)
+        CuratedProductList.exists?(slug: request.params[:id])
       end
     end
 
