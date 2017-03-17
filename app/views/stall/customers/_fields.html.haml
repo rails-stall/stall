@@ -21,13 +21,14 @@
           = user_form.input :password
           = user_form.input :password_confirmation
 
-        %fieldset
-          %legend.omniauth-sign-up= t('stall.checkout.sign_in.omniauth_sign_up')
+        - if Stall.config.omniauth_providers.any?
+          %fieldset
+            %legend.omniauth-sign-up= t('stall.checkout.sign_in.omniauth_sign_up')
 
-          - Stall.config.omniauth_providers.each do |provider|
-            = link_to user_omniauth_redirect_path(provider.name, _redirect_to: request.path), class: 'btn btn-default' do
-              = fa_icon provider.icon
-              = t('stall.omniauth.sign_in_with', provider: provider.display_name)
+            - Stall.config.omniauth_providers.each do |provider|
+              = link_to user_omniauth_redirect_path(provider.name, _redirect_to: request.path), class: 'btn btn-default' do
+                = fa_icon provider.icon
+                = t('stall.omniauth.sign_in_with', provider: provider.display_name)
 
   %p.help-block
     %label

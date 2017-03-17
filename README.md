@@ -74,16 +74,16 @@ model by using the model generator :
 rails generate stall:model user
 ```
 
-#### Remove user management
+#### Omniauth
 
-If you don't want to associate a user account to your customers, you'll need
-to set those variables to `nil` and remove the user creation form in the
-informations checkout step (See
-[Configuring the checkout flow](#4-configuring-the-checkout-flow) and
-[Customizing views](#5-customizing-views) for more informations on how to
-do this).
+You can easily make customers sign in and up with omniauth. Stall comes with
+Facebook and Google OAuth2 integrations, but other other integrations can be
+easily added.
 
-Note that this is untested for now, but should be doable quite easily.
+To use this feature, just uncomment the `config.omniauth_provider` lines in
+the initializer.
+
+For more information, please see the initializer comments.
 
 ### 3. Making a model sellable
 

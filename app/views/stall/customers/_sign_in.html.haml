@@ -22,10 +22,11 @@
         %button.btn.btn-primary{ type: 'submit', autocomplete: 'off', data: { :'sign-in-submit-btn' => true, :'loading-text' => t('stall.shared.sending') } }
           = t('stall.checkout.sign_in.button_label')
 
-    %fieldset
-      %legend.omniauth-sign-in= t('stall.checkout.sign_in.omniauth_sign_in')
+    - if Stall.config.omniauth_providers.any?
+      %fieldset
+        %legend.omniauth-sign-in= t('stall.checkout.sign_in.omniauth_sign_in')
 
-      - Stall.config.omniauth_providers.each do |provider|
-        = link_to user_omniauth_redirect_path(provider.name, _redirect_to: request.path), class: 'btn btn-default' do
-          = fa_icon provider.icon
-          = t('stall.omniauth.sign_in_with', provider: provider.display_name)
+        - Stall.config.omniauth_providers.each do |provider|
+          = link_to user_omniauth_redirect_path(provider.name, _redirect_to: request.path), class: 'btn btn-default' do
+            = fa_icon provider.icon
+            = t('stall.omniauth.sign_in_with', provider: provider.display_name)

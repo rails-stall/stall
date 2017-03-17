@@ -36,12 +36,28 @@ Stall.configure do |config|
   # User omniauth providers that will be allowed for customers to authenticate
   # with.
   #
-  # Note that Facebook and Google are configured by default, and you can remove
-  # them as you want, but if you want to add a new provider, you'll have to
-  # include the `omniauth-<provider_name>` gem in your app's Gemfile to make
-  # it work.
+  # For each activated integration, you need to add the app id and secret key
+  # environment variables.
   #
-  # config.omniauth_providers_configs = [:facebook, :google_oauth2]
+  #   Example :
+  #
+  #     For Facebook, add the FACEBOOK_APP_ID and FACEBOOK_SECRET_KEY environment
+  #     variables.
+  #
+  # If you prefer, you can pass the app id and secret key to the
+  # config.omniauth_provider options.
+  #
+  #   Example :
+  #
+  #     config.omniauth_provider :facebook, app_id: '000000', secret_key; 'xxxxxx'
+  #
+  # Note that Facebook and Google omniauth integrations are included by default,
+  # and you can remove them as you want, but if you want to add a new provider,
+  # you'll have to include the `omniauth-<provider_name>` gem in your app's
+  # Gemfile to make it work.
+  #
+  # config.omniauth_provider :facebook
+  # config.omniauth_provider :google_oauth2, display_name: 'Google', icon: 'google'
 
   # Configure `devise_for :user` call, if you need to customize some
   # controllers behavior.

@@ -22,9 +22,6 @@ module Stall
     param :prices_precision, 2
 
     # User omniauth providers
-    param :omniauth_providers_configs, { facebook: {}, google_oauth2: { display_name: 'Google', icon: 'google' } }
-
-    # User omniauth providers
     param :devise_for_user_config, { controllers: { omniauth_callbacks: 'stall/omniauth_callbacks' } }
 
     # Engine's ApplicationController parent
@@ -110,6 +107,15 @@ module Stall
 
     alias_method :raw_default_currency, :default_currency
     alias_method :default_currency, :default_currency_as_money
+
+    # User omniauth providers
+    def omniauth_providers_configs
+      @omniauth_providers_configs ||= {}
+    end
+
+    def omniauth_provider(name, config = {})
+      omniauth_providers_configs[name] = config
+    end
 
     def omniauth_providers
       omniauth_providers_configs.map do |provider, config|
