@@ -107,7 +107,7 @@ module Stall
 
         # Remove user from customer to avoid automatic validation of the user
         # if no user should be saved with the customer
-        unless stall_user_signed_in? || cart.customer.try(:user).try(:persisted?) ||
+        unless user_signed_in? || cart.customer.try(:user).try(:persisted?) ||
           !cart.customer
         then
           cart.customer.user = nil

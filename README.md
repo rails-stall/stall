@@ -64,21 +64,14 @@ Here are the mandatory ones :
 
 ### 2. Configuring shop users
 
-The default cart behavior admits that you have a user model, named `User` and
-that you are using [Devise](https://github.com/plataformatec/devise)
-compatible helpers in your controllers (`current_user`).
+Stall uses [Devise](https://github.com/plataformatec/devise) to authenticate
+shop customers through a `User` model.
 
-You can configure those settings by setting the following initializer config
-parameters :
+To add behavior to this model, you can override the model like any other Stall
+model by using the model generator :
 
-- `default_user_model_name`
-- `default_user_helper_method`
-
-Also, the user should include an inverse `:customer` relation targeting the
-Stall's customer model like the following :
-
-```ruby
-has_one :customer, as: :user
+```bash
+rails generate stall:model user
 ```
 
 #### Remove user management

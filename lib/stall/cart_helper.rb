@@ -19,11 +19,11 @@ module Stall
     end
 
     def current_customer
-      @current_customer ||= if stall_user_signed_in?
-        if (customer = current_stall_user.customer)
+      @current_customer ||= if user_signed_in?
+        if (customer = current_user.customer)
           customer
         else
-          current_stall_user.create_customer(email: current_stall_user.email)
+          current_user.create_customer(email: current_user.email)
         end
       end
     end

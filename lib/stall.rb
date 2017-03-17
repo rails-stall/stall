@@ -10,6 +10,11 @@ require 'deep_merge/rails_compat'
 require 'friendly_id'
 require 'para'
 
+require 'devise'
+require 'omniauth'
+require 'omniauth-facebook'
+require 'omniauth-google-oauth2'
+
 require 'stall/rails/routing_mapper'
 require 'stall/rails/currency_helper'
 require 'stall/engine'
@@ -30,6 +35,7 @@ module Stall
   autoload :ReferenceManager
   autoload :TotalPricesManager
   autoload :ProductFiltersBuilder
+  autoload :OmniauthProvider
 
   autoload :Checkout
   autoload :Shipping

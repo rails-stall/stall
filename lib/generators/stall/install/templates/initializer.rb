@@ -25,20 +25,6 @@ Stall.configure do |config|
   #
   # config.sender_email = ENV['STALL_SENDER_EMAIL']
 
-  # Set the customer associated user model used by the shop to bind user
-  # accounts to.
-  #
-  # This model should have an e-mail, password and password_confirmation
-  # fields.
-  #
-  # config.default_user_model_name = 'User'
-
-  # A method available in all controllers to fetch the current signed in user
-  # in your app. It should return a user model if the visitor is signed in, and
-  # nil if it's unsigned.
-  #
-  # config.default_user_helper_method = :current_user
-
   # Global default VAT rate, can be overrided by products
   #
   # config.vat_rate = BigDecimal.new('20.0')
@@ -46,6 +32,23 @@ Stall.configure do |config|
   # Defines the default number of decimals precision used in prices
   #
   # config.prices_precision = 2
+
+  # User omniauth providers that will be allowed for customers to authenticate
+  # with.
+  #
+  # Note that Facebook and Google are configured by default, and you can remove
+  # them as you want, but if you want to add a new provider, you'll have to
+  # include the `omniauth-<provider_name>` gem in your app's Gemfile to make
+  # it work.
+  #
+  # config.omniauth_providers_configs = [:facebook, :google_oauth2]
+
+  # Configure `devise_for :user` call, if you need to customize some
+  # controllers behavior.
+  #
+  # config.devise_for_user_config = {
+  #  controllers: { omniauth_callbacks: 'stall/omniauth_callbacks' }
+  # }
 
   # Default engine's controllers ancestor class
   #

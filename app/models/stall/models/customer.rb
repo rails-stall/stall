@@ -8,12 +8,10 @@ module Stall
 
         include Stall::Addressable
 
-        if Stall.config.default_user_model
-          belongs_to :user, polymorphic: true, inverse_of: :customer
-          accepts_nested_attributes_for :user
+        belongs_to :user, polymorphic: true, inverse_of: :customer
+        accepts_nested_attributes_for :user
 
-          before_validation :ensure_user_email
-        end
+        before_validation :ensure_user_email
 
         has_many :product_lists, dependent: :destroy
         has_many :credit_notes, dependent: :destroy
@@ -26,9 +24,7 @@ module Stall
         end
 
         def build_user(attributes = {})
-          (self.user = Stall.config.default_user_model.new(attributes)).tap do
-            user.customer = self if user.respond_to?(:customer)
-          end if Stall.config.default_user_model
+          self.user = ::User.new(attributes.merge(customer: self))
         end
 
         def credit(currency = Stall.config.default_currency)

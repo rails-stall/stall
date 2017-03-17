@@ -8,6 +8,12 @@ module Stall
 
     def draw(mount_location)
       router.instance_eval do
+        devise_for :users, Stall.config.devise_for_user_config
+
+        devise_scope :user do
+          get '/users/omniauth/:provider/redirect' => 'stall/omniauth_callbacks#redirect', as: :user_omniauth_redirect
+        end
+
         scope mount_location, module: :stall do
           constraints CuratedProductListExistsConstraint.new do
             resources :curated_product_lists, path: '/'

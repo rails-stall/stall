@@ -1,6 +1,7 @@
 module Stall
   class Config
     extend Stall::Utils::ConfigDSL
+
     # Store name used in e-mails and other interfaces duisplaying such an
     # information
     param :store_name
@@ -19,6 +20,12 @@ module Stall
 
     # Default prices precision for rounding
     param :prices_precision, 2
+
+    # User omniauth providers
+    param :omniauth_providers_configs, { facebook: {}, google_oauth2: { display_name: 'Google', icon: 'google' } }
+
+    # User omniauth providers
+    param :devise_for_user_config, { controllers: { omniauth_callbacks: 'stall/omniauth_callbacks' } }
 
     # Engine's ApplicationController parent
     param :application_controller_ancestor, '::ApplicationController'
@@ -50,9 +57,6 @@ module Stall
 
     # Duration after which an aborted cart is cleaned out by the rake task
     param :aborted_carts_expires_after, 14.days
-
-    param :default_user_model_name, 'User'
-    param :default_user_helper_method, :current_user
 
     # Configure the terms of service page path
     param :terms_path, 'about:blank'
@@ -100,15 +104,17 @@ module Stall
       self.services.merge!(value)
     end
 
-    def default_user_model
-      default_user_model_name.try(:constantize)
-    end
-
     def default_currency_as_money
       raw_default_currency && Money::Currency.new(raw_default_currency)
     end
 
     alias_method :raw_default_currency, :default_currency
     alias_method :default_currency, :default_currency_as_money
+
+    def omniauth_providers
+      omniauth_providers_configs.map do |provider, config|
+        Stall::OmniauthProvider.new(provider, config.deep_dup)
+      end
+    end
   end
 end

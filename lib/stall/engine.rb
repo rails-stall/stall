@@ -37,6 +37,15 @@ module Stall
       Para.config.plugins += [:stall]
     end
 
+    # For each omniauth provider in the config, declare a devise Omniauth
+    # provider
+    #
+    initializer 'stall.add_omniauth_providers_to_devise', before: 'devise.omniauth' do
+      Stall.config.omniauth_providers.each do |provider|
+        Devise.omniauth(provider.name, provider.app_id, provider.secret_key, provider.config)
+      end
+    end
+
     # Development : Configure rails generators to only generate the target
     # files and not try to generate useless complementary files
     #

@@ -1,8 +1,8 @@
 = render partial: 'stall/checkout/steps/navigation', locals: { cart: cart, wizard: @wizard, step: @step }
 
 -# Display sign in form for users that are not signed in
-- unless stall_user_signed_in?
-  - resource = Stall.config.default_user_model.new
+- unless user_signed_in?
+  - resource = User.new
   = render partial: 'stall/customers/sign_in', locals: { resource: resource, resource_name: resource.model_name.element }
 
 %h1= t('stall.checkout.informations.title')

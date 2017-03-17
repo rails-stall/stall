@@ -69,8 +69,8 @@ module Stall
           step.inject(:cookies, cookies)
           step.inject(:request, request)
           step.inject(:flash, flash)
-          step.inject(:stall_user_signed_in?, stall_user_signed_in?)
-          step.inject(:current_stall_user, current_stall_user)
+          step.inject(:user_signed_in?, user_signed_in?)
+          step.inject(:current_user, current_user)
 
           if Stall.config.steps_initialization
             instance_exec(step, &Stall.config.steps_initialization)

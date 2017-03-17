@@ -113,10 +113,16 @@ fr:
       sign_in:
         already_have_an_account: "J'ai déjà un compte :"
         click_to_sign_in: "Cliquez-ici pour vous connecter"
+
         sign_in_instructions: |
           Renseigez dans les champs suivant vos identifiants de connexion puis
           cliquez sur le bouton "%{label}"
         button_label: "Me connecter"
+
+        email_sign_in: "Connexion par e-mail"
+        omniauth_sign_in: "ou"
+        password_sign_up: "Renseigner un mot de passe"
+        omniauth_sign_up: "ou"
 
       payment:
         title: "Paiement"
@@ -192,6 +198,9 @@ fr:
       admin:
         order_paid_email:
           subject: "Une nouvelle commande a été passée sur le site - %{ref}"
+
+    omniauth:
+      sign_in_with: "%{provider}"
 
   activerecord:
     enums:

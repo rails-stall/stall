@@ -1,10 +1,10 @@
 -# When stall a user is signed in, a customer autoatically exist and is assigned
 -# to the cart, by default, we notify the visitor that he's signed in and will
 -# order with that account, making customer and user related fields unnecessary
-- if stall_user_signed_in?
+- if user_signed_in?
   .alert.alert-info
     %i.fa.fa-info-circle
-    = t('stall.checkout.informations.signed_in_as', email: current_stall_user.email)
+    = t('stall.checkout.informations.signed_in_as', email: current_user.email)
 
 - else
   -# The `#with_errors_from_user` helper ensures that user e-mail errors, like
@@ -14,9 +14,20 @@
 
   = form.fields_for :customer do |customer_form|
     = customer_form.fields_for :user, customer_form.object.user_or_default do |user_form|
-      %fieldset.collapse{ class: ('in' if params[:create_account] == '1'), data: { :'user-fields' => true } }
-        = user_form.input :password
-        = user_form.input :password_confirmation
+      .collapse{ class: ('in' if params[:create_account] == '1'), data: { :'user-fields' => true } }
+        %fieldset
+          %legend.password-sign-up= t('stall.checkout.sign_in.password_sign_up')
+
+          = user_form.input :password
+          = user_form.input :password_confirmation
+
+        %fieldset
+          %legend.omniauth-sign-up= t('stall.checkout.sign_in.omniauth_sign_up')
+
+          - Stall.config.omniauth_providers.each do |provider|
+            = link_to user_omniauth_redirect_path(provider.name, _redirect_to: request.path), class: 'btn btn-default' do
+              = fa_icon provider.icon
+              = t('stall.omniauth.sign_in_with', provider: provider.display_name)
 
   %p.help-block
     %label

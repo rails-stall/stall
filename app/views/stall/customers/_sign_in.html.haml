@@ -6,15 +6,26 @@
       = t('stall.checkout.sign_in.click_to_sign_in')
 
   #sign-in-form.panel-body.collapse{ data: { :'sign-in-form' => true } }
-    %p.help-block
-      = t('stall.checkout.sign_in.sign_in_instructions', label: t('stall.checkout.sign_in.button_label'))
+    %fieldset
+      %legend.email-sign-in= t('stall.checkout.sign_in.email_sign_in')
 
-    = simple_form_for resource, as: resource_name, url: session_path(resource_name), remote: true, html: { data: { :'stall-remote-sign-in-form' => true } } do |form|
-      .row
-        .col-md-6
-          = form.input :email
-        .col-md-6
-          = form.input :password
+      %p.help-block
+        = t('stall.checkout.sign_in.sign_in_instructions', label: t('stall.checkout.sign_in.button_label'))
 
-      %button.btn.btn-primary{ type: 'submit', autocomplete: 'off', data: { :'sign-in-submit-btn' => true, :'loading-text' => t('stall.shared.sending') } }
-        = t('stall.checkout.sign_in.button_label')
+      = simple_form_for resource, as: resource_name, url: session_path(resource_name), remote: true, html: { data: { :'stall-remote-sign-in-form' => true } } do |form|
+        .row
+          .col-md-6
+            = form.input :email
+          .col-md-6
+            = form.input :password
+
+        %button.btn.btn-primary{ type: 'submit', autocomplete: 'off', data: { :'sign-in-submit-btn' => true, :'loading-text' => t('stall.shared.sending') } }
+          = t('stall.checkout.sign_in.button_label')
+
+    %fieldset
+      %legend.omniauth-sign-in= t('stall.checkout.sign_in.omniauth_sign_in')
+
+      - Stall.config.omniauth_providers.each do |provider|
+        = link_to user_omniauth_redirect_path(provider.name, _redirect_to: request.path), class: 'btn btn-default' do
+          = fa_icon provider.icon
+          = t('stall.omniauth.sign_in_with', provider: provider.display_name)

@@ -31,6 +31,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'friendly_id', '~> 5.1'
   s.add_dependency 'para', '~> 0.6'
 
+  s.add_dependency 'devise'
+  s.add_dependency 'omniauth'
+  s.add_dependency 'omniauth-facebook'
+  s.add_dependency 'omniauth-google-oauth2'
+
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'shoulda-matchers', '~> 3.0'
   s.add_development_dependency 'factory_girl_rails', '~> 4.0'
