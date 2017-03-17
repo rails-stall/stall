@@ -1,6 +1,10 @@
 fr:
   para:
     stall:
+      cart:
+        filters:
+          paid_after: Payé après le
+          paid_before: Payé avant le
       variants_matrix:
         enabled: "Publier ?"
         price: "Prix"
