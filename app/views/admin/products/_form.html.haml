@@ -11,7 +11,7 @@
       = form.input :suggested_products, as: :selectize
 
     = tabs.tab :images, icon: 'picture-o' do
-      = form.input :image, as: :image
+      = form.input :images, as: :nested_many
 
     = tabs.tab :descriptions, icon: 'font' do
       = form.input :description, as: :redactor

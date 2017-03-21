@@ -307,6 +307,7 @@ fr:
         product_category: "Catégorie de produit"
         name: "Nom du produit"
         slug: "Fragment d'URL"
+        images: Images du produit
         description: "Description du produit"
         properties: "Propriétés"
         variants: "Déclinaisons"
@@ -327,6 +328,8 @@ fr:
         name: "Nom du fabricant"
         logo: "Logo"
         products: "Produits"
+      image:
+        file: Image
 
   simple_form:
     placeholders:

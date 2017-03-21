@@ -30,6 +30,10 @@ module Stall
         has_many :suggester_products, through: :suggester_product_suggestions,
                                       source: :product
 
+        has_many :images, as: :imageable
+
+        accepts_nested_attributes_for :images, allow_destroy: true
+
         has_attached_file :image, styles: {
           thumb: '100x100#',
           show: '555x'
