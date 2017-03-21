@@ -30,7 +30,7 @@ module Stall
         has_many :suggester_products, through: :suggester_product_suggestions,
                                       source: :product
 
-        has_many :images, as: :imageable
+        has_many :images, -> { ordered },  as: :imageable
 
         accepts_nested_attributes_for :images, allow_destroy: true
 
@@ -45,6 +45,10 @@ module Stall
 
       def price
         variants.map(&:price).min
+      end
+
+      def image
+        images.first.try(:file)
       end
     end
   end
