@@ -34,12 +34,6 @@ module Stall
 
         accepts_nested_attributes_for :images, allow_destroy: true
 
-        has_attached_file :image, styles: {
-          thumb: '100x100#',
-          show: '555x'
-        }
-        validates_attachment :image, content_type: { content_type: /\Aimage\/.*\z/ }
-
         validates :name, presence: true
 
         scope :visible, -> { where(visible: true) }
