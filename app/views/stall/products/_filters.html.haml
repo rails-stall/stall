@@ -1,4 +1,4 @@
 .products-filters
-  = search_form_for search, url: request.path, as: :search, builder: SimpleForm::FormBuilder, html: { data: { :'product-filters' => true } } do |form|
-    - product_filters_for(@products).each do |filter|
+  = search_form_for search, url: request.path, as: :search, builder: SimpleForm::FormBuilder, html: { class: 'products-filters-form', data: { :'product-filters' => true } } do |form|
+    - product_filters_for(@product_category.products).each do |filter|
       = render filter.rendering_options(locals: { form: form })

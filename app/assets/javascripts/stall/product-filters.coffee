@@ -1,12 +1,26 @@
 class Stall.ProductFilters extends Vertebra.View
   events:
-    'change [data-filter]': 'filterChanged'
+    'change [data-filter-submission="change"]': 'filterChanged'
+    'slideStop [data-filter-submission="slide"]': 'filterChanged'
 
-  initialize: ->
-    console.log 'ProductFilters', @$el, @$('[data-filter]')
+  filterChanged: (e) ->
+    return if @submitted
+    @setSubmitted()
+    setTimeout((=> @$el.submit()), 0)
 
-  filterChanged: ->
-     @$el.submit()
+  setSubmitted: ->
+    @submitted = true
+
+    $overlay = $('<div/>', class: 'overlay').css(
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      background: '#fafafa',
+      zIndex: '100',
+      opacity: '0.4'
+    )
+
+    @$el.prepend($overlay)
 
 Stall.onDomReady ->
   if ($productFilters = $('[data-product-filters]')).length
