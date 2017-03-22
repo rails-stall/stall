@@ -8,6 +8,10 @@ module Stall
         @property = property
       end
 
+      def available?
+        collection.count > 1
+      end
+
       def name
         property.name.parameterize
       end
@@ -21,7 +25,9 @@ module Stall
       end
 
       def collection
-        property.property_values
+        @collection ||= property.property_values.joins(variants: :product)
+          .where(stall_products: { id: products.select(:id) })
+          .uniq
       end
 
       def partial_locals

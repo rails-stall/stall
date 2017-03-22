@@ -1,8 +1,14 @@
 module Stall
   module ProductFilters
     class CategoryFilter < BaseFilter
+      def available?
+        collection.count > 1
+      end
+
       def collection
-        ProductCategory.roots
+        @collection ||= ProductCategory.joins(:products)
+          .where(stall_products: { id: products.select(:id) })
+          .uniq
       end
 
       def param

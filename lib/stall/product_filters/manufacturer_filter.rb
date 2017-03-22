@@ -1,8 +1,14 @@
 module Stall
   module ProductFilters
     class ManufacturerFilter < BaseFilter
+      def available?
+        collection.count > 1
+      end
+
       def collection
-        Manufacturer.ordered
+        @collection ||= Manufacturer.ordered.joins(:products)
+          .where(stall_products: { id: products.select(:id) })
+          .uniq
       end
 
       def param

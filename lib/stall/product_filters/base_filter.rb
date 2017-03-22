@@ -15,6 +15,13 @@ module Stall
         I18n.t("stall.products.filters.#{ key }")
       end
 
+      # Can be overriden to hide the filter depending on certain conditions,
+      # e.g. there's more than one option so the filter is useful
+      #
+      def available?
+        true
+      end
+
       def rendering_options(options = {})
         { partial: partial_path, locals: partial_locals }.deep_merge(options)
       end
