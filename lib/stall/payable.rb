@@ -17,7 +17,9 @@ module Stall
       scope :aborted, ->(options = {}) {
         joins('LEFT JOIN stall_payments ON stall_payments.cart_id = stall_product_lists.id')
           .where(stall_payments: { paid_at: nil })
-          .older_than(options.fetch(:before, 1.day.ago))
+          .older_than(
+            options.fetch(:before, Stall.config.aborted_carts_expires_after.ago)
+          )
       }
 
       delegate :paid?, to: :payment, allow_nil: true

@@ -30,11 +30,9 @@ module Stall
         has_many :suggester_products, through: :suggester_product_suggestions,
                                       source: :product
 
-        has_attached_file :image, styles: {
-          thumb: '100x100#',
-          show: '555x'
-        }
-        validates_attachment :image, content_type: { content_type: /\Aimage\/.*\z/ }
+        has_many :images, -> { ordered },  as: :imageable
+
+        accepts_nested_attributes_for :images, allow_destroy: true
 
         validates :name, presence: true
 
@@ -47,6 +45,10 @@ module Stall
 
       def price
         variants.map(&:price).min
+      end
+
+      def image
+        images.first.try(:file)
       end
     end
   end
