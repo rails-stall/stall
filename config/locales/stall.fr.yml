@@ -314,6 +314,7 @@ fr:
         product_details: "Blocs de description produit"
         manufacturer: "Fabricant"
         suggested_products: "Produits suggérés"
+        price: "Prix"
       product_category:
         name: "Nom"
         slug: "Fragment d'URL"
