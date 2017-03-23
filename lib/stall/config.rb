@@ -29,8 +29,11 @@ module Stall
 
     param :mailers_parent_class, 'ActionMailer::Base'
 
-    # Default layout used for the checkout
+    # Default layout used for controllers
     param :default_layout
+
+    # Default layout used for the checkout
+    param :checkout_layout
 
     # Default currency for money objects
     param :default_currency, 'EUR'

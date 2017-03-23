@@ -70,12 +70,19 @@ Stall.configure do |config|
   #
   # config.application_controller_ancestor = '::ApplicationController'
 
-  # Set a layout to use in the checkouts controllers
+  # Set a layout to use across all stall controllers
   #
   # The default is set to nil, which will make the controllers inherit from the
   # layout of the controller set in `config.application_controller_ancestor`
   #
   # config.default_layout = nil
+
+  # Set a layout to use in the checkouts controllers
+  #
+  # The default is set to nil, which will make it inherit from the
+  # `default_checkout` config behavior defined above.
+  #
+  # config.checkout_layout = nil
 
   # Defines the parent mailer for the Stall customer and admin mailers
   #
