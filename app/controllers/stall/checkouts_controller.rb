@@ -1,7 +1,5 @@
 module Stall
-  class CheckoutsController < Stall::ApplicationController
-    include CheckoutHelper
-
+  class CheckoutsController < Stall::CheckoutBaseController
     before_action :load_cart
 
     def show
