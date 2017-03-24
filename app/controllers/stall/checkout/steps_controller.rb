@@ -1,8 +1,6 @@
 module Stall
   module Checkout
-    class StepsController < Stall::ApplicationController
-      include Stall::CheckoutHelper
-
+    class StepsController < Stall::CheckoutBaseController
       skip_before_action :verify_authenticity_token, on: :foreign_update
       before_action :load_cart
       before_action :load_step

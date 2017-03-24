@@ -66,6 +66,11 @@ fr:
         title: "Vous pourriez aussi aimer ..."
       prices:
         from: "À partir de %{price}"
+      filters:
+        category_filter: "Catégorie"
+        manufacturer_filter: "Fabricant"
+        price_filter: "Prix"
+
     carts:
       actions:
         view_cart: "Voir mon panier"
@@ -314,6 +319,7 @@ fr:
         product_details: "Blocs de description produit"
         manufacturer: "Fabricant"
         suggested_products: "Produits suggérés"
+        price: "Prix"
       product_category:
         name: "Nom"
         slug: "Fragment d'URL"

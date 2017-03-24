@@ -7,7 +7,7 @@
     = table.header_for(:product_category, sort: :product_category_name)
 
   = table.rows(resources) do |resource|
-    = table.data_for(resource, :image)
+    %td= image_tag(resource.image.url(:thumb)) if resource.image
     = table.data_for(resource, :name)
     = table.data_for(resource, :visible)
     = table.data_for(resource, :price)

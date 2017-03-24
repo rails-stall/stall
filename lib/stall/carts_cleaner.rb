@@ -32,7 +32,7 @@ module Stall
     #
     # Note : The given cart model should implement the `.unpaid` method
     def clean_aborted_carts
-      carts = cart_model.aborted(before: Stall.config.aborted_carts_expires_after.ago)
+      carts = cart_model.aborted
 
       log "Cleaning #{ carts.count } aborted carts ..."
       carts.destroy_all

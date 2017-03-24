@@ -1,2 +1,2 @@
-.filter{ data: { :'filter' => 'property', :'filter-name' => filter.name, :'filter-submission' => 'change' } }
+.filter{ data: { :'filter' => filter.name, :'filter-submission' => 'change' } }
   = form.input filter.param, as: :check_boxes, collection: filter.collection, label: filter.label, required: false

@@ -31,19 +31,19 @@ module Stall
     end
 
     def after_omniauth_failure_path_for(scope)
-      redirect_path
+      redirect_path || new_session_path(scope)
     end
 
     def after_sign_in_path_for(scope)
-      redirect_path
+      redirect_path || stored_location_for(scope) || root_path
     end
 
     def after_sign_up_path_for(scope)
-      redirect_path
+      redirect_path || stored_location_for(scope) || root_path
     end
 
     def redirect_path
-      session.delete('omniauth.after_sign_in_redirect_path') || new_session_path(scope)
+      session.delete('omniauth.after_sign_in_redirect_path')
     end
   end
 end

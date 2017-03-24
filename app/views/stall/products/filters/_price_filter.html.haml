@@ -1,0 +1,2 @@
+.filter{ data: { :'filter' => 'price', :'filter-submission' => 'slide' } }
+  = form.input filter.param, as: :slider, label: filter.label, required: false, min: filter.min, max: filter.max, values: [filter.min, filter.max], range: true, input_html: { data: { :'slider-ticks' => filter.ticks, :'slider-ticks-labels' => filter.ticks } }

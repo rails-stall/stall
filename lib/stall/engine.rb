@@ -46,6 +46,12 @@ module Stall
       end
     end
 
+    # Add ransack search predicates
+    #
+    initializer 'stall.add_omniauth_providers_to_devise', before: 'devise.omniauth' do
+      Stall::Ransack.configure
+    end
+
     # Development : Configure rails generators to only generate the target
     # files and not try to generate useless complementary files
     #

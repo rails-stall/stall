@@ -47,8 +47,10 @@ module Stall
         variants.map(&:price).min
       end
 
-      def image
-        images.first.try(:file)
+      def image(*args)
+        if (image = images.first)
+          image.file
+        end
       end
     end
   end
