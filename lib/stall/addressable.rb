@@ -38,7 +38,7 @@ module Stall
     end
 
     def shipping_address?
-      shipping_address.try(:persisted?) && shipping_address.billing?
+      shipping_address.try(:persisted?) && shipping_address.shipping?
     end
   end
 end
