@@ -5,6 +5,7 @@ module Stall
 
       @search = @manufacturer.products.ransack(params[:search])
       @products = @search.result
+      @filterable_products = @manufacturer.products
     end
   end
 end

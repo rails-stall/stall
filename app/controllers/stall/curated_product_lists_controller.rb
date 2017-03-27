@@ -5,6 +5,7 @@ module Stall
 
       @search = @curated_product_list.products.ransack(params[:search])
       @products = @search.result
+      @filterable_products = @curated_product_list.products
     end
   end
 end
