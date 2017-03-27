@@ -15,6 +15,7 @@ module Stall
 
         has_many :product_lists, dependent: :destroy
         has_many :credit_notes, dependent: :destroy
+        has_many :carts, dependent: :nullify
 
         validates :email, presence: true,
                           format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/ }
