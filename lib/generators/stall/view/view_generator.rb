@@ -37,16 +37,18 @@ module Stall
         return @file_path_with_ext if @file_path_with_ext
         @file_path += '.html.haml' unless file_path.match(/\.html\.haml\z/)
 
-        if File.exist?(source_file_for(file_path))
-          @file_path_with_ext = file_path
-          return @file_path_with_ext
-        end
-
         partial_path = [File.dirname(file_path), File.basename(file_path)].join('/_')
 
-        if File.exist?(source_file_for(partial_path))
-          @file_path_with_ext = partial_path
-          return @file_path_with_ext
+        stall_file_path = ['stall', file_path].join('/')
+        stall_partial_path = ['stall', partial_path].join('/')
+
+        paths = [file_path, partial_path, stall_file_path, stall_partial_path]
+
+        paths.each do |path|
+          if File.exist?(source_path = source_file_for(path))
+            @file_path_with_ext = path
+            return @file_path_with_ext
+          end
         end
 
         raise ViewNotFound, "No Stall view was found for #{ file_path } !"
