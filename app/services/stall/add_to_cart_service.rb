@@ -25,7 +25,7 @@ module Stall
 
     def line_item
       @line_item ||= sellable.to_line_item.tap do |line_item|
-        line_item.quantity = params[:quantity]
+        line_item.quantity = line_items_params[:quantity]
       end
     end
 
@@ -48,15 +48,21 @@ module Stall
     end
 
     def sellable
-      @sellable ||= sellable_class.find(params[:sellable_id])
+      @sellable ||= sellable_class.find(line_items_params[:sellable_id])
     end
 
     def sellable_class
-      @sellable_class ||= params[:sellable_type].camelize.constantize
+      @sellable_class ||= line_items_params[:sellable_type].camelize.constantize
     end
 
     def shipping_fee_service
       @shipping_fee_service ||= Stall::ShippingFeeCalculatorService.new(cart)
+    end
+
+    def line_item_params
+      @line_item_params ||= params.require(:line_item).permit(
+        :sellable_type, :sellable_id, :quantity
+      )
     end
   end
 end

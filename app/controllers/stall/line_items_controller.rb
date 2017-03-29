@@ -1,7 +1,7 @@
 module Stall
   class LineItemsController < Stall::ApplicationController
     def create
-      service = Stall.config.service_for(:add_to_cart).new(cart, line_item_params)
+      service = Stall.config.service_for(:add_to_cart).new(cart, params)
 
       if service.call
         @quantity = params[:line_item][:quantity].to_i
@@ -15,10 +15,6 @@ module Stall
     end
 
     private
-
-    def line_item_params
-      params.require(:line_item).permit(:sellable_type, :sellable_id, :quantity)
-    end
 
     def cart
       @cart ||= ProductList.find_by_token(params[:cart_id]) || current_cart
