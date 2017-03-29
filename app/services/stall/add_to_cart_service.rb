@@ -25,7 +25,7 @@ module Stall
 
     def line_item
       @line_item ||= sellable.to_line_item.tap do |line_item|
-        line_item.quantity = line_items_params[:quantity]
+        line_item.quantity = line_item_params[:quantity]
       end
     end
 
