@@ -48,11 +48,11 @@ module Stall
     end
 
     def sellable
-      @sellable ||= sellable_class.find(line_items_params[:sellable_id])
+      @sellable ||= sellable_class.find(line_item_params[:sellable_id])
     end
 
     def sellable_class
-      @sellable_class ||= line_items_params[:sellable_type].camelize.constantize
+      @sellable_class ||= line_item_params[:sellable_type].camelize.constantize
     end
 
     def shipping_fee_service
