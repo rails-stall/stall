@@ -10,7 +10,7 @@
 
   - all_properties.each do |property_config|
     -# Hide all fields for new records
-    %td{ class: ('hidden' unless form.object.persisted? && property_config.active?), data: { :'variants-matrix-variant-property' => property_config.property.id } }
+    %td{ class: ('hidden' unless property_config.active?), data: { :'variants-matrix-variant-property' => property_config.property.id } }
       = form.fields_for :variant_property_values, [property_config.variant_property_value_or_build_for(form.object)] do |fields|
         %span{ data: { :'property-name' => true } }
           = property_config.property_value_for(form.object).try(:name)

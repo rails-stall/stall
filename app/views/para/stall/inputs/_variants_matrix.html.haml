@@ -5,7 +5,6 @@
 
       .dropdown
         %button.btn.btn-primary{ type: 'button', data: { toggle: 'dropdown' } }
-          = fa_icon 'plus'
           = t('para.stall.variants_matrix.add_property')
           %span.caret
         .dropdown-menu.variants-matrix-property-selector
@@ -14,23 +13,23 @@
               = check_box :properties, :activated, { checked: variants_property_config.active? , autocomplete: 'off', data: { :'variants-matrix-property-selector-input' => true } }, variants_property_config.property.id
               = variants_property_config.property.name
 
-      %ul.list-group
+      %ul.list-group.variants-matrix-properties-list
         - all_properties.each do |variants_property_config|
           %li.list-group-item{ class: ('hidden' unless variants_property_config.active?), data: { :'variants-matrix-property-id' => variants_property_config.property.id } }
-            .row
-              .col-md-3
-                = label :variants_property_config, variants_property_config.property.id, variants_property_config.property.name
-              .col-md-9
-                = select :variants_property_config, variants_property_config.property.id, options_for_select(variants_property_config.options), {}, multiple: true, autocomplete: 'off', data: { :'variants-matrix-property-select' => variants_property_config.property.name }
+            .form-group
+              = label :variants_property_config, variants_property_config.property.id, variants_property_config.property.name, class: 'control-label'
+              = select :variants_property_config, variants_property_config.property.id, options_for_select(variants_property_config.options), {}, multiple: true, autocomplete: 'off', data: { :'variants-matrix-property-select' => variants_property_config.property.name }
 
   = form.input :variants do
     %table.table.table-hover
       %thead{ data: { :'variants-matrix-variants-table-header' => true } }
         %tr
-          %th{ data: { :'variants-matrix-variant-enabled-cell' => true } }= t('para.stall.variants_matrix.enabled')
+          %th{ data: { :'variants-matrix-variant-enabled-cell' => true } }
+            = t('para.stall.variants_matrix.enabled')
 
           - properties.each do |variants_property_config|
-            %th{ data: { :'variants-matrix-variant-property-cell' => true } }= variants_property_config.property.name
+            %th{ data: { :'variants-matrix-variant-property-cell' => true } }
+              = variants_property_config.property.name
 
           %th= t('para.stall.variants_matrix.price')
 
