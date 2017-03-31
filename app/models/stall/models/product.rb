@@ -32,6 +32,9 @@ module Stall
 
         has_many :images, -> { ordered },  as: :imageable
 
+        has_many :curated_list_products, dependent: :destroy
+        has_many :curated_product_lists, through: :curated_list_products
+
         accepts_nested_attributes_for :images, allow_destroy: true
 
         validates :name, presence: true

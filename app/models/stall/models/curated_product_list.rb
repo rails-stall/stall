@@ -6,7 +6,7 @@ module Stall
       included do
         self.table_name = 'stall_curated_product_lists'
 
-        has_many :curated_list_products, -> { ordered }
+        has_many :curated_list_products, -> { ordered }, dependent: :destroy
         has_many :products, through: :curated_list_products
 
         accepts_nested_attributes_for :curated_list_products,
