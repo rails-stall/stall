@@ -7,7 +7,7 @@
 #= require stall/cart-form
 #= require stall/addresses-fields
 #= require stall/remote-sign-in-form
-#= require stall/product-filters
+#= require stall/products-filters
 #
 #= require para/stall/inputs/variant-select
 #= require para/lib/turbolinks-forms
