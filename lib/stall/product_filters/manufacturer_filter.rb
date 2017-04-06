@@ -8,7 +8,7 @@ module Stall
       def collection
         @collection ||= Manufacturer.ordered.joins(:products)
           .where(stall_products: { id: products.select(:id) })
-          .uniq
+          .distinct
       end
 
       def param

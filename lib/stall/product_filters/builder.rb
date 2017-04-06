@@ -38,7 +38,7 @@ module Stall
           ]
         )
         .includes(:property_values)
-        .uniq
+        .distinct
       end
     end
   end

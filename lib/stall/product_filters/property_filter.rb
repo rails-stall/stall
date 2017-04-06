@@ -9,7 +9,7 @@ module Stall
       end
 
       def available?
-        collection.count > 1
+        @available ||= collection.count > 1
       end
 
       def name
@@ -27,7 +27,7 @@ module Stall
       def collection
         @collection ||= property.property_values.joins(variants: :product)
           .where(stall_products: { id: products.select(:id) })
-          .uniq
+          .distinct
       end
 
       def partial_locals

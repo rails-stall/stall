@@ -3,8 +3,8 @@ module Stall
     def show
       @manufacturer = Manufacturer.friendly.find(params[:id])
 
-      @search = @manufacturer.products.ransack(params[:search])
-      @products = @search.result
+      @search = Stall.config.service_for(:products_search).new(@manufacturer.products, params)
+      @products = @search.records
       @filterable_products = @manufacturer.products
     end
   end
