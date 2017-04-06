@@ -14,7 +14,9 @@ module Para
             foreign_key: foreign_key,
             properties: properties,
             variants_data: variants_data,
-            price_selector: price_selector
+            price_selector: price_selector,
+            variant_label_class: variant_label_class,
+            variant_property_class: variant_property_class
           }
         end
 
@@ -72,6 +74,14 @@ module Para
               end
             end
           end
+        end
+
+        def variant_label_class
+          options.fetch(:variant_label_class, 'col-md-3')
+        end
+
+        def variant_property_class
+          options.fetch(:variant_property_class, 'col-md-9')
         end
       end
     end

@@ -8,7 +8,7 @@
     - else
       .variant-select-property{ data: { :'variant-select-property' => property_config.property.id } }
         .row
-          .col-md-3
+          .variant-select-label-container{ class: variant_label_class }
             = label :property_config, property_config.property.id, property_config.property.name, class: 'variant-select-label'
-          .col-md-9
+          .variant-select-property-container{ class: variant_property_class }
             = select :property_config, property_config.property.id, options_for_select(property_config.available_options), { include_blank: true }, placeholder: t('para.stall.variant_select.property_placeholder'), class: 'variant-select-property-input', autocomplete: 'off', data: { selectize: true }
