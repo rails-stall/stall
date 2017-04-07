@@ -18,6 +18,10 @@ module Stall
         scope :ordered, -> { order(position: 'ASC') }
       end
 
+      def all_child_products
+        ::Product.where(product_category_id: ([id] + descendant_ids))
+      end
+
       module ClassMethods
         def max_depth
           2
