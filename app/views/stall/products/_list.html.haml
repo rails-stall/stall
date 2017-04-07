@@ -3,3 +3,5 @@
     - products.each do |product|
       .col-md-3
         = render partial: 'stall/products/product', locals: { product: product }
+
+  = paginate(products)

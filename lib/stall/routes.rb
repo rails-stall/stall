@@ -15,19 +15,21 @@ module Stall
         end
 
         scope mount_location, module: :stall do
+          resources :products, only: [:index], as: :products
+
+          constraints ProductExistsConstraint.new do
+            resources :products, path: '/', only: [:show]
+          end
+
           constraints CuratedProductListExistsConstraint.new do
-            resources :curated_product_lists, path: '/'
+            resources :curated_product_lists, path: '/', only: [:show]
           end
 
           constraints ProductCategoryExistsConstraint.new do
-            resources :product_categories, path: '/'
+            resources :product_categories, path: '/', only: [:show]
           end
 
-          constraints ProductExistsConstraint.new do
-            resources :products, path: '/'
-          end
-
-          resources :manufacturers
+          resources :manufacturers, only: [:show]
 
           resources :carts do
             resources :line_items

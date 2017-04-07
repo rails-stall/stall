@@ -62,6 +62,8 @@ fr:
       sending: "Envoi en cours ..."
 
     products:
+      index:
+        title: "Notre catalogue"
       suggester_products:
         title: "Vous pourriez aussi aimer ..."
       prices:

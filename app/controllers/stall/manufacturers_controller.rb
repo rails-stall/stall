@@ -1,10 +1,10 @@
 module Stall
   class ManufacturersController < ApplicationController
+    include ProductsSearch
+
     def show
       @manufacturer = Manufacturer.friendly.find(params[:id])
-      @filterable_products = @manufacturer.products
-      @search = Stall.config.service_for(:products_search).new(@filterable_products, params)
-      @products = @search.records
+      search_products_among(@manufacturer.products)
     end
   end
 end

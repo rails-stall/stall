@@ -1,0 +1,8 @@
+%h1= t('stall.products.index.title')
+
+.row
+  .col-md-4
+    = render partial: 'stall/products/filters', locals: { search: @search, products: @filterable_products }
+
+  .col-md-8
+    = render partial: 'stall/products/list', locals: { products: @products }
