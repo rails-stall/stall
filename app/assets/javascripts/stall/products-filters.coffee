@@ -2,6 +2,7 @@ class Stall.ProductsFilters extends Vertebra.View
   events:
     'change [data-filter-submission="change"]': 'filterChanged'
     'slideStop [data-filter-submission="slide"]': 'filterChanged'
+    'submit': 'setSubmitted'
 
   filterChanged: (e) ->
     @submit()
