@@ -10,8 +10,6 @@ class Stall.ProductsFilters extends Vertebra.View
     setTimeout((=> @$el.submit()), 0)
 
   setSubmitted: (e) ->
-    console.log 'setSubmitted // submitted : ', @submitted
-
     return e.preventDefault() if @submitted
     @submitted = true
 

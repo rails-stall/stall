@@ -23,15 +23,7 @@
   = form.input :variants do
     %table.table.table-hover
       %thead{ data: { :'variants-matrix-variants-table-header' => true } }
-        %tr
-          %th{ data: { :'variants-matrix-variant-enabled-cell' => true } }
-            = t('para.stall.variants_matrix.enabled')
-
-          - properties.each do |variants_property_config|
-            %th{ data: { :'variants-matrix-variant-property-cell' => true } }
-              = variants_property_config.property.name
-
-          %th= t('para.stall.variants_matrix.price')
+        = render partial: find_partial_for(model, :variant_row_header), locals: { form: form, properties: properties }
 
       %tbody{ data: { :'variants-matrix-variants-container' => "#{ dom_identifier }" } }
         = form.fields_for attribute_name, variants do |variant_fields|

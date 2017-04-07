@@ -16,6 +16,7 @@ class VariantsMatrix.Input extends Vertebra.View
     @variants = for row in @$('[data-variants-matrix-variant-row]').get()
       combination = @findCombinationForRow(row, existingCombinations)
       variant = new VariantsMatrix.Variant(el: row, combination: combination, input: this)
+      @listenTo(variant, 'applytoall', @onVariantApplyToAll)
       @listenTo(variant, 'destroy', @onVariantDestroyed)
 
       variant
@@ -83,6 +84,7 @@ class VariantsMatrix.Input extends Vertebra.View
     variant = new VariantsMatrix.Variant(combination: combination, input: this)
     variant.renderTo(@$variantsContainer)
     @listenTo(variant, 'destroy', @onVariantDestroyed)
+    @listenTo(variant, 'applytoall', @onVariantApplyToAll)
     @variants.push(variant)
 
     variant
@@ -123,6 +125,9 @@ class VariantsMatrix.Input extends Vertebra.View
       combinations = new_combinations
 
     combinations
+
+  onVariantApplyToAll: (variant) =>
+    v.copyInputsFrom(variant) for v in @variants when v.cid isnt variant.cid
 
   # Cleanup destroyed variants
   #

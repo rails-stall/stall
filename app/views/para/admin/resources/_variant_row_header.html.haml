@@ -1,0 +1,11 @@
+%tr
+  %th{ data: { :'variants-matrix-variant-enabled-cell' => true } }
+    = t('para.stall.variants_matrix.enabled')
+
+  - properties.each do |variants_property_config|
+    %th{ data: { :'variants-matrix-variant-property-cell' => true } }
+      = variants_property_config.property.name
+
+  %th= t('para.stall.variants_matrix.price')
+
+  %th

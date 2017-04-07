@@ -1,6 +1,7 @@
 class VariantsMatrix.Variant extends Vertebra.View
   events:
     'change [data-variants-matrix-variant-enabled]': 'onEnabledStateChanged'
+    'click [data-variants-matrix-apply-to-all]': 'onApplyToAllClicked'
 
   initialize: (options = {}) ->
     @combination = options.combination
@@ -57,3 +58,11 @@ class VariantsMatrix.Variant extends Vertebra.View
 
   setDestroyed: (state) ->
     @$el.find('[data-variant-remove]').val(if state then 'true' else 'false')
+
+  onApplyToAllClicked: ->
+    @trigger('applytoall', this)
+
+  copyInputsFrom: (otherVariant) ->
+    @$('input').each (i, el) ->
+      otherValue = otherVariant.$('input').eq(i).val()
+      $(el).val(otherValue)
