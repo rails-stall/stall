@@ -1,4 +1,4 @@
-.variants-matrix-input-container{ data: { :'variants-matrix-input' => true } }
+.variants-matrix-input-container{ data: { :'variants-matrix-input' => true, :'allow-empty-variant' => allow_empty_variant } }
   = form.input :properties do
     .variants-matrix-properties-select{ data: { :'variants-matrix-properties-select' => true } }
       %p.help-block= t('para.stall.variants_matrix.choose_properties_to_build_variants')

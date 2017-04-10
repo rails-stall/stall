@@ -12,6 +12,8 @@ module Para
         def input(wrapper_options = nil)
           ensure_target_relation_present!
 
+          ensure_empty_variant_if_needed
+
           template.render partial: 'para/stall/inputs/variants_matrix', locals: {
             form: @builder,
             model: model,
@@ -20,7 +22,8 @@ module Para
             properties: properties,
             variants: variants,
             dom_identifier: dom_identifier,
-            variant_row_locals: variant_row_locals
+            variant_row_locals: variant_row_locals,
+            allow_empty_variant: allow_empty_variant
           }
         end
 
@@ -60,6 +63,14 @@ module Para
             properties: properties,
             dom_identifier: dom_identifier
           }
+        end
+
+        def allow_empty_variant
+          @allow_empty_variant ||= options.fetch(:allow_empty_variant, true)
+        end
+
+        def ensure_empty_variant_if_needed
+          object.variants.build if object.variants.empty? && allow_empty_variant
         end
       end
     end

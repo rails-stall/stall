@@ -3,6 +3,8 @@ class VariantsMatrix.Input extends Vertebra.View
     @$variantsContainer = @$('[data-variants-matrix-variants-container]')
     @$variantsTableHeader = @$('[data-variants-matrix-variants-table-header]')
 
+    @allowEmptyVariant = @$el.is('[data-allow-empty-variant]')
+
     @propertiesSelect = new VariantsMatrix.PropertiesSelect(el: @$('[data-variants-matrix-properties-select]'))
     @listenTo(@propertiesSelect, 'change', @onPropertySelectChanged)
 
@@ -124,7 +126,7 @@ class VariantsMatrix.Input extends Vertebra.View
       # one for next iterations to use it
       combinations = new_combinations
 
-    combinations
+    if !combinations.length && @allowEmptyVariant then [{}] else combinations
 
   onVariantApplyToAll: (variant) =>
     v.copyInputsFrom(variant) for v in @variants when v.cid isnt variant.cid
