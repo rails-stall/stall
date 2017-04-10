@@ -55,6 +55,11 @@ module Stall
           image.file
         end
       end
+
+      # Support paperclip attachment presence helper for #image
+      def image?
+        !!image
+      end
     end
   end
 end
