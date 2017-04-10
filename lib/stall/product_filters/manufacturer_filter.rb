@@ -2,7 +2,7 @@ module Stall
   module ProductFilters
     class ManufacturerFilter < BaseFilter
       def available?
-        collection.count > 1
+        options[:force] || collection.count > 1
       end
 
       def collection

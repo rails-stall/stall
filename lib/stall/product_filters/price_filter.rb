@@ -2,7 +2,7 @@ module Stall
   module ProductFilters
     class PriceFilter < BaseFilter
       def available?
-        min != max
+        options[:force] || min != max
       end
 
       def min

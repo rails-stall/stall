@@ -3,13 +3,13 @@ module Stall
     class PropertyFilter < BaseFilter
       attr :property
 
-      def initialize(products, property)
-        super(products)
-        @property = property
+      def initialize(*)
+        super
+        @property = options[:property]
       end
 
       def available?
-        @available ||= collection.count > 1
+        @available ||= (options[:force] || collection.count > 1)
       end
 
       def name

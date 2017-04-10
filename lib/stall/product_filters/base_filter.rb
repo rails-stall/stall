@@ -1,10 +1,11 @@
 module Stall
   module ProductFilters
     class BaseFilter
-      attr_reader :products
+      attr_reader :products, :options
 
-      def initialize(products)
+      def initialize(products, options = {})
         @products = products
+        @options = options
       end
 
       def name
@@ -19,7 +20,7 @@ module Stall
       # e.g. there's more than one option so the filter is useful
       #
       def available?
-        true
+        options[:force] || true
       end
 
       def rendering_options(options = {})

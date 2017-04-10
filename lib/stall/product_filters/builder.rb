@@ -1,10 +1,11 @@
 module Stall
   module ProductFilters
     class Builder
-      attr_reader :products
+      attr_reader :products, :options
 
-      def initialize(products)
+      def initialize(products, options = {})
         @products = products
+        @options = options
       end
 
       def filters
@@ -12,20 +13,25 @@ module Stall
       end
 
       def category_filter
-        CategoryFilter.new(products)
+        CategoryFilter.new(products, options_for(:category)) if enabled?(:category)
       end
 
       def manufacturer_filter
-        ManufacturerFilter.new(products)
+        ManufacturerFilter.new(products, options_for(:manufacturer)) if enabled?(:manufacturer)
       end
 
       def price_filter
-        PriceFilter.new(products)
+        PriceFilter.new(products, options_for(:price)) if enabled?(:price)
       end
 
       def properties_filters
-        properties.map do |property|
-          PropertyFilter.new(products, property)
+        if enabled?(:property)
+          properties.map do |property|
+            property_options = options_for(:property, property: property)
+            PropertyFilter.new(products, property_options)
+          end
+        else
+          []
         end
       end
 
@@ -39,6 +45,14 @@ module Stall
         )
         .includes(:property_values)
         .distinct
+      end
+
+      def options_for(filter_name, overrides = {})
+        (options[filter_name] || {}).deep_dup.merge(overrides)
+      end
+
+      def enabled?(filter_name)
+        options[filter_name] != false
       end
     end
   end
