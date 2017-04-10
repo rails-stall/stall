@@ -25,7 +25,7 @@
       %thead{ data: { :'variants-matrix-variants-table-header' => true } }
         = render partial: find_partial_for(model, :variant_row_header), locals: { form: form, properties: properties }
 
-      %tbody{ data: { :'variants-matrix-variants-container' => "#{ dom_identifier }" } }
+      %tbody{ data: { :'variants-matrix-variants-container' => dom_identifier } }
         = form.fields_for attribute_name, variants do |variant_fields|
           = render partial: find_partial_for(model, :variant_row), locals: { form: variant_fields }.merge(variant_row_locals)
 

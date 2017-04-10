@@ -19,7 +19,6 @@ module Para
             all_properties: all_properties,
             properties: properties,
             variants: variants,
-            require_all_properties: require_all_properties,
             dom_identifier: dom_identifier,
             variant_row_locals: variant_row_locals
           }
@@ -43,10 +42,6 @@ module Para
 
         def variants
           @variants ||= unsorted_variants.sort_by(&method(:variant_sort_method))
-        end
-
-        def require_all_properties
-          options[:require_all_properties] || false
         end
 
         def dom_identifier
