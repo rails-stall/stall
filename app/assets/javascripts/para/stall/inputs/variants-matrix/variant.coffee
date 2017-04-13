@@ -63,6 +63,6 @@ class VariantsMatrix.Variant extends Vertebra.View
     @trigger('applytoall', this)
 
   copyInputsFrom: (otherVariant) ->
-    @$('input').each (i, el) ->
-      otherValue = otherVariant.$('input').eq(i).val()
+    @$('input:visible').each (i, el) ->
+      otherValue = otherVariant.$('input:visible').eq(i).val()
       $(el).val(otherValue)
