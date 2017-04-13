@@ -23,6 +23,10 @@
       %span.input-group-addon
         = form.object.currency.symbol
 
+  - if Stall.config.manage_inventory
+    %td
+      = form.input_field :stock, class: 'form-control'
+
   %td
     %button.btn.btn-default.btn-shadow.hint--left{ type: 'button', :'aria-label' => t('para.stall.variants_matrix.apply_to_all'), data: { :'variants-matrix-apply-to-all' => true } }
       = fa_icon 'sort-amount-asc'

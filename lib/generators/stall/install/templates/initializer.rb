@@ -98,6 +98,15 @@ Stall.configure do |config|
   #
   # config.default_currency = 'EUR'
 
+  # Define if inventory levels should be managed through variants stocks.
+  #
+  # It defaults to `false`, allowing customers to order any quantity of products
+  # at the same time, but can be set to true, which would allow managing
+  # stocks for every variants and add inventory levels handling when adding
+  # to cart and on payment.
+  #
+  # config.manage_inventory = false
+
   # Default app domain use for building URLs in payment gateway forms and in
   # e-mails.
   #

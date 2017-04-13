@@ -38,6 +38,9 @@ module Stall
     # Default currency for money objects
     param :default_currency, 'EUR'
 
+    # Do not manage stocks on hand by default
+    param :manage_inventory, false
+
     # Default app domain for building routes
     param :default_app_domain
 

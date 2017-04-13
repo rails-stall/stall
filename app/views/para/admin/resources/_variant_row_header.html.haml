@@ -8,4 +8,7 @@
 
   %th= t('para.stall.variants_matrix.price')
 
+  - if Stall.config.manage_inventory
+    %th= t('para.stall.variants_matrix.stock')
+
   %th

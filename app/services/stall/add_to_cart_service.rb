@@ -8,7 +8,7 @@ module Stall
     end
 
     def call
-      return false unless line_item.valid?
+      return false unless line_item_valid?
 
       unless assemble_identical_line_items
         cart.line_items << line_item
@@ -21,6 +21,15 @@ module Stall
         # that the fee us always up to date when displayed to the customer
         shipping_fee_service.call if shipping_fee_service.available?
       end
+    end
+
+    def line_item_valid?
+      line_item.valid? && enough_stock?
+    end
+
+    def enough_stock?
+      stock_service = Stall.config.service_for(:available_stocks).new
+      stock_service.on_hand?(line_item)
     end
 
     def line_item
