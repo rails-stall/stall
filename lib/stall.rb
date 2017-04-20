@@ -40,6 +40,9 @@ module Stall
   autoload :ProductFilters
   autoload :OmniauthProvider
 
+  autoload :ProductsSearch
+  autoload :ProductsBreadcrumbs
+
   autoload :Checkout
   autoload :Shipping
   autoload :Payments

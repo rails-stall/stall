@@ -231,19 +231,45 @@ fr:
           paid: "Payé"
 
     models:
-      line_item: "Produit"
-      customer: "Client"
-      address: "Adresse"
-      cart: "Panier"
-      shipment: "Livraison"
-      payment: "Paiement"
-      product: "Produit"
-      product_category: "Catégorie"
-      variant: "Déclinaison"
-      product_detail: "Bloc de description"
-      manufacturer: "Fabricant"
-      curated_product_list: Curated list
-      curated_list_product: Produit de curated list
+      line_item:
+        one: "Produit"
+        other: "Produits"
+      customer:
+        one: "Client"
+        other: "Clients"
+      address:
+        one: "Adresse"
+        other: "Adresses"
+      cart:
+        one: "Panier"
+        other: "Paniers"
+      shipment:
+        one: "Livraison"
+        other: "Livraisons"
+      payment:
+        one: "Paiement"
+        other: "Paiements"
+      product:
+        one: "Produit"
+        other: "Produits"
+      product_category:
+        one: "Catégorie"
+        other: "Catégories"
+      variant:
+        one: "Déclinaison"
+        other: "Déclinaisons"
+      product_detail:
+        one: "Bloc de description"
+        other: "Blocs de description"
+      manufacturer:
+        one: "Fabricant"
+        other: "Fabricants"
+      curated_product_list:
+        one: "Curated list"
+        other: "Curated lists"
+      curated_list_product:
+        one: "Produit de curated list"
+        other: "Produits de curated list"
 
     attributes:
       curated_product_list:

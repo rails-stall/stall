@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cocoon', '~> 1.0'
   s.add_dependency 'deep_merge', '~> 1.1'
   s.add_dependency 'friendly_id', '~> 5.1'
-  s.add_dependency 'para', '~> 0.6'
+  s.add_dependency 'para', '~> 0.7'
   s.add_dependency 'ransack'
 
   s.add_dependency 'devise'

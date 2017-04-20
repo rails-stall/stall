@@ -1,5 +1,7 @@
 module Stall
   module ProductsSearch
+    private
+
     def search_products_among(products)
       @filterable_products = products
       @search = Stall.config.service_for(:products_search).new(@filterable_products, params)
