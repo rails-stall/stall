@@ -20,6 +20,14 @@ module Stall
         validates :email, presence: true,
                           format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/ }
 
+        def name
+          if billing_address && (billing_address.first_name.present? || billing_address.last_name.present?)
+            [billing_address.last_name, billing_address.first_name].join(' ')
+          else
+            email
+          end
+        end
+
         def user_or_default
           user || build_user
         end

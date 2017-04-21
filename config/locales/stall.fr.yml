@@ -49,11 +49,13 @@ fr:
   components:
     section:
       products: "Catalogue"
+      selling: "Vente"
     component:
       products: "Produits"
       product_categories: "Catégories de produits"
       properties: "Propriétés de produit"
       manufacturers: "Fabricants"
+      carts: "Commandes / Paniers"
 
   stall:
     shared:
