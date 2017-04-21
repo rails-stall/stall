@@ -26,7 +26,7 @@
             %legend.omniauth-sign-up= t('stall.checkout.sign_in.omniauth_sign_up')
 
             - Stall.config.omniauth_providers.each do |provider|
-              = link_to user_omniauth_redirect_path(provider.name, _redirect_to: request.path), class: 'btn btn-default' do
+              = link_to user_omniauth_redirect_path(provider.name, _redirect_to: request.path), class: 'btn btn-default', rel: 'nofollow' do
                 = fa_icon provider.icon
                 = t('stall.omniauth.sign_in_with', provider: provider.display_name)
 

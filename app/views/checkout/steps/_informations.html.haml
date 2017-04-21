@@ -25,7 +25,7 @@
       = form.input :terms, label: false do
         = form.check_box :terms, id: 'terms-checkbox'
         = form.label :terms, t('stall.checkout.informations.accept_the')
-        = link_to Stall.config.terms_path, target: '_blank' do
+        = link_to Stall.config.terms_path, target: '_blank', rel: 'nofollow' do
           = form.object.class.human_attribute_name(:terms)
 
       %button.btn.btn-primary.btn-lg.btn-block{ type: 'submit' }

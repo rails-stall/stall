@@ -2,7 +2,7 @@
   .panel-heading
     %i.fa.fa-user
     = t('stall.checkout.sign_in.already_have_an_account')
-    = link_to '#sign-in-form', data: { toggle: 'collapse' } do
+    = link_to '#sign-in-form', data: { toggle: 'collapse' }, rel: 'nofollow' do
       = t('stall.checkout.sign_in.click_to_sign_in')
 
   #sign-in-form.panel-body.collapse{ data: { :'sign-in-form' => true } }
@@ -27,6 +27,6 @@
         %legend.omniauth-sign-in= t('stall.checkout.sign_in.omniauth_sign_in')
 
         - Stall.config.omniauth_providers.each do |provider|
-          = link_to user_omniauth_redirect_path(provider.name, _redirect_to: request.path), class: 'btn btn-default' do
+          = link_to user_omniauth_redirect_path(provider.name, _redirect_to: request.path), class: 'btn btn-default', rel: 'nofollow' do
             = fa_icon provider.icon
             = t('stall.omniauth.sign_in_with', provider: provider.display_name)

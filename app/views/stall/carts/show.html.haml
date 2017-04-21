@@ -59,7 +59,7 @@
       %button.btn.btn-default{ type: 'submit', data: { :'cart-update-button' => true } }
         = t('stall.carts.recap.update')
 
-      = link_to checkout_path(current_cart.identifier), class: 'btn btn-primary' do
+      = link_to checkout_path(current_cart.identifier), class: 'btn btn-primary', rel: 'nofollow' do
         = t('stall.carts.recap.validate')
 
 
