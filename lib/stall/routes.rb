@@ -29,7 +29,9 @@ module Stall
             resources :product_categories, path: '/', only: [:show]
           end
 
-          resources :manufacturers, only: [:show]
+          constraints ManufacturerExistsConstraint.new do
+            resources :manufacturers, path: '/', only: [:show]
+          end
 
           resources :carts do
             resources :line_items
@@ -78,6 +80,12 @@ module Stall
     class ProductCategoryExistsConstraint
       def matches?(request)
         ProductCategory.exists?(slug: request.params[:id])
+      end
+    end
+
+    class ManufacturerExistsConstraint
+      def matches?(request)
+        Manufacturer.exists?(slug: request.params[:id])
       end
     end
   end
