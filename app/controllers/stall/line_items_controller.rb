@@ -1,23 +1,28 @@
 module Stall
   class LineItemsController < Stall::ApplicationController
     def create
-      service = Stall.config.service_for(:add_to_cart).new(cart, params)
-
       if service.call
         @quantity = params[:line_item][:quantity].to_i
         @line_item = service.line_item
-        @widget_partial = render_to_string(partial: 'stall/carts/widget', locals: { cart: cart })
+        # Allow subclasses to hook into successful product list add
+        yield(true) if block_given?
         render partial: 'added'
       else
         @line_item = service.line_item
+        # Allow subclasses to hook into failed product list add
+        yield(false) if block_given?
         render partial: 'add_error'
       end
     end
 
     private
 
-    def cart
-      @cart ||= ProductList.find_by_token(params[:cart_id]) || current_cart
+    def product_list
+      fail NotImplementedError, 'Override #product_list in subclass'
+    end
+
+    def service
+      fail NotImplementedError, 'Override #service in subclass'
     end
   end
 end

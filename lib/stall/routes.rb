@@ -34,8 +34,12 @@ module Stall
           end
 
           resources :carts do
-            resources :line_items
+            resources :line_items, only: [:create], controller: 'cart_line_items'
             resource :credit, controller: 'cart_credits', only: [:update, :destroy]
+          end
+
+          resources :wish_lists, only: [:show] do
+            resources :line_items, only: [:create], controller: 'wish_list_line_items'
           end
 
           get 'checkout/:cart_key' => 'checkouts#show', as: :checkout
@@ -52,7 +56,6 @@ module Stall
               end
             end
           end
-
 
           scope '/:gateway' do
             resource :payment, only: [] do

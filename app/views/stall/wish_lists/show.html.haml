@@ -1,0 +1,21 @@
+.wish-list-recap{ data: { :'product-list-recap' => true } }
+  = simple_form_for @wish_list, url: wish_list_path(@wish_list), as: :wish_list, remote: true, data: { :'product-list-form' => true } do |form|
+    %table.table.table-striped
+      %thead
+        %tr
+          %th= LineItem.human_attribute_name(:name)
+          %th= LineItem.human_attribute_name(:unit_price)
+          %th
+
+      %tbody
+        = form.fields_for :line_items do |line_item_fields|
+          %tr.line-item-row{ data: { :'line-item-id' => line_item_fields.object.id } }
+            %td= line_item_fields.object.name
+            %td= line_item_fields.object.unit_price
+            %td= link_to_remove_association '&times;'.html_safe, line_item_fields, wrapper_class: 'line-item-row'
+
+    .form-actions
+      %button.btn.btn-default{ type: 'submit', data: { :'product-list-update-button' => true } }
+        = t('stall.wish_lists.recap.update')
+
+

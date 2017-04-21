@@ -1,5 +1,5 @@
-.cart-recap{ data: { :'cart-recap' => true } }
-  = simple_form_for @cart, url: cart_path(@cart), as: :cart, remote: true, data: { :'cart-form' => true } do |form|
+.cart-recap{ data: { :'product-list-recap' => true } }
+  = simple_form_for @cart, url: cart_path(@cart), as: :cart, remote: true, data: { :'product-list-form' => true } do |form|
     %table.table.table-striped
       %thead
         %tr
@@ -56,7 +56,7 @@
           %td
 
     .form-actions
-      %button.btn.btn-default{ type: 'submit', data: { :'cart-update-button' => true } }
+      %button.btn.btn-default{ type: 'submit', data: { :'product-list-update-button' => true } }
         = t('stall.carts.recap.update')
 
       = link_to checkout_path(current_cart.identifier), class: 'btn btn-primary', rel: 'nofollow' do

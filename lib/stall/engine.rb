@@ -21,6 +21,7 @@ module Stall
     config.to_prepare do
       ::ApplicationController.send(:include, Stall::CartHelper)
       ::ApplicationController.send(:include, Stall::ArchivedPaidCartHelper)
+      ::ApplicationController.send(:include, Stall::WishListHelper)
     end
 
     initializer 'stall.ensure_shipping_method_for_all_calculators' do

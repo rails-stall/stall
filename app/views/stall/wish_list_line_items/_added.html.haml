@@ -1,0 +1,19 @@
+.modal.fade{ role: 'dialog', tabindex: '-1', data: { :'wish-list' => { token: @product_list.token, :'total-quantity' => @product_list.total_quantity } } }
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ type: 'button', :'aria-label' => 'Close', data: { dismiss:  'modal' } }
+          %span{ :'aria-hidden' => 'true' }
+            ×
+        %h4.modal-title
+          = t('stall.wish_list_line_items.added.title')
+
+      .modal-body
+        = @line_item.name
+
+      .modal-footer
+        %button.btn.btn-default{ type: 'button', data: { dismiss: 'modal' } }
+          = t('stall.wish_list_line_items.added.continue_shopping')
+
+        = link_to wish_list_path(@product_list), class: 'btn btn-primary', rel: 'nofollow' do
+          = t('stall.wish_lists.actions.view_wish_list')

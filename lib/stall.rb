@@ -50,6 +50,7 @@ module Stall
   autoload :Routes
   autoload :CartHelper
   autoload :ArchivedPaidCartHelper
+  autoload :WishListHelper
   autoload :Config
   autoload :Utils
 

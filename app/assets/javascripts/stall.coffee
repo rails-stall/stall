@@ -4,7 +4,8 @@
 #= require_self
 #
 #= require stall/add-to-cart-form
-#= require stall/cart-form
+#= require stall/add-to-wish-list-button
+#= require stall/product-list-form
 #= require stall/addresses-fields
 #= require stall/remote-sign-in-form
 #= require stall/products-filters

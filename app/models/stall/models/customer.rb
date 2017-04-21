@@ -14,6 +14,7 @@ module Stall
         before_validation :ensure_user_email
 
         has_many :product_lists, dependent: :destroy
+        has_many :wish_lists, class_name: 'WishList'
         has_many :credit_notes, dependent: :destroy
         has_many :carts, dependent: :nullify
 

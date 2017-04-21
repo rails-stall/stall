@@ -101,6 +101,10 @@ fr:
         validate: "Passer la commande"
         paid_at: "Payée le %{at}"
 
+    wish_lists:
+      actions:
+        view_wish_list: "Voir ma liste"
+
     line_items:
       form:
         add_to_cart: "Ajouter au panier"
@@ -113,6 +117,11 @@ fr:
       errors:
         choose: "Merci de choisir un produit afin de l'ajouter au panier"
         quantity: "Merci de choisir une quantité à ajouter au panier"
+
+    wish_list_line_items:
+      added:
+        title: "Votre produit a bien été ajouté à votre liste de souhaits"
+        continue_shopping: "Continuer ma visite"
 
     checkout:
       shared:
