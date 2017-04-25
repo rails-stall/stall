@@ -58,7 +58,7 @@ module Stall
 
             csv.each do |row|
               max_weight = row.first.to_f
-              price = BigDecimal.new(row[index])
+              price = BigDecimal.new(row[index]) if row[index]
               hash[country_code][max_weight] = price
             end
           end
