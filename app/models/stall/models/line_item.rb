@@ -29,6 +29,7 @@ module Stall
 
         before_validation :restore_valid_quantity
         before_validation :refresh_total_prices
+        before_validation :refresh_weight
 
         scope :ordered, -> { order(created_at: :asc) }
       end
@@ -41,6 +42,14 @@ module Stall
 
       def currency
         product_list.try(:currency) || Money.default_currency
+      end
+
+      def weight
+        read_store_attribute(:data, :weight).presence || Stall.config.default_product_weight
+      end
+
+      def total_weight
+        weight * quantity
       end
 
       private
@@ -60,6 +69,10 @@ module Stall
         if persisted? && quantity && (quantity < 1) && quantity_changed?
           restore_quantity!
         end
+      end
+
+      def refresh_weight
+        self.weight = sellable.weight if sellable.respond_to?(:weight)
       end
     end
   end

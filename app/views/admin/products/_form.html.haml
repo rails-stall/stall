@@ -20,4 +20,7 @@
     = tabs.tab :variants, icon: 'list' do
       = form.input :variants, as: :variants_matrix
 
+    = tabs.tab :shipping, icon: 'truck' do
+      = form.input :weight, hint: t('para.stall.products.weight_hint').html_safe
+
     = form.actions

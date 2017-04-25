@@ -13,9 +13,7 @@ module Stall
       end
 
       def total_weight
-        line_items.reduce(0) do |total, line_item|
-          total + (line_item.weight || Stall.config.default_product_weight)
-        end
+        line_items.map(&:total_weight).sum
       end
 
       def active?

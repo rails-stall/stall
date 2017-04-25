@@ -31,6 +31,9 @@ fr:
         sent: "Notification envoyée !"
         sent_description: "Le client a bien été notifié de l'expédition de sa commande. "
 
+      products:
+        weight_hint: "Indiquez le poids du produit <b>en grammes</b>"
+
   forms:
     tabs:
       cart:
@@ -45,6 +48,7 @@ fr:
         images: "Images"
         descriptions: "Descriptions"
         variants: "Déclinaisons"
+        shipping: "Livraison"
 
   components:
     section:
@@ -360,6 +364,11 @@ fr:
         manufacturer: "Fabricant"
         suggested_products: "Produits suggérés"
         price: "Prix"
+        weight: "Poids du produit"
+      variant:
+        price: "Prix"
+        stock: "Quantité en stock"
+        weight: "Poids"
       product_category:
         name: "Nom"
         slug: "Fragment d'URL"
