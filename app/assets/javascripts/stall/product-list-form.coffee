@@ -19,7 +19,7 @@ class Stall.ProductListForm extends Vertebra.View
     @updateProductListFormWith(resp)
 
   updateProductListFormWith: (markup) =>
-    $form = $(markup).find('[data-product-list-form]')
+    $form = $(markup).find('[data-product-list-form], [data-cart-form]')
     @$el.html($form.html())
     @clean()
 
