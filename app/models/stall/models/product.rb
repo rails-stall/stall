@@ -43,7 +43,7 @@ module Stall
       end
 
       def vat_rate
-        Stall.config.vat_rate
+        read_attribute(:vat_rate).presence || Stall.config.vat_rate
       end
 
       def price

@@ -5,6 +5,7 @@ fr:
         filters:
           paid_after: Payé après le
           paid_before: Payé avant le
+
       variants_matrix:
         enabled: "Publier ?"
         price: "Prix"
@@ -33,6 +34,7 @@ fr:
 
       products:
         weight_hint: "Indiquez le poids du produit <b>en grammes</b>"
+        vat_rate_hint: "Taux de TVA en %. <b>%{rate} si vide.</b>"
 
   forms:
     tabs:
@@ -364,6 +366,7 @@ fr:
         manufacturer: "Fabricant"
         suggested_products: "Produits suggérés"
         price: "Prix"
+        vat_rate: "Taux de TVA"
         weight: "Poids du produit"
       variant:
         price: "Prix"

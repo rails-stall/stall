@@ -8,6 +8,8 @@
       = form.input :product_category, as: :selectize, collection: Para.components.product_categories.resources.leaves
       = form.input :manufacturer, as: :selectize
 
+      = form.input :vat_rate, hint: t('para.stall.products.vat_rate_hint', rate: number_to_percentage(Stall.config.vat_rate), precision: 2).html_safe
+
       = form.input :suggested_products, as: :selectize
 
     = tabs.tab :images, icon: 'picture-o' do
