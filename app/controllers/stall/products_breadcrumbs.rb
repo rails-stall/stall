@@ -3,7 +3,14 @@ module Stall
     private
 
     def add_product_breadcrumbs
-      add_product_category_breadcrumbs(@product.product_category)
+      if @curated_product_list
+        add_breadcrumb(@curated_product_list)
+      elsif @manufacturer
+        add_breadcrumb(@manufacturer)
+      else
+        add_product_category_breadcrumbs(@product.product_category)
+      end
+
       add_breadcrumb(@product)
     end
 

@@ -21,16 +21,20 @@ module Stall
             resources :products, path: '/', only: [:show]
           end
 
-          constraints CuratedProductListExistsConstraint.new do
-            resources :curated_product_lists, path: '/', only: [:show]
-          end
-
           constraints ProductCategoryExistsConstraint.new do
             resources :product_categories, path: '/', only: [:show]
           end
 
+          constraints CuratedProductListExistsConstraint.new do
+            resources :curated_product_lists, path: '/', only: [:show] do
+              resources :products, only: [:show], path: '/'
+            end
+          end
+
           constraints ManufacturerExistsConstraint.new do
-            resources :manufacturers, path: '/', only: [:show]
+            resources :manufacturers, path: '/', only: [:show] do
+              resources :products, only: [:show], path: '/'
+            end
           end
 
           resources :carts do
@@ -68,12 +72,6 @@ module Stall
       end
     end
 
-    class CuratedProductListExistsConstraint
-      def matches?(request)
-        CuratedProductList.exists?(slug: request.params[:id])
-      end
-    end
-
     class ProductExistsConstraint
       def matches?(request)
         Product.exists?(slug: request.params[:id])
@@ -86,9 +84,17 @@ module Stall
       end
     end
 
+    class CuratedProductListExistsConstraint
+      def matches?(request)
+        id = request.params[:curated_product_list_id] || request.params[:id]
+        CuratedProductList.exists?(slug: id)
+      end
+    end
+
     class ManufacturerExistsConstraint
       def matches?(request)
-        Manufacturer.exists?(slug: request.params[:id])
+        id = request.params[:manufacturer_id] || request.params[:id]
+        Manufacturer.exists?(slug: id)
       end
     end
   end
