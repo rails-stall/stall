@@ -1,4 +1,4 @@
-class VariantSelectInput extends Vertebra.View
+class Stall.VariantSelectInput extends Vertebra.View
   events:
     'change [data-variant-select-property]': 'onInputChanged'
 
@@ -57,6 +57,7 @@ class VariantSelectInput extends Vertebra.View
     price = if variant then variant.price else @originalPrice
     @$priceTarget.html(price)
 
-$(document).on 'page:change turbolinks:load', ->
+
+Stall.onDomReady ->
   $('[data-variant-select-input]').each (i, el) ->
-    new VariantSelectInput(el: el)
+    new Stall.VariantSelectInput(el: el)

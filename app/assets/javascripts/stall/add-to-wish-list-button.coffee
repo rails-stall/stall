@@ -13,5 +13,5 @@ class Stall.AddToWishListButton extends Vertebra.View
     $(resp).modal()
 
 Stall.onDomReady ->
-  $('[data-add-to-wish-list]').each (i, el) ->
+  $('[data-add-to-wish-list="line-item-form"]').each (i, el) ->
     new Stall.AddToWishListButton(el: el)

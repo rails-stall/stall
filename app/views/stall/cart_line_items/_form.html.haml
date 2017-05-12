@@ -1,6 +1,6 @@
 = simple_form_for line_item, as: :line_item, url: cart_line_items_path(cart), remote: true, data: { :'add-to-cart-form' => true, :'error-messages' => { choose: t('stall.line_items.errors.choose'), quantity: t('stall.line_items.errors.quantity') } } do |form|
   = form.hidden_field :sellable_type, value: 'Variant'
-  = form.input_field :sellable, as: :variant_select, product: @product
+  = form.input_field :sellable, as: :variant_select, product: product
 
   .input-group
     = form.input_field :quantity, spinner: false, value: 1, class: 'form-group', data: { :'quantity-field' => true }

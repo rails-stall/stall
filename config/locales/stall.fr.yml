@@ -125,8 +125,11 @@ fr:
         quantity: "Merci de choisir une quantité à ajouter au panier"
 
     wish_list_line_items:
+      form:
+        add: "Ajouter à ma Wish list"
+        remove: "Retirer de ma Wish list"
       added:
-        title: "Votre produit a bien été ajouté à votre liste de souhaits"
+        title: "Votre produit a bien été ajouté à votre Wish list"
         continue_shopping: "Continuer ma visite"
 
     checkout:

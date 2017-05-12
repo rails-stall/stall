@@ -14,8 +14,12 @@ module Stall
 
     def line_item
       @line_item ||= sellable.to_line_item.tap do |line_item|
-        line_item.quantity = line_item_params[:quantity]
+        line_item.quantity = quantity
       end
+    end
+
+    def line_item_params?
+      line_item_params.any?
     end
 
     private
@@ -44,10 +48,16 @@ module Stall
       @sellable_class ||= line_item_params[:sellable_type].camelize.constantize
     end
 
+    def quantity
+      @quantity ||= line_item_params[:quantity]
+    end
+
     def line_item_params
       @line_item_params ||= params.require(:line_item).permit(
         :sellable_type, :sellable_id, :quantity
       )
+    rescue ActionController::ParameterMissing
+      {}
     end
   end
 end

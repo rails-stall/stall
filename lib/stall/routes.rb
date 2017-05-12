@@ -43,7 +43,7 @@ module Stall
           end
 
           resources :wish_lists, only: [:show] do
-            resources :line_items, only: [:create], controller: 'wish_list_line_items'
+            resources :line_items, only: [:create, :destroy], controller: 'wish_list_line_items'
           end
 
           get 'checkout/:cart_key' => 'checkouts#show', as: :checkout

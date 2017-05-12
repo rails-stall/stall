@@ -1,2 +1,3 @@
-%button.btn.btn-default{ type: 'button', data: { :'add-to-wish-list' => true, :'url' => wish_list_line_items_path(current_wish_list) } }
-  = fa_icon 'heart-o'
+%button.btn.btn-default.add-to-wish-list-btn{ type: 'button', data: { :'add-to-wish-list' => true, title: title, url: url, included: included, :'product-id' => product.id, :'variant-id' => variant.try(:id), :'popover-content' => popover_content } }
+  = fa_icon (included ? 'heart' : 'heart-o'), data: { :'wish-list-icon' => true }
+  = fa_icon 'spinner spin', class: 'hidden', data: { :'wish-list-loading-spinner' => true }

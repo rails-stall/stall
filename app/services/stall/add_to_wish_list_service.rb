@@ -7,5 +7,11 @@ module Stall
       wish_list.line_items << line_item unless assemble_identical_line_items
       wish_list.save
     end
+
+    def add(variant)
+      @sellable = variant
+      @quantity = 1
+      call
+    end
   end
 end

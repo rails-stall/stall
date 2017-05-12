@@ -1,4 +1,5 @@
-= link_to product_path(product), class: 'product' do
+= link_to product_path(product), class: 'product', data: { :'product-id' => product.id } do
   %span.product-name= product.name
   = image_tag product.image.url(:thumb), class: 'img-responsive'
   = number_to_currency(product.price)
+  = add_to_wish_list_button(product)

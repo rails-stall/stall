@@ -6,12 +6,14 @@ module Stall
         @line_item = service.line_item
         # Allow subclasses to hook into successful product list add
         yield(true) if block_given?
-        render partial: 'added'
+        # We do not render if the yield bock already has done it
+        render partial: 'added' unless response_body
       else
         @line_item = service.line_item
         # Allow subclasses to hook into failed product list add
         yield(false) if block_given?
-        render partial: 'add_error'
+        # We do not render if the yield bock already has done it
+        render partial: 'add_error' unless response_body
       end
     end
 

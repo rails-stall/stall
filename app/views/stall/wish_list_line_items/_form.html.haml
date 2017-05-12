@@ -1,0 +1,12 @@
+= simple_form_for line_item, as: :line_item, url: wish_list_line_items_path(wish_list), remote: true, data: { :'add-to-wish-list-form' => true, :'error-messages' => { choose: t('stall.line_items.errors.choose'), quantity: t('stall.line_items.errors.quantity') } } do |form|
+  = form.hidden_field :sellable_type, value: 'Variant'
+  = form.input_field :sellable, as: :variant_select, product: product
+  = form.hidden_field :quantity, value: 1
+
+  %button.btn.btn-primary{ type: 'submit', autocomplete: 'off', data: { :'loading-text' => t('stall.shared.sending') } }
+    = fa_icon 'heart-o'
+    = t('stall.wish_list_line_items.form.add')
+
+  %button.btn.btn-danger{ type: 'button', data: { :'cancel-button' => true } }
+    = fa_icon 'times'
+    = t('stall.shared.cancel')

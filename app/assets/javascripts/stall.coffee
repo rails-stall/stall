@@ -5,6 +5,7 @@
 #
 #= require stall/add-to-cart-form
 #= require stall/add-to-wish-list-button
+#= require stall/add-product-to-wish-list-button
 #= require stall/product-list-form
 #= require stall/addresses-fields
 #= require stall/remote-sign-in-form
