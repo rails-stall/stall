@@ -32,6 +32,10 @@ module Stall
         @currency ||= Money::Currency.new(Stall.config.default_currency)
       end
 
+      def weight
+        read_attribute(:weight).presence || product.try(:weight)
+      end
+
       private
 
       def refresh_name

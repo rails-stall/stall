@@ -8,7 +8,8 @@ module Stall
       end
 
       def price
-        total_weight = cart.total_weight
+        # Convert weight from grams to kilograms.
+        total_weight = (cart.total_weight / 1000.0)
 
         # Browse the data hash to find a suitable country code for the cart's
         # total weight

@@ -13,7 +13,7 @@ module Stall
         name: (try(:name) || try(:title)),
         unit_price: try(:price),
         unit_eot_price: eot_price,
-        vat_rate: vat_rate,
+        vat_rate: vat_rate
       )
     end
 

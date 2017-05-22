@@ -33,7 +33,7 @@ module Stall
       end
 
       def eot_price
-        price / (1 + (vat_rate / 100.0))
+        price / (1 + (vat_rate / 100.0)) if price
       end
 
       def vat_rate

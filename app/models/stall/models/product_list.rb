@@ -67,6 +67,10 @@ module Stall
         line_items.map(&:quantity).compact.sum
       end
 
+      def total_weight
+        line_items.map(&:total_weight).sum
+      end
+
       def wizard
         @wizard ||= self.class.wizard
       end

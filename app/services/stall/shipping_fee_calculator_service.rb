@@ -21,11 +21,15 @@ module Stall
     private
 
     def update_price_for(shipment, calculator)
-      shipment.update_attributes(
-        price: calculator.price,
-        eot_price: calculator.eot_price,
-        vat_rate: calculator.vat_rate
-      )
+      if calculator.price
+        shipment.update_attributes(
+          price: calculator.price,
+          eot_price: calculator.eot_price,
+          vat_rate: calculator.vat_rate
+        )
+      else
+        shipment.errors.add(:price, :unavailable)
+      end
     end
 
     def calculator
