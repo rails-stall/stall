@@ -22,10 +22,10 @@ module Stall
     end
 
     # Allow billing address to fall back to shipping address when not filled
-    def billing_address
+    def billing_address(force_actual_address: false)
       if (billing_address = association(:billing_address).load_target)
         billing_address
-      elsif !@_force_actual_address_association
+      elsif !@_force_actual_address_association && !force_actual_address
         association(:shipping_address).load_target
       end
     end
@@ -41,16 +41,16 @@ module Stall
     end
 
     # Allow shipping address to fall back to billing address when not filled
-    def shipping_address
+    def shipping_address(force_actual_address: false)
       if (shipping_address = association(:shipping_address).load_target)
         shipping_address
-      elsif !@_force_actual_address_association
+      elsif !@_force_actual_address_association && !force_actual_address
         association(:billing_address).load_target
       end
     end
 
     def shipping_address?
-      shipping_address.try(:persisted?) && shipping_address.billing?
+      shipping_address.try(:persisted?) && shipping_address.shipping?
     end
 
     def shipping_address_attributes=(attributes)

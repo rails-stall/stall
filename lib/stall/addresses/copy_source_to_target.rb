@@ -17,17 +17,21 @@ module Stall
       # Update or create target address with source attributes
       #
       def copy_address(type)
-        address = if target.send(:"#{ type }_address?")
-          target.send(:"#{ type }_address")
-        else
-          target.send(:"build_#{ type }_address")
-        end
+        source.with_actual_address_associations do
+          target.with_actual_address_associations do
+            address = if target.send(:"#{ type }_address?")
+              target.send(:"#{ type }_address")
+            else
+              target.send(:"build_#{ type }_address")
+            end
 
-        if source.send(:"#{ type }_address?")
-          attributes = duplicate_attributes(source.send(:"#{ type }_address"))
-          address.assign_attributes(attributes)
-        else
-          address.try(:mark_for_destruction)
+            if source.send(:"#{ type }_address?")
+              attributes = duplicate_attributes(source.send(:"#{ type }_address"))
+              address.assign_attributes(attributes)
+            else
+              address.try(:mark_for_destruction)
+            end
+          end
         end
       end
     end
