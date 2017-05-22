@@ -1,10 +1,10 @@
 .addresses-fields{ data: { :'addresses-fields' => true } }
   %fieldset{ data: { :'address-form' => :shipping } }
-    = form.fields_for :shipping_address do |address_form|
+    = form.fields_for :shipping_address, form.object.shipping_address(force_actual_address: true) do |address_form|
       = render partial: 'stall/addresses/nested_fields', locals: { form: address_form }
 
-  = form.input :use_another_address_for_billing, as: :boolean, input_html: { checked: (params[:use_another_address_for_billing] || form.object.billing_address?), data: { :'use-another-address-for-billing' => true } }
+  = form.input :use_another_address_for_billing, as: :boolean, input_html: { checked: (params[:use_another_address_for_billing] == '1' || form.object.billing_address?), data: { :'use-another-address-for-billing' => true } }
 
-  %fieldset{ class: ('hidden' unless params[:use_another_address_for_billing] == '1'), data: { :'address-form' => :billing } }
-    = form.fields_for :billing_address do |address_form|
+  %fieldset{ class: ('hidden' unless params[:use_another_address_for_billing] == '1' || form.object.billing_address?), data: { :'address-form' => :billing } }
+    = form.fields_for :billing_address, form.object.billing_address(force_actual_address: true) do |address_form|
       = render partial: 'stall/addresses/nested_fields', locals: { form: address_form }
