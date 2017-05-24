@@ -28,7 +28,7 @@ module Stall
     private
 
     def shipping_fee_service
-      @shipping_fee_service ||= Stall::ShippingFeeCalculatorService.new(cart)
+      @shipping_fee_service ||= Stall.config.service_for(:shipping_fee_calculator).new(cart)
     end
   end
 end
