@@ -7,6 +7,8 @@ module Stall
     end
 
     def draw(mount_location)
+      routes = self
+
       router.instance_eval do
         devise_for :users, Stall.config.devise_for_user_config
 
@@ -14,43 +16,43 @@ module Stall
           get '/users/omniauth/:provider/redirect' => 'stall/omniauth_callbacks#redirect', as: :user_omniauth_redirect
         end
 
-        scope mount_location, module: :stall do
-          resources :products, only: [:index], as: :products
+        scope mount_location do
+          resources :products, only: [:index], as: :products, controller: routes.controller_for(:products)
 
           constraints ProductExistsConstraint.new do
-            resources :products, path: '/', only: [:show]
+            resources :products, path: '/', only: [:show], controller: routes.controller_for(:products)
           end
 
           constraints ProductCategoryExistsConstraint.new do
-            resources :product_categories, path: '/', only: [:show]
+            resources :product_categories, path: '/', only: [:show], controller: routes.controller_for(:product_categories)
           end
 
           constraints CuratedProductListExistsConstraint.new do
-            resources :curated_product_lists, path: '/', only: [:show] do
-              resources :products, only: [:show], path: '/'
+            resources :curated_product_lists, path: '/', only: [:show], controller: routes.controller_for(:curated_product_lists) do
+              resources :products, only: [:show], path: '/', controller: routes.controller_for(:products)
             end
           end
 
           constraints ManufacturerExistsConstraint.new do
-            resources :manufacturers, path: '/', only: [:show] do
-              resources :products, only: [:show], path: '/'
+            resources :manufacturers, path: '/', only: [:show], controller: routes.controller_for(:manufacturers) do
+              resources :products, only: [:show], path: '/', controller: routes.controller_for(:products)
             end
           end
 
-          resources :carts do
-            resources :line_items, only: [:create], controller: 'cart_line_items'
-            resource :credit, controller: 'cart_credits', only: [:update, :destroy]
+          resources :carts, controller: routes.controller_for(:carts) do
+            resources :line_items, only: [:create], controller: routes.controller_for(:cart_line_items)
+            resource :credit, only: [:update, :destroy], controller: routes.controller_for(:cart_credits)
           end
 
-          resources :wish_lists, only: [:show] do
-            resources :line_items, only: [:create, :destroy], controller: 'wish_list_line_items'
+          resources :wish_lists, only: [:show], controller: routes.controller_for(:wish_lists) do
+            resources :line_items, only: [:create, :destroy], controller: routes.controller_for(:wish_list_line_items)
           end
 
-          get 'checkout/:cart_key' => 'checkouts#show', as: :checkout
+          get 'checkout/:cart_key' => "#{routes.controller_for(:checkouts)}#show", as: :checkout
 
-          scope 'checkout', module: 'checkout', as: :checkout do
+          scope 'checkout', as: :checkout do
             scope '(:cart_key)' do
-              resource :step, only: [:show, :update] do
+              resource :step, only: [:show, :update], controller: routes.controller_for(:'checkout/steps') do
                 post '/', action: :update, as: :update
                 get  '/process', action: :update, as: :process
                 # Allow external URLs process steps, allowing some payment
@@ -62,7 +64,7 @@ module Stall
           end
 
           scope '/:gateway' do
-            resource :payment, only: [] do
+            resource :payment, only: [], controller: routes.controller_for(:payments) do
               member do
                 match 'notify', action: 'notify', via: [:get, :post]
               end
@@ -70,6 +72,10 @@ module Stall
           end
         end
       end
+    end
+
+    def controller_for(key)
+      Stall.config.controllers[key] || "stall/#{key}"
     end
 
     class ProductExistsConstraint

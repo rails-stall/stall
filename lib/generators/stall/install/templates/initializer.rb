@@ -33,6 +33,24 @@ Stall.configure do |config|
   #
   # config.prices_precision = 2
 
+  # Override the controllers used in stall's default routing.
+  #
+  # This allows to extend or replace default controller behaviors by providing
+  # a route-compatible controller name with the right key
+  #
+  # Please read the routes source to see which controllers your can override
+  # with this config :
+  #
+  #   https://github.com/rails-stall/stall/blob/master/lib/stall/routes.rb
+  #
+  # Note : If you define controllers here that inherit from stall controllers,
+  #        to extend their behavior, please fill the `config.default_layout`
+  #        config to avoid layout issues, or define the `#set_stall_layout`
+  #        in your controllers, returing the layout name to render, or set
+  #        the `.layout` macro in your controller.
+  #
+  # config.controllers = { products: 'products' }
+
   # User omniauth providers that will be allowed for customers to authenticate
   # with.
   #

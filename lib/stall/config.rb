@@ -21,6 +21,10 @@ module Stall
     # Default prices precision for rounding
     param :prices_precision, 2
 
+    # Controller overrides to allow extending or replacing default controllers
+    # behaviors
+    param :controllers, {}.with_indifferent_access
+
     # User omniauth providers
     param :devise_for_user_config, { controllers: { omniauth_callbacks: 'stall/omniauth_callbacks' } }
 
