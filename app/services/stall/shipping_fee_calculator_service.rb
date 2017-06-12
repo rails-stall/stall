@@ -7,7 +7,7 @@ module Stall
     end
 
     def call
-      return unless cart.shipment && cart.shipment.shipping_method
+      return reset_shipment_price unless available?
 
       update_price_for(cart.shipment, calculator) if calculator
     end
@@ -30,6 +30,12 @@ module Stall
       else
         shipment.errors.add(:price, :unavailable)
       end
+    end
+
+    def reset_shipment_price
+      return unless cart.shipment
+
+      cart.shipment.update_attributes(price: 0, eot_price: 0, vat_rate: 0)
     end
 
     def calculator

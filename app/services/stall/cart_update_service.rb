@@ -17,7 +17,7 @@ module Stall
     def refresh_associated_services!
       # Recalculate shipping fee if available for calculation to ensure
       # that the fee us always up to date when displayed to the customer
-      shipping_fee_service.call if shipping_fee_service.available?
+      shipping_fee_service.call
 
       # Recalculate the credit usage amount if already used to avoid negative
       # cart totals
