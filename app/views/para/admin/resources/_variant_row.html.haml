@@ -5,7 +5,7 @@
 
     %span.checkbox
       %label
-        = form.check_box :published, checked: (form.object.published? || form.object.new_record?), data: { :'variants-matrix-variant-enabled' => true }
+        = form.check_box :published, checked: (form.object.published? || form.object.new_record?), autocomplete: 'off', data: { :'variants-matrix-variant-enabled' => true }
         %i.checkbox-icon
 
   - all_properties.each do |property_config|

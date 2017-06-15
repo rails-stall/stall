@@ -83,7 +83,6 @@ class Stall.WishListFormPopover extends Vertebra.View
     @trigger('added', resp)
 
   onCancelClicked: ->
-    console.log 'onCancelClicked', this
     @destroy()
 
   destroy: ->

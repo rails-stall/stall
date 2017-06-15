@@ -6,6 +6,7 @@ class VariantsMatrix.Variant extends Vertebra.View
   initialize: (options = {}) ->
     @combination = options.combination
     @persisted = @$el?.data('variant-id')
+    @isDestroyed = false
     @input = options.input
 
   renderTo: ($container) ->
@@ -16,6 +17,9 @@ class VariantsMatrix.Variant extends Vertebra.View
     @fillProperties()
 
   fillProperties: ->
+    # Reset all properties to hidden
+    @$("[data-variants-matrix-variant-property]").addClass('hidden')
+
     for propertyValue in @propertyValues()
       $propertyValue = @$("[data-variants-matrix-variant-property='#{ propertyValue.propertyId }']")
       $propertyValue.find('[data-property-name]').html(propertyValue.name)
@@ -23,9 +27,10 @@ class VariantsMatrix.Variant extends Vertebra.View
       $propertyValue.removeClass('hidden')
 
   remove: ->
+    @setDestroyed(true)
+
     if @persisted
       @$el.hide(0)
-      @setDestroyed(true)
     else
       @$el.remove()
       @trigger('destroy', this)
@@ -54,15 +59,16 @@ class VariantsMatrix.Variant extends Vertebra.View
 
   onEnabledStateChanged: (e) ->
     checked = @$('[data-variants-matrix-variant-enabled]').prop('checked')
-    @$el.toggleClass('disabled')
+    @$el.toggleClass('disabled', !checked)
 
   setDestroyed: (state) ->
-    @$el.find('[data-variant-remove]').val(if state then 'true' else 'false')
+    @isDestroyed = state
+    @$el.find('[data-variant-remove]').val(if @isDestroyed then 'true' else 'false')
 
   onApplyToAllClicked: ->
     @trigger('applytoall', this)
 
   copyInputsFrom: (otherVariant) ->
-    @$('input:visible').each (i, el) ->
+    @$('input:visible').each (i, el) =>
       otherValue = otherVariant.$('input:visible').eq(i).val()
       $(el).val(otherValue)

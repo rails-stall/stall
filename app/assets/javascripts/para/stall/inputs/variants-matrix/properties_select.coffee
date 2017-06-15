@@ -12,6 +12,8 @@ class VariantsMatrix.PropertiesSelect extends Vertebra.View
   # field name and the selected property values ids
   #
   getSelectedProperties: ->
+    selectedProperties = []
+
     for el in @$propertySelects.get()
       $field = $(el)
 
@@ -23,7 +25,16 @@ class VariantsMatrix.PropertiesSelect extends Vertebra.View
 
       fieldName = $field.data('variants-matrix-property-select')
       values = @serializeFieldValues($field, propertyId)
-      { id: propertyId, name: fieldName, values: values, active: !!values.length }
+
+      continue unless values?.length
+
+      selectedProperties.push
+        id: propertyId
+        name: fieldName
+        values: values
+        active: !!values.length
+
+    selectedProperties
 
   serializeFieldValues: ($field, propertyId) ->
     for option in $field.find(':selected').get()

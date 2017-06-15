@@ -57,27 +57,42 @@ class VariantsMatrix.Input extends Vertebra.View
 
   refreshAvailableVariants: ->
     combinations = @buildPossibleCombinations()
-    @removeVariantsNotIn(combinations)
-    @createVariantsIn(combinations)
+    removeableVariants = @variantsNotIn(combinations)
+    createdVariants = @createVariantsIn(combinations)
 
-  removeVariantsNotIn: (combinations) ->
+    # Copy default values from removeable variants before they're removed from
+    # the DOM, allowing the Variant#copyInputsFrom method to work
+    @applyDefaultValuesForNewVariants(removeableVariants, createdVariants)
+
+    @removeVariants(removeableVariants)
+
+  variantsNotIn: (combinations) ->
     removeableVariants = []
 
     for variant, index in @variants
-      continue unless variant
+      continue if !variant or variant.isDestroyed
       matches = false
       matches = true for combination in combinations when variant.matches(combination)
       removeableVariants.push(variant) unless matches
 
-    # We remove variants after iterating, avoiding to change array indexes
-    # while we loop through it to match removeable variants
+    removeableVariants
+
+  removeVariants: (removeableVariants) ->
     variant.remove() for variant in removeableVariants
 
   createVariantsIn: (combinations) ->
+    @newVariants = []
+
     for combination in combinations
       existingVariant = @findVariantFor(combination)
-      variant = existingVariant or @createVariantFor(combination)
+      newVariant = false
+
+      unless (variant = existingVariant)
+        variant = @createVariantFor(combination)
+        @newVariants.push(variant)
+
       variant.show()
+      variant
 
   findVariantFor: (combination) ->
     return variant for variant, index in @variants when variant.matches(combination)
@@ -128,6 +143,23 @@ class VariantsMatrix.Input extends Vertebra.View
 
     if !combinations.length && @allowEmptyVariant then [{}] else combinations
 
+  applyDefaultValuesForNewVariants: (removeableVariants, createdVariants) ->
+    existingVariants = if removeableVariants.length >= createdVariants.length
+      removeableVariants
+    else
+      (v for v in createdVariants when !@isNewVariant(v))
+
+    if existingVariants.length >= @newVariants.length
+      v.copyInputsFrom(existingVariants[i]) for v, i in @newVariants
+    else if existingVariants.length
+      v.copyInputsFrom(existingVariants[0]) for v, i in @newVariants
+
+  isNewVariant: (variant) ->
+    for v in @newVariants
+      return true if variant.cid is v.cid
+
+    false
+
   onVariantApplyToAll: (variant) =>
     v.copyInputsFrom(variant) for v in @variants when v.cid isnt variant.cid
 
@@ -137,4 +169,3 @@ class VariantsMatrix.Input extends Vertebra.View
     destroyedVariant.destroy()
     # Remove variant from @variants array
     @variants.splice(index, 1) for variant, index in @variants when variant?.matches(destroyedVariant.combination)
-
