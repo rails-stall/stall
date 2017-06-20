@@ -3,8 +3,8 @@
 #
 module Stall
   module RoutingMapper
-    def mount_stall(mount_location)
-      Stall::Routes.new(self).draw(mount_location)
+    def mount_stall(*args)
+      Stall::Routes.new(self).draw(*args)
     end
   end
 end
