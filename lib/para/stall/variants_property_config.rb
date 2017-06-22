@@ -34,10 +34,20 @@ module Para
         end
       end
 
+      def one_available_value?
+        available_options.length == 1
+      end
+
       def available_options
-        @available_options ||= property.property_values.each_with_object([]) do |property_value, ary|
+        @available_options ||= available_property_values.map do |property_value|
+          [property_value.value, property_value.id]
+        end
+      end
+
+      def available_property_values
+        @available_property_values ||= property.property_values.each_with_object([]) do |property_value, ary|
           if property_value_used?(property_value)
-            ary << [property_value.value, property_value.id]
+            ary << property_value
           end
         end
       end

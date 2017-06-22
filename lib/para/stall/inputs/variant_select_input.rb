@@ -16,11 +16,16 @@ module Para
             variants_data: variants_data,
             price_selector: price_selector,
             variant_label_class: variant_label_class,
-            variant_property_class: variant_property_class
+            variant_property_class: variant_property_class,
+            value: value
           }
         end
 
         private
+
+        def value
+          variants.first.id if variants.length == 1
+        end
 
         def price_selector
           @price_selector ||= options[:price_selector] || '[data-sellable-price]'
