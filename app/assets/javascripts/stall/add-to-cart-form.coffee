@@ -53,6 +53,7 @@ class Stall.AddToCartForm extends Vertebra.View
     @setLoading(false)
 
   onSuccess: (e, resp) ->
+    @removeExistingModal()
     @$modal = $(resp).appendTo('body').modal()
     @updateWidget()
 
@@ -62,8 +63,16 @@ class Stall.AddToCartForm extends Vertebra.View
     else if ($counter = $('[data-cart-quantity-counter]')).length
       $counter.text(@$modal.data('cart-total-quantity'))
 
+  # Hide current modal and remove it from DOM when it's hidden
+  #
+  removeExistingModal: ->
+    return unless ($modal = $('.modal')).length
+    $modal.one('hidden.bs.modal', -> $modal.remove())
+    $modal.modal('hide')
+
   # Displays errors in a tooltip on the form submit button, listing different
   # errors and disabling the submit button
+  #
   refreshErrorsDisplay: (options = {}) ->
     @clearErrorMessages()
     @displayErrorMessages(options) if @errors.length
