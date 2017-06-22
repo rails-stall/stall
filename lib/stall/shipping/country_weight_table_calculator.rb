@@ -4,7 +4,7 @@ module Stall
   module Shipping
     class CountryWeightTableCalculator < Stall::Shipping::Calculator
       def available?
-        country?(address.country)
+        address && country?(address.country)
       end
 
       def price
