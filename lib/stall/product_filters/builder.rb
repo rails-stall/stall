@@ -9,7 +9,14 @@ module Stall
       end
 
       def filters
-        [category_filter, manufacturer_filter, price_filter] + properties_filters
+        (
+          [
+            category_filter,
+            manufacturer_filter,
+            price_filter
+          ] +
+          properties_filters
+        ).compact
       end
 
       def category_filter
