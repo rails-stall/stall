@@ -41,7 +41,9 @@ module Stall
             end
 
             constraints ProductCategoryExistsConstraint.new do
-              resources :product_categories, path: '/', only: [:show], controller: routes.controller_for(:product_categories)
+              resources :product_categories, path: '/', only: [:show], controller: routes.controller_for(:product_categories) do
+                 resources :products, only: [:show], path: '/', controller: routes.controller_for(:products)
+              end
             end
 
             constraints CuratedProductListExistsConstraint.new do
