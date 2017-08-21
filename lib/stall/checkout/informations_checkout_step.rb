@@ -136,6 +136,10 @@ module Stall
       # cart to pre-fill the fields for the user
       #
       def prefill_addresses_from_customer
+        # Do not fill addresses if we have errors on the address models since 
+        # it means the form has just been submitted
+        return if cart.shipping_address && cart.shipping_address.errors.any?
+        
         Stall::Addresses::PrefillTargetFromSource.new(cart.customer, cart).copy
       end
 
