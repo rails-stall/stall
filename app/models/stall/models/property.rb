@@ -6,7 +6,8 @@ module Stall
       included do
         self.table_name = 'stall_properties'
 
-        has_many :property_values, dependent: :destroy,
+        has_many :property_values, -> { ordered },
+                                   dependent: :destroy,
                                    inverse_of: :property
         accepts_nested_attributes_for :property_values, allow_destroy: true
 
