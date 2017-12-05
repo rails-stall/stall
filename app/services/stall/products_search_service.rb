@@ -9,7 +9,7 @@ module Stall
     end
 
     def call
-      @search = products.ransack(params[:search])
+      @search = products.ransack(params[:search] || {})
     end
 
     def search
