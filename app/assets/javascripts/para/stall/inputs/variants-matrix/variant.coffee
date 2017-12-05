@@ -6,6 +6,15 @@ class VariantsMatrix.Variant extends Vertebra.View
   initialize: (options = {}) ->
     @combination = options.combination
     @persisted = @$el?.data('variant-id')
+
+    # This allows for destroying attributes mappings fields that are
+    # automatically added after the actual table row.
+    #
+    # Not removing it produces an empty variant on each product creation
+    #
+    if @$el?.length is 1
+      @setElement(@$el.add(@$el.next('[data-attributes-mappings]')))
+
     @isDestroyed = false
     @input = options.input
 
